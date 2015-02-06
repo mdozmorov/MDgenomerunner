@@ -1,0 +1,8 @@
+Package: MDmisc
+Title: Miscellaneous helpful functions
+Version: 0.0.0.9000
+Authors@R: person("Mikhail", "Dozmorov", , "mikhail@dozmorov.com", role = c("aut", "cre"))
+Description: Little helpers for computational biology
+Depends: R (>= 3.1.1)
+License: The MIT license
+LazyData: true
