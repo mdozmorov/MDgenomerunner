@@ -7,8 +7,8 @@ To install:
 
 ```r
 library(devtools)
-install_github('davetang/bedr')
-library(bedr)
+install_github('mdozmorov/MDmisc')
+library(MDmisc)
 ```
 
 List of functions:
