@@ -2,3 +2,6 @@
 .Rproj
 .Rhistory
 .RData
+.Rbuildignore
+.DS_Store
+MDmisc.Rproj

@@ -6,3 +6,10 @@ Description: Little helpers for computational biology
 Depends: R (>= 3.1.1)
 License: The MIT license
 LazyData: true
+Suggests: Biobase,
+    KEGG.db,
+    GO.db
+Imports: org.Hs.eg.db,
+    AnnotationDbi,
+    GOstats,
+    Category
