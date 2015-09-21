@@ -1,7 +1,7 @@
 MD helper functions
 ===
 
-Package created with help of [Dave Tang's tutorial](http://davetang.org/muse/2015/02/04/bed-granges/#more-5066).
+Package created with the help of [Dave Tang's tutorial](http://davetang.org/muse/2015/02/04/bed-granges/#more-5066).
 
 To install:
 
@@ -13,4 +13,4 @@ library(MDmisc)
 
 List of functions:
 
-`Enrichment` - gene set enrichment analysis on a list of gene names or EntrezIDs
+`gene_enrichment` - gene set enrichment analysis on a list of gene names or EntrezIDs. Currently, Homo Sapiens only.
