@@ -8,7 +8,7 @@ gene_enrichment(selected, all.universe = NULL, id = "symbol", use = "GO",
   ont = "BP", fileName = NULL)
 }
 \arguments{
-\item{selected}{a character vector of gene IDs. Either gene names or Entrez IDs are accepted. Must be provided.}
+\item{selected}{a character vector of gene IDs. Either gene names or Entrez IDs are accepted. Required.}
 
 \item{all.universe}{a character vector of all genes, to be used for estimating random enrichments.
 Must be the same ID type as the 'selected' genes.}

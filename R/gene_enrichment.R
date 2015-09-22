@@ -3,7 +3,7 @@
 #' A function to perform GO or KEGG enrichment analysis of a list of gene symbols or EntrezIDs. A "background",
 #' or the universe of all gene IDs can be provided instead of default all genes.
 #'
-#' @param selected a character vector of gene IDs. Either gene names or Entrez IDs are accepted. Must be provided.
+#' @param selected a character vector of gene IDs. Either gene names or Entrez IDs are accepted. Required.
 #' @param all.universe a character vector of all genes, to be used for estimating random enrichments.
 #' Must be the same ID type as the 'selected' genes.
 #' @param id what type of ID is provided. "symbol" (e.g., "BRCA1", default) or "entrezid" (e.g., "672").
