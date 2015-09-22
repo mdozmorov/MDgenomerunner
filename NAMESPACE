@@ -6,3 +6,4 @@ importFrom(GOstats, hyperGTest)
 importFrom(GOstats, summary)
 
 export(gene_enrichment)
+export(unembed)
