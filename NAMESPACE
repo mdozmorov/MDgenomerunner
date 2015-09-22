@@ -8,3 +8,4 @@ importClassesFrom(Category, KEGGHyperGParams)
 
 export(gene_enrichment)
 export(unembed)
+export(gr_clusters)
