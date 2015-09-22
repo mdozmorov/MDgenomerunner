@@ -21,3 +21,5 @@ List of functions:
 ### GenomeRunner-specific functions
 
 `gr_clusters` - define clusters by cutting a dendrogram by specified height.
+
+`gr_transform` -  convert a matrix of p-values (with "-" indicating depletion) into a -log10-transformed matrix with sign preserved
