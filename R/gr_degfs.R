@@ -42,32 +42,45 @@ gr_degfs <- function(mtx, clust, cutoff.pval = 0.1, cutoff.adjust = "fdr", isOR 
         degs <- apply(exprs, 1, function(x) 
           wilcox.test(x[design[, i] == 1], x[design[, j] == 1])$p.value)
         degs <- degs[!is.na(degs)]  # Precaution against NA p-values, when both clusters have exactly the same numbers
-        degs <- p.adjust(degs, method = cutoff.adjust)
-        degs <- degs[degs < cutoff.pval]
         # Average values in clusters i and j
-        if (sum(degs < cutoff.pval) > 0) {
-          if (isOR == FALSE) {
-            i.av <- 1/(10^rowMeans(abs(exprs[names(degs), design[, i] == 
-                                               1, drop = FALSE])))  # Anti -log10 transform p-values
-            j.av <- 1/(10^rowMeans(abs(exprs[names(degs), design[, j] == 
-                                               1, drop = FALSE])))
-          } else {
-            i.av <- 2^rowMeans(exprs[names(degs), design[, i] == 1, drop = FALSE])  # Anti log2 transform mean odds ratios
-            j.av <- 2^rowMeans(exprs[names(degs), design[, j] == 1, drop = FALSE])
+        if (isOR == FALSE) {
+          i.av <- 1/(10^rowMeans(abs(exprs[names(degs), design[, i] == 
+                                             1, drop = FALSE])))  # Anti -log10 transform p-values
+          j.av <- 1/(10^rowMeans(abs(exprs[names(degs), design[, j] == 
+                                             1, drop = FALSE])))
+        } else {
+          i.av <- 2^rowMeans(exprs[names(degs), design[, i] == 1, drop = FALSE])  # Anti log2 transform mean odds ratios
+          j.av <- 2^rowMeans(exprs[names(degs), design[, j] == 1, drop = FALSE])
+        }
+        # Merge and convert the values
+        degs.table <- merge(data.frame(degs=degs, i.av, j.av), gfAnnot, by.x = "row.names", by.y = "file_name",
+                            all.x = TRUE, sort = FALSE)
+        # Rename columns
+        colnames(degs.table)[2:4] <- c("degs", colnames(design)[i], colnames(design)[j])
+        # Prepare cell types
+        class(degs.table$cell) <- "character"
+        degs.table$cell[ is.na(degs.table$cell) ] <- "dummy_cell" # If some file names is not in the gfAnnot dataframe (e.g., user-provided data), 'cell' column will contain NAs. replace them with dummy text to allow FDR correction
+        unique.cells <- unique(degs.table$cell) # Keep unique cell types
+        # Adjust for multiple testing on per-cell-type basis
+        for (u.c in unique.cells) { 
+          # If the cell-specific subset have >1 row, perform correction for multiple testing
+          if(sum(degs.table$cell == u.c) > 1) {
+            # i+1 because we added the GF column
+            degs.table[degs.table$cell == u.c, "degs"] <- 
+              p.adjust(degs.table[degs.table$cell == u.c, "degs"], method = cutoff.adjust)
           }
-          
-          # Merge and convert the values
-          degs.pvals <- as.matrix(cbind(degs, i.av, j.av))
-          colnames(degs.pvals) <- c("adj.p.val", colnames(design)[i], colnames(design)[j])
-          degs.pvals <- degs.pvals[order(degs.pvals[, "adj.p.val"]), , drop = FALSE]
+        }
+        # Filter by the cutoff
+        degs.table <- degs.table[degs.table$degs < cutoff.pval, , drop = FALSE]
+        # Proceed, if significant differential enrichments are present
+        if (nrow(degs.table) > 0) {
+          degs.table <- degs.table[order(degs.table$degs), , drop = FALSE]
           print(paste(colnames(design)[i], "vs.", colnames(design)[j], 
                       ", number of degs significant at adj.p.val <", 
-                      cutoff.pval, ":", nrow(degs.pvals)))
+                      cutoff.pval, ":", nrow(degs.table)))
           
           # Keep the number of DEGs in the matrix
-          degs.matrix[i, j] <- nrow(degs.pvals)
-          degs.table <- merge(degs.pvals, gfAnnot, by.x = "row.names", by.y = "file_name", 
-                              all.x = TRUE, sort = FALSE)  # Merge with the descriptions
+          degs.matrix[i, j] <- nrow(degs.table)
           # Format columns
           degs.table[, 2] <- formatC(degs.table[, 2], format = "e", digits = 2)
           degs.table[, 3] <- formatC(degs.table[, 3], format = "f", digits = 3)
@@ -91,4 +104,3 @@ gr_degfs <- function(mtx, clust, cutoff.pval = 0.1, cutoff.adjust = "fdr", isOR 
   print(degs.matrix)
   return(degfs.list)  # Return the full list of the results
 }
-
