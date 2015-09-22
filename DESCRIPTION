@@ -8,8 +8,8 @@ License: The MIT license
 LazyData: true
 Suggests: Biobase,
     KEGG.db,
-    GO.db
-Imports: org.Hs.eg.db,
+    GO.db,
     AnnotationDbi,
     GOstats,
     Category
+Imports: org.Hs.eg.db

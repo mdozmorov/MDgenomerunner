@@ -27,7 +27,7 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol",
   # Preparing environment for remapping Gene Symbols to Entrez IDs
   x <- org.Hs.egSYMBOL2EG
   # Get entrez gene identifiers that are mapped to a gene symbol
-  mapped_genes <- mappedkeys(x)
+  mapped_genes <- AnnotationDbi::mappedkeys(x)
   # Convert to a list
   xx <- as.list(x[mapped_genes])
   # If all.universe provided as gene symbols, convert them to entrezids
@@ -50,7 +50,7 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol",
   # Combine the universe with all genes
   all.universe <- unique(c(selected, all.universe))
   # Get GO-gene annotations
-  geneList.annot <- select(org.Hs.eg.db, keys = selected, columns = c("ENTREZID", 
+  geneList.annot <- AnnotationDbi::select(org.Hs.eg.db, keys = selected, columns = c("ENTREZID", 
                                                                       "SYMBOL", 
                                                                       "GOALL", 
                                                                       "PATH"), 
@@ -79,8 +79,8 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol",
     genes.annot <- do.call("rbind", genes.annot)  # resing data frame
   }
   # Enrichment analysis
-  hgOver <- hyperGTest(params)
-  res <- summary(hgOver)
+  hgOver <- GOstats::hyperGTest(params)
+  res <- GOstats::summary(hgOver)
   res <- cbind(res, p.adjust(res$Pvalue, method = "BH"))  # Append corrected for multiple testing p-value
   colnames(res)[length(colnames(res))] <- "p.adj"
   res <- res[res$p.adj < 0.1, ]  # Subset the ress keeping FDR at 10%
