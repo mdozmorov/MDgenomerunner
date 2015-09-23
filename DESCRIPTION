@@ -11,5 +11,6 @@ Suggests: Biobase,
     GO.db,
     AnnotationDbi,
     GOstats,
-    Category
+    Category,
+    xlsx
 Imports: org.Hs.eg.db

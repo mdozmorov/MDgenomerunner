@@ -56,7 +56,7 @@ gr_degfs <- function(mtx, clust, cutoff.pval = 0.1, cutoff.adjust = "fdr", isOR 
         degs.table <- merge(data.frame(degs=degs, i.av, j.av), gfAnnot, by.x = "row.names", by.y = "file_name",
                             all.x = TRUE, sort = FALSE)
         # Rename columns
-        colnames(degs.table)[2:4] <- c("degs", colnames(design)[i], colnames(design)[j])
+        colnames(degs.table)[1:4] <- c("epigenomic_name", "adj.p.val", colnames(design)[i], colnames(design)[j])
         # Prepare cell types
         class(degs.table$cell) <- "character"
         degs.table$cell[ is.na(degs.table$cell) ] <- "dummy_cell" # If some file names is not in the gfAnnot dataframe (e.g., user-provided data), 'cell' column will contain NAs. replace them with dummy text to allow FDR correction
