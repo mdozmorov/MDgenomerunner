@@ -3,14 +3,19 @@
 #' A function to perform cell type-specific enrichment analysis on a matrix 
 #' of the enrichment results (raw p-values). It compares the distributions 
 #' of the overall and cell-specific -log10 p-values using Wilcoxon test.
+#' Each column (SNP set-specific enrichment profile) is processed separately,
+#' and the results are returned as a list contatining cell type enrichment
+#' results for each set.
 #' 
 #' @param mtx a matrix of the enrichment results (transformed p-values). The cell type-specific enrichment analysis is performed on each column (for each SNP set).
 #' @param fileName a path to a filename to save the results. Should be with "xlsx" extension. The results for each column are saved in separate worksheets. Default - NULL, do not save.
 #' @param cutoff.pval a p-value cutoff for cell type enrichment significance. Default: 0.01
-#' @return A list of the results
+#' @return A list of the SNP set-specific cell type enrichment results
 #' @export
 #' @examples
-#' gr_cellspecific(mtx)
+#' \dontrun {
+#'  gr_cellspecific(mtx)
+#' }
 ##
 gr_cellspecific <- function(mtx, cutoff.pval = 0.01, fileName = NULL) {
   if (nrow(mtx) <= 5) {
@@ -92,7 +97,7 @@ gr_cellspecific <- function(mtx, cutoff.pval = 0.01, fileName = NULL) {
                                    by = c(cell = "cell"))  
       # Untransform average p-values
       cells.stats.foi[, c("av_pval_cell", "av_pval_tot")] <- 
-        mtx.untransform(cells.stats.foi[, c("av_pval_cell", "av_pval_tot")])  
+        gr_untransform(cells.stats.foi[, c("av_pval_cell", "av_pval_tot")])  
       # Formatting
       if (nrow(cells.stats.foi) > 1) {
         # If more than 1 row, order by p.value
@@ -108,7 +113,7 @@ gr_cellspecific <- function(mtx, cutoff.pval = 0.01, fileName = NULL) {
       enrichments.foi[d] <- list(cells.stats.foi)
       if (!is.null(fileName)) 
         write.xlsx2(cells.stats.foi[order(as.numeric(cells.stats.foi[, 2]), decreasing = FALSE), ], 
-                    fileName, sheetName = names(cutoff.pval.foi)[d], row.names = FALSE, append = TRUE)
+                    fileName, sheetName = names(cutoff.pval.foi)[d], row.names = TRUE, append = TRUE)
     } else {
       enrichments.foi[d] <- list("Nothing significant")
     }

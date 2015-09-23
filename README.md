@@ -26,8 +26,12 @@ List of functions:
 
 `gr_degfs` - compares the enrichment values between pairs of clusters using Wilcoxon (aka Mann-Whitney) test.
 
+`gf_cellspecific` - performs cell type-specific enrichment analysis.
+
 ### GenomeRunner-specific ancillary functions
 
-`gr_transform` -  converts a matrix of p-values (with "-" indicating depletion) into a -log10-transformed matrix with sign preserved
+`gr_transform` -  converts a matrix of p-values (with "-" indicating depletion) into a -log10-transformed matrix with sign preserved.
+
+`gr_untransform` -  converts a matrix of -log10-transformed p-values (with "-" indicating depletion) into a matrix of regular p-values with sign preserved.
 
 `gr_trimnames` - trim long column/row names to a defined length.
