@@ -13,4 +13,8 @@ Suggests: Biobase,
     GOstats,
     Category,
     xlsx
+<<<<<<< HEAD
 Imports: org.Hs.eg.db, dplyr
+=======
+Imports: org.Hs.eg.db
+>>>>>>> 6e9586b3783117298043913c4d48ed6f96d0883f
