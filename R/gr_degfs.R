@@ -56,7 +56,7 @@ gr_degfs <- function(mtx, clust, cutoff.pval = 0.1, cutoff.adjust = "fdr", isOR 
         degs.table <- merge(data.frame(degs=degs, i.av, j.av), gfAnnot, by.x = "row.names", by.y = "file_name",
                             all.x = TRUE, sort = FALSE)
         # Rename columns
-        colnames(degs.table)[2:4] <- c("degs", colnames(design)[i], colnames(design)[j])
+        colnames(degs.table)[1:4] <- c("epigenomic_name", "adj.p.val", colnames(design)[i], colnames(design)[j])
         # Prepare cell types
         class(degs.table$cell) <- "character"
         degs.table$cell[ is.na(degs.table$cell) ] <- "dummy_cell" # If some file names is not in the gfAnnot dataframe (e.g., user-provided data), 'cell' column will contain NAs. replace them with dummy text to allow FDR correction
@@ -66,15 +66,15 @@ gr_degfs <- function(mtx, clust, cutoff.pval = 0.1, cutoff.adjust = "fdr", isOR 
           # If the cell-specific subset have >1 row, perform correction for multiple testing
           if(sum(degs.table$cell == u.c) > 1) {
             # i+1 because we added the GF column
-            degs.table[degs.table$cell == u.c, "degs"] <- 
-              p.adjust(degs.table[degs.table$cell == u.c, "degs"], method = cutoff.adjust)
+            degs.table[degs.table$cell == u.c, "adj.p.val"] <- 
+              p.adjust(degs.table[degs.table$cell == u.c, "adj.p.val"], method = cutoff.adjust)
           }
         }
         # Filter by the cutoff
-        degs.table <- degs.table[degs.table$degs < cutoff.pval, , drop = FALSE]
+        degs.table <- degs.table[degs.table$adj.p.val < cutoff.pval, , drop = FALSE]
         # Proceed, if significant differential enrichments are present
         if (nrow(degs.table) > 0) {
-          degs.table <- degs.table[order(degs.table$degs), , drop = FALSE]
+          degs.table <- degs.table[order(degs.table$adj.p.val), , drop = FALSE]
           print(paste(colnames(design)[i], "vs.", colnames(design)[j], 
                       ", number of degs significant at adj.p.val <", 
                       cutoff.pval, ":", nrow(degs.table)))
