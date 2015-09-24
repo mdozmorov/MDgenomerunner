@@ -26,7 +26,7 @@ gr_cellspecific <- function(mtx, cutoff.pval = 0.01, fileName = NULL) {
   n.fois <- ncol(mtx) 
   # Prepare the matrix for merging with GF annotations
   mtx <- as.data.frame(cbind(GF = rownames(mtx), mtx), stringsAsFactors = FALSE)
-  mtx <- left_join(mtx, gfAnnot[, c("file_name", "cell", "factor")], by = c(GF = "file_name"))
+  mtx <- dplyr::left_join(mtx, gfAnnot[, c("file_name", "cell", "factor")], by = c(GF = "file_name"))
   # If some file names is not in the gfAnnot dataframe (e.g., user-provided data), 
   # 'cell' column will contain NAs. replace them with dummy text to allow cell type-specific analysis
   mtx$cell[is.na(mtx$cell)] <- "dummy_cell"  
@@ -93,7 +93,7 @@ gr_cellspecific <- function(mtx, cutoff.pval = 0.01, fileName = NULL) {
       colnames(cells.stats.foi) <- c("cell", "p.value", "num_of_tests", 
                                      "av_pval_cell", "av_pval_tot")  
       # Join with cell annotations. We need unique to keep unique rows.
-      cells.stats.foi <- left_join(cells.stats.foi, unique(gfAnnot[, c("cell", "cell_desc")]), 
+      cells.stats.foi <- dplyr::left_join(cells.stats.foi, unique(gfAnnot[, c("cell", "cell_desc")]), 
                                    by = c(cell = "cell"))  
       # Untransform average p-values
       cells.stats.foi[, c("av_pval_cell", "av_pval_tot")] <- 
