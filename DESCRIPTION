@@ -10,7 +10,16 @@ Suggests: Biobase,
     KEGG.db,
     GO.db,
     AnnotationDbi,
+    org.Hs.eg.db,
     GOstats,
     Category,
-    xlsx
-Imports: org.Hs.eg.db, dplyr
+    xlsx,
+    d3heatmap,
+    dendextendRcpp,
+    colorRamps,
+    Hmisc,
+    scales,
+    dplyr,
+    gplots,
+    tools
+Imports: dplyr, shiny

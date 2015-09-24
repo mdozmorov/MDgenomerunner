@@ -25,7 +25,7 @@
 gene_enrichment <- function(selected, all.universe = NULL, id = "symbol", 
                             use = "GO", ont = "BP", fileName = NULL) {
   # Preparing environment for remapping Gene Symbols to Entrez IDs
-  x <- org.Hs.egSYMBOL2EG
+  x <- org.Hs.eg.db::org.Hs.egSYMBOL2EG
   # Get entrez gene identifiers that are mapped to a gene symbol
   mapped_genes <- AnnotationDbi::mappedkeys(x)
   # Convert to a list
