@@ -22,4 +22,4 @@ Suggests: Biobase,
     dplyr,
     gplots,
     tools
-Imports: dplyr, shiny
+Imports: dplyr, shiny, shinyBS
