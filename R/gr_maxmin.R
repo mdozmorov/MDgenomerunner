@@ -31,11 +31,11 @@
 gr_maxmin <- function(mtx, cortype = "spearman", fileName = NULL) {
   mtx.cor <- Hmisc::rcorr(mtx, type = cortype)
   mtx.cor.r <- mtx.cor[[1]] # Matrix of correlation coefficients
-  diag(mtx.cor.r) <- 0 # We don't need to consider self correlations, zero them out
+  diag(mtx.cor.r) <- NA # We don't need to consider self correlations, zero them out
   mtx.cor.p <- mtx.cor[[3]] # Matrix of p-values
   # Indexes of max and min correlation coefficients in each column
-  ind.max <- apply(mtx.cor.r, 2, function(x) which(x == max(x)))
-  ind.min <- apply(mtx.cor.r, 2, function(x) which(x == min(x)))
+  ind.max <- apply(mtx.cor.r, 2, function(x) which(x == max(x, na.rm = TRUE)))
+  ind.min <- apply(mtx.cor.r, 2, function(x) which(x == min(x, na.rm = TRUE)))
   # Collect max and min correlation coefficients and their p-values
   mtx.cor.r.maxmin <- vector(mode="list", length=ncol(mtx.cor.r))
   mtx.cor.p.maxmin <- vector(mode="list", length=ncol(mtx.cor.p))
