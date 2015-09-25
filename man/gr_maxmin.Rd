@@ -2,8 +2,7 @@
 % Please edit documentation in R/gr_maxmin.R
 \name{gr_maxmin}
 \alias{gr_maxmin}
-\title{Extract pairs of objects from a correlation matrix, sorted by max/min
-correlation coefficient}
+\title{Extract max/min correlations for pairs of objects (columns) from a matrix}
 \usage{
 gr_maxmin(mtx, cortype = "spearman", fileName = NULL)
 }
@@ -18,14 +17,22 @@ Other oprions - "pearson".}
 Default - none, do not save the results}
 }
 \value{
-a 4-column matrix of object.1, object.2, correlation.coefficient,
-p.value, sorted by max-to-min correlation coefficient. object.1, 2 etc. are
-the names of the columns of the original matrix.
+an m x 7 matrix with the 7 columns:
+\preformatted{
+- obj - target object
+- obj.max - object maximally correlated with the target object
+- obj.min - object minimally correlated with the target object
+- corr.coeff.max - max correlation coefficient
+- corr.coeff.min - min correlation coefficient
+- p.value.max - p-value for max correlation coefficient
+- p.value.min - p-value for min correlation coefficient
+}
 }
 \description{
-A function to extract pairs of objects from a square correlation matrix,
-sorted by max/min correlation coefficient. The self-self correlations
-are excluded.
+A function to extract max/min correlation of each object (column) with other
+objects. Each column in an n x m matrix is correlated with other columns, and
+the names of the columns maximally/minimally correlated with the target column
+are assembled
 }
 \examples{
 \dontrun{

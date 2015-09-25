@@ -36,4 +36,4 @@ List of functions:
 
 `gr_trimnames` - trims long column/row names to a defined length.
 
-`gr_maxmin` - extracts pairs of objects from a square correlation matrix, sorted by max/min correlation coefficient. The self-self correlations are excluded.
+`gr_maxmin` - extracts max/min correlation of each object (column) with other objects. Each column in an n x m matrix is correlated with other columns, and the names of the columns maximally/minimally correlated with the target column are assembled.
