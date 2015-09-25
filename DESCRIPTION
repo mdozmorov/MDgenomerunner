@@ -19,7 +19,7 @@ Suggests: Biobase,
     colorRamps,
     Hmisc,
     scales,
-    dplyr,
     gplots,
-    tools
+    tools,
+    reshape2
 Imports: dplyr, shiny, shinyBS

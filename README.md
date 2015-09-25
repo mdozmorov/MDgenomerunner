@@ -34,4 +34,6 @@ List of functions:
 
 `gr_untransform` -  converts a matrix of -log10-transformed p-values (with "-" indicating depletion) into a matrix of regular p-values with sign preserved.
 
-`gr_trimnames` - trim long column/row names to a defined length.
+`gr_trimnames` - trims long column/row names to a defined length.
+
+`gr_maxmin` - extracts pairs of objects from a square correlation matrix, sorted by max/min correlation coefficient. The self-self correlations are excluded.
