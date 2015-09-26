@@ -5,7 +5,7 @@
 \title{Defines epigenetic marks differentially enriched between clusters}
 \usage{
 gr_degfs(mtx, clust, cutoff.pval = 0.1, cutoff.adjust = "fdr",
-  isOR = FALSE, fileName = NULL)
+  isOR = FALSE, nperm = NULL, fileName = NULL)
 }
 \arguments{
 \item{mtx}{the matrix of transformed p-values or odds-ratios}
@@ -22,6 +22,9 @@ Default - FDR.}
 properly convert their average values into decimal scale. Default - FALSE,
 the supplied mtx is the matrix of -log10-transformed p-values.}
 
+\item{nperm}{if not NULL, differentially enrished p-values are calculated
+using permutations. Use at least 10000 permutations.}
+
 \item{fileName}{a name of an Excel file to save the differential enrichment
 analysis results. Each pair-wise comparison (e.g., c1_vs_c2) will be saved
 in a corresponding worksheet. Default - none. Example - "degfs.xsls"}
@@ -36,7 +39,17 @@ corresponds to each comparison (e.g., c1_vs_c2)
 A function that compares the enrichment values between pairs of clusters using
 Wilcoxon (aka Mann-Whitney) test.
 }
+\note{
+Permutation test shall be redone per
+\preformatted{
+Phipson B, Smyth GK: Permutation P-values should never be zero:
+calculating exact P-values when permutations are randomly drawn.
+Stat Appl Genet Mol Biol 2010, 9:Article39.
+}
+}
 \examples{
+\dontrun{
 mtx.degfs(mtx.tumor[, tumor.clust$eset.labels] \%>\% mtx.transform.p2z \%>\% normalizeQuantiles , tumor.clust, fileName="tumor_gfs")
+}
 }
 

@@ -12,6 +12,8 @@
 #' @param isOR logical. Indicates the origin of the transformed values. Used to 
 #' properly convert their average values into decimal scale. Default - FALSE,
 #' the supplied mtx is the matrix of -log10-transformed p-values.
+#' @param nperm if not NULL, differentially enrished p-values are calculated
+#' using permutations. Use at least 10000 permutations.
 #' @param fileName a name of an Excel file to save the differential enrichment
 #' analysis results. Each pair-wise comparison (e.g., c1_vs_c2) will be saved
 #' in a corresponding worksheet. Default - none. Example - "degfs.xsls"
@@ -21,10 +23,17 @@
 #' corresponds to each comparison (e.g., c1_vs_c2)
 #' @export
 #' @examples
+#' \dontrun{
 #' mtx.degfs(mtx.tumor[, tumor.clust$eset.labels] %>% mtx.transform.p2z %>% normalizeQuantiles , tumor.clust, fileName="tumor_gfs")
-##
+#' }
+#' @note Permutation test shall be redone per 
+#' \preformatted{
+#' Phipson B, Smyth GK: Permutation P-values should never be zero: 
+#' calculating exact P-values when permutations are randomly drawn. 
+#' Stat Appl Genet Mol Biol 2010, 9:Article39.
+#' }
 gr_degfs <- function(mtx, clust, cutoff.pval = 0.1, cutoff.adjust = "fdr", isOR = FALSE,
-                     fileName = NULL) {
+                     nperm = NULL, fileName = NULL) {
   exprs = (as.matrix(mtx[, clust$eset.labels]))
   # Make model matrix
   design <- model.matrix(~0 + factor(clust$eset.groups))
@@ -39,9 +48,37 @@ gr_degfs <- function(mtx, clust, cutoff.pval = 0.1, cutoff.adjust = "fdr", isOR 
     for (j in 1:length(colnames(design))) {
       # Test only unique pairs of clusters
       if (i < j) {
-        degs <- apply(exprs, 1, function(x) 
-          wilcox.test(x[design[, i] == 1], x[design[, j] == 1])$p.value)
-        degs <- degs[!is.na(degs)]  # Precaution against NA p-values, when both clusters have exactly the same numbers
+        # If nperm is not NULL, run permutation test, otherwise, use Wilcoxon
+        if (is.null(nperm)) {
+          
+          degs <- apply(exprs, 1, function(x) 
+            wilcox.test(x[design[, i] == 1], x[design[, j] == 1])$p.value)
+          
+        } else {
+          
+          one.test <- function(x,y) {
+            xstar <- sample(x)
+            mean(y[xstar == 1]) - mean(y[xstar == 0])
+          }
+          
+          degs <- apply(exprs, 1, function(x) {
+            alt.y1 <- x[design[, i] == 1]
+            alt.y2 <- x[design[, j] == 1]
+            alt.diff <- mean(alt.y1) - mean(alt.y2)
+            carrier <- c(rep(0, length(alt.y1)), rep(1, length(alt.y2)))
+            alt.y <- c(alt.y1, alt.y2)
+            many.falsenull <- replicate(nperm, one.test(carrier, alt.y))
+            
+            if (sum(abs(many.falsenull) > abs(alt.diff)) > 0) {
+              return(mean(abs(many.falsenull) > abs(alt.diff)))
+            } else {
+              return(1)
+            }
+          })
+          
+        }
+        # Precaution against NA p-values, when both clusters have exactly the same numbers
+        degs <- degs[!is.na(degs)]  
         # Average values in clusters i and j
         if (isOR == FALSE) {
           i.av <- 1/(10^rowMeans(abs(exprs[names(degs), design[, i] == 
@@ -72,6 +109,10 @@ gr_degfs <- function(mtx, clust, cutoff.pval = 0.1, cutoff.adjust = "fdr", isOR 
         }
         # Filter by the cutoff
         degs.table <- degs.table[degs.table$adj.p.val < cutoff.pval, , drop = FALSE]
+        # Filter rows where average p-value in both clusters is non-significant
+        if (isOR == FALSE) {
+          degs.table <- degs.table[ (degs.table[, 3] < 0.05) | (degs.table[, 4] < 0.05), ]
+        }
         # Proceed, if significant differential enrichments are present
         if (nrow(degs.table) > 0) {
           degs.table <- degs.table[order(degs.table$adj.p.val), , drop = FALSE]
