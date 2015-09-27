@@ -4,7 +4,7 @@
 \alias{gr_load_data}
 \title{Load enrichment analysis data}
 \usage{
-gr_load_data(dname, subset = "none")
+gr_load_data(dname, subset = "none", p2z = FALSE)
 }
 \arguments{
 \item{dname}{a string, or a character vector containing one or multiple paths
@@ -16,6 +16,9 @@ are found, the data is not transformed. The non-informative enrichments
 
 \item{subset}{a string used to select rows containing it. If a vector, "OR"
 operation is used in subsetting. Default - none. Examples - c("Histone", "Tfbs")}
+
+\item{p2z}{logical. Indicates whether instead of -log10-transformation use
+Z-scores. Default - FALSE.}
 }
 \value{
 a matrix of transformed data
