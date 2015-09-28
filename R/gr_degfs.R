@@ -12,6 +12,8 @@
 #' @param isOR logical. Indicates the origin of the transformed values. Used to 
 #' properly convert their average values into decimal scale. Default - FALSE,
 #' the supplied mtx is the matrix of -log10-transformed p-values.
+#' @param p2z logical. Indicates whether instead of -log10-transformation use
+#' Z-scores. Default - FALSE.
 #' @param nperm if not NULL, differentially enrished p-values are calculated
 #' using permutations. Use at least 10000 permutations.
 #' @param fileName a name of an Excel file to save the differential enrichment
@@ -33,7 +35,7 @@
 #' Stat Appl Genet Mol Biol 2010, 9:Article39.
 #' }
 gr_degfs <- function(mtx, clust, cutoff.pval = 0.1, cutoff.adjust = "fdr", isOR = FALSE,
-                     nperm = NULL, fileName = NULL) {
+                     p2z = FALSE, nperm = NULL, fileName = NULL) {
   exprs = (as.matrix(mtx[, clust$eset.labels]))
   # Make model matrix
   design <- model.matrix(~0 + factor(clust$eset.groups))
@@ -80,14 +82,21 @@ gr_degfs <- function(mtx, clust, cutoff.pval = 0.1, cutoff.adjust = "fdr", isOR 
         # Precaution against NA p-values, when both clusters have exactly the same numbers
         degs <- degs[!is.na(degs)]  
         # Average values in clusters i and j
+        i.av <- rowMeans(exprs[names(degs), design[, i] == 1, drop = FALSE])
+        j.av <- rowMeans(exprs[names(degs), design[, j] == 1, drop = FALSE])
         if (isOR == FALSE) {
-          i.av <- 1/(10^rowMeans(abs(exprs[names(degs), design[, i] == 
-                                             1, drop = FALSE])))  # Anti -log10 transform p-values
-          j.av <- 1/(10^rowMeans(abs(exprs[names(degs), design[, j] == 
-                                             1, drop = FALSE])))
+          if (p2z) { # If true, use anti-Z-score transformation
+            i.av <- sign(i.av) * 2 * pnorm(q = as.matrix(-abs( i.av )))
+            j.av <- sign(j.av) * 2 * pnorm(q = as.matrix(-abs( j.av )))
+          } else {
+            # Anti -log10 transform p-values
+            i.av <- sign(i.av) * 1/(10^abs( i.av ))  
+            j.av <- sign(j.av) * 1/(10^abs( j.av ))
+          }
         } else {
-          i.av <- 2^rowMeans(exprs[names(degs), design[, i] == 1, drop = FALSE])  # Anti log2 transform mean odds ratios
-          j.av <- 2^rowMeans(exprs[names(degs), design[, j] == 1, drop = FALSE])
+          # Anti log2 transform mean odds ratios
+          i.av <- 2^i.av  
+          j.av <- 2^j.av
         }
         # Merge and convert the values
         degs.table <- merge(data.frame(degs=degs, i.av, j.av), gfAnnot, by.x = "row.names", by.y = "file_name",
@@ -111,7 +120,7 @@ gr_degfs <- function(mtx, clust, cutoff.pval = 0.1, cutoff.adjust = "fdr", isOR 
         degs.table <- degs.table[degs.table$adj.p.val < cutoff.pval, , drop = FALSE]
         # Filter rows where average p-value in both clusters is non-significant
         if (isOR == FALSE) {
-          degs.table <- degs.table[ (degs.table[, 3] < 0.05) | (degs.table[, 4] < 0.05), ]
+          degs.table <- degs.table[ (abs(degs.table[, 3]) < 0.05) | (abs(degs.table[, 4]) < 0.05), ]
         }
         # Proceed, if significant differential enrichments are present
         if (nrow(degs.table) > 0) {

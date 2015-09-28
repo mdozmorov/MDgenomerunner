@@ -11,6 +11,8 @@
 #' (rows with all non-significant enrichments) are removed  
 #' @param subset a string used to select rows containing it. If a vector, "OR"
 #' operation is used in subsetting. Default - none. Examples - c("Histone", "Tfbs")
+#' @param p2z logical. Indicates whether instead of -log10-transformation use
+#' Z-scores. Default - FALSE.
 #'
 #' @return a matrix of transformed data
 #' @export
@@ -21,7 +23,7 @@
 #' "data/ENCODE_Histone/matrix_PVAL.txt"), subset=c("Tfbs", "Histone"))
 #' }
 ##
-gr_load_data <- function(dname, subset = "none") {
+gr_load_data <- function(dname, subset = "none", p2z = FALSE) {
   # Load matrix(es) from a (vector of) file(s) located at dname
   mtx.list <- list()
   for (d in dname) {
@@ -42,7 +44,11 @@ gr_load_data <- function(dname, subset = "none") {
   }
   # Transform PVAL and OR matrixes accordingly
   if (grepl("PVAL", d)) {
-    mtx <- gr_transform(mtx)  # -log10 transform p-values
+    if (p2z) { # If true, apply p-value to Z-score transformation
+      mtx <- sign(mtx) * qnorm(p = as.matrix(abs(mtx))/2, lower.tail = FALSE) 
+    } else {
+      mtx <- gr_transform(mtx)  # -log10 transform p-values
+    }
   }
   if (grepl("OR", d)) {
     mtx <- log2(mtx)  # log2 transform odds ratios
