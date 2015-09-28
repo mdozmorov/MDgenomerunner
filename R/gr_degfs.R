@@ -82,8 +82,8 @@ gr_degfs <- function(mtx, clust, cutoff.pval = 0.1, cutoff.adjust = "fdr", isOR 
         # Precaution against NA p-values, when both clusters have exactly the same numbers
         degs <- degs[!is.na(degs)]  
         # Average values in clusters i and j
-        i.av <- rowMeans(exprs[names(degs), design[, i] == 1, drop = FALSE])
-        j.av <- rowMeans(exprs[names(degs), design[, j] == 1, drop = FALSE])
+        i.av <- Biobase::rowMedians(exprs[names(degs), design[, i] == 1, drop = FALSE])
+        j.av <- Biobase::rowMedians(exprs[names(degs), design[, j] == 1, drop = FALSE])
         if (isOR == FALSE) {
           if (p2z) { # If true, use anti-Z-score transformation
             i.av <- sign(i.av) * 2 * pnorm(q = as.matrix(-abs( i.av )))
