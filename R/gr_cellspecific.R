@@ -8,8 +8,10 @@
 #' results for each set.
 #' 
 #' @param mtx a matrix of the enrichment results (transformed p-values). The cell type-specific enrichment analysis is performed on each column (for each SNP set).
-#' @param fileName a path to a filename to save the results. Should be with "xlsx" extension. The results for each column are saved in separate worksheets. Default - NULL, do not save.
 #' @param cutoff.pval a p-value cutoff for cell type enrichment significance. Default: 0.01
+#' @param p2z logical. Indicates whether instead of -log10-transformation use
+#' Z-scores. Default - FALSE.
+#' @param fileName a path to a filename to save the results. Should be with "xlsx" extension. The results for each column are saved in separate worksheets. Default - NULL, do not save.
 #' @return A list of the SNP set-specific cell type enrichment results
 #' @export
 #' @examples
@@ -17,7 +19,7 @@
 #'  gr_cellspecific(mtx)
 #' }
 ##
-gr_cellspecific <- function(mtx, cutoff.pval = 0.01, fileName = NULL) {
+gr_cellspecific <- function(mtx, cutoff.pval = 0.01, p2z = FALSE, fileName = NULL) {
   if (nrow(mtx) <= 5) {
     # If too few genomic features, no analysis can be performed
     return("Insufficient data for performing cell type-specific enrichment analysis")
@@ -97,7 +99,7 @@ gr_cellspecific <- function(mtx, cutoff.pval = 0.01, fileName = NULL) {
                                    by = c(cell = "cell"))  
       # Untransform average p-values
       cells.stats.foi[, c("av_pval_cell", "av_pval_tot")] <- 
-        gr_untransform(cells.stats.foi[, c("av_pval_cell", "av_pval_tot")])  
+        gr_untransform(cells.stats.foi[, c("av_pval_cell", "av_pval_tot")], p2z)  
       # Formatting
       if (nrow(cells.stats.foi) > 1) {
         # If more than 1 row, order by p.value
@@ -112,7 +114,7 @@ gr_cellspecific <- function(mtx, cutoff.pval = 0.01, fileName = NULL) {
       # Store results
       enrichments.foi[d] <- list(cells.stats.foi)
       if (!is.null(fileName)) 
-        write.xlsx2(cells.stats.foi[order(as.numeric(cells.stats.foi[, 2]), decreasing = FALSE), ], 
+        write.xlsx2(cells.stats.foi[order(as.numeric(cells.stats.foi[, 1]), decreasing = FALSE), ], 
                     fileName, sheetName = names(cutoff.pval.foi)[d], row.names = TRUE, append = TRUE)
     } else {
       enrichments.foi[d] <- list("Nothing significant")
