@@ -82,16 +82,21 @@ gr_degfs <- function(mtx, clust, cutoff.pval = 0.1, cutoff.adjust = "fdr", isOR 
         # Precaution against NA p-values, when both clusters have exactly the same numbers
         degs <- degs[!is.na(degs)]  
         # Average values in clusters i and j
-        i.av <- Biobase::rowMedians(exprs[names(degs), design[, i] == 1, drop = FALSE])
-        j.av <- Biobase::rowMedians(exprs[names(degs), design[, j] == 1, drop = FALSE])
+#         i.av <- Biobase::rowMedians(exprs[names(degs), design[, i] == 1, drop = FALSE])
+#         j.av <- Biobase::rowMedians(exprs[names(degs), design[, j] == 1, drop = FALSE])
+        i.av <- rowMeans(exprs[names(degs), design[, i] == 1, drop = FALSE])
+        j.av <- rowMeans(exprs[names(degs), design[, j] == 1, drop = FALSE])
+        # Keep sign, positive even for zero means
+        i.sign <- ifelse(sign(i.av) >= 0, 1, -1)
+        j.sign <- ifelse(sign(j.av) >= 0, 1, -1) 
         if (isOR == FALSE) {
           if (p2z) { # If true, use anti-Z-score transformation
-            i.av <- sign(i.av) * 2 * pnorm(q = as.matrix(-abs( i.av )))
-            j.av <- sign(j.av) * 2 * pnorm(q = as.matrix(-abs( j.av )))
+            i.av <- i.sign * 2 * pnorm(q = as.matrix(-abs( i.av )))
+            j.av <- j.sign * 2 * pnorm(q = as.matrix(-abs( j.av )))
           } else {
             # Anti -log10 transform p-values
-            i.av <- sign(i.av) * 1/(10^abs( i.av ))  
-            j.av <- sign(j.av) * 1/(10^abs( j.av ))
+            i.av <- i.sign * 1/(10^abs( i.av ))  
+            j.av <- j.sign * 1/(10^abs( j.av ))
           }
         } else {
           # Anti log2 transform mean odds ratios
