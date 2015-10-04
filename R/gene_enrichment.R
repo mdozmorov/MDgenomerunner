@@ -9,6 +9,8 @@
 #' @param id what type of ID is provided. "symbol" (e.g., "BRCA1", default) or "entrezid" (e.g., "672").
 #' @param use which analysis to perform. "GO" (default) or "KEGG".
 #' @param ont if "GO", which ontology namespace to use. "MF", "BP" (default), of "CC". Not used in "KEGG" analysis
+#' @param pval non-corrected p-value cutoff to perform the enrichment analysis. Default - 0.05.
+#' @param p.adj FDR-corrected p-value cutoff to report the enrichment analysis results. Default - 0.1.
 #' @param fileName save the results into a fileName. Default - none
 #'
 #' @return a data frame of significant enrichments, with lists of gene symbols per enriched funciton.
@@ -23,7 +25,7 @@
 #' \code{if (nrow(res) > 10) { n <-10 } else { n <- nrow(res) }; kable(res[1:n, ])}
 ##
 gene_enrichment <- function(selected, all.universe = NULL, id = "symbol", 
-                            use = "GO", ont = "BP", fileName = NULL) {
+                            use = "GO", ont = "BP", pval = 0.05, p.adj = 0.1, fileName = NULL) {
   # Precaution against misformatting of the supplied genes
   selected <- as.vector(sapply(selected, as.character))
   # Preparing environment for remapping Gene Symbols to Entrez IDs
@@ -60,7 +62,7 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol",
   # Prepare parameters for the enrichment analysis
   if (use == "GO") {
     params <- new("GOHyperGParams", geneIds = selected, universeGeneIds = all.universe, 
-                  ontology = ont, pvalueCutoff = 0.05, conditional = F, testDirection = "over", 
+                  ontology = ont, pvalueCutoff = pval, conditional = F, testDirection = "over", 
                   annotation = "org.Hs.eg.db")
     # GO-gene summarization
     genes.annot <- split(geneList.annot[!duplicated(geneList.annot[, 1:3]), 1:3], 
@@ -71,7 +73,7 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol",
     genes.annot <- do.call("rbind", genes.annot)  # resing data frame
   } else {
     params <- new("KEGGHyperGParams", geneIds = selected, universeGeneIds = all.universe, 
-                  pvalueCutoff = 0.05, testDirection = "over", annotation = "org.Hs.eg.db")
+                  pvalueCutoff = pval, testDirection = "over", annotation = "org.Hs.eg.db")
     # Same for KEGG-gene summarization
     genes.annot <- split(geneList.annot[!duplicated(geneList.annot[, c(1, 2, 6)]), c(1, 2, 6)], 
                          geneList.annot$PATH[!duplicated(geneList.annot[, c(1, 2, 6)])])
@@ -85,11 +87,13 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol",
   res <- GOstats::summary(hgOver)
   res <- cbind(res, p.adjust(res$Pvalue, method = "BH"))  # Append corrected for multiple testing p-value
   colnames(res)[length(colnames(res))] <- "p.adj"
-  res <- res[res$p.adj < 0.1, ]  # Subset the ress keeping FDR at 10%
+  res <- res[res$p.adj < p.adj, ]  # Subset the ress keeping FDR at 10%
   colnames(res)[1] <- "ID"  # Set column name to merge by to ID, instead of GO- or KEGG specific
   # If genes.annot is empty, skip joining
   if (!is.null(genes.annot)) 
     res <- left_join(res, genes.annot, by = c(ID = "ID"))
+  # Sort by p.adj
+  res <- res[ order(res$p.adj, decreasing = FALSE), ]
   # Save the ress
   if (!is.null(fileName)) {
     write.table(res, fileName, sep = "\t", row.names = F, quote = F)

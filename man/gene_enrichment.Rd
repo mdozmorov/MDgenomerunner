@@ -5,7 +5,7 @@
 \title{Performs GO or KEGG enrichment analysis of a list of gene symbols or Entrez IDs}
 \usage{
 gene_enrichment(selected, all.universe = NULL, id = "symbol", use = "GO",
-  ont = "BP", fileName = NULL)
+  ont = "BP", pval = 0.05, p.adj = 0.1, fileName = NULL)
 }
 \arguments{
 \item{selected}{a character vector of gene IDs. Either gene names or Entrez IDs are accepted. Required.}
@@ -18,6 +18,10 @@ Must be the same ID type as the 'selected' genes.}
 \item{use}{which analysis to perform. "GO" (default) or "KEGG".}
 
 \item{ont}{if "GO", which ontology namespace to use. "MF", "BP" (default), of "CC". Not used in "KEGG" analysis}
+
+\item{pval}{non-corrected p-value cutoff to perform the enrichment analysis. Default - 0.05.}
+
+\item{p.adj}{FDR-corrected p-value cutoff to report the enrichment analysis results. Default - 0.1.}
 
 \item{fileName}{save the results into a fileName. Default - none}
 }
