@@ -5,7 +5,7 @@
 \title{Defines epigenetic marks differentially enriched between clusters}
 \usage{
 gr_degfs(mtx, clust, cutoff.pval = 0.1, cutoff.adjust = "fdr",
-  isOR = FALSE, nperm = NULL, fileName = NULL)
+  isOR = FALSE, p2z = FALSE, nperm = NULL, fileName = NULL)
 }
 \arguments{
 \item{mtx}{the matrix of transformed p-values or odds-ratios}
@@ -21,6 +21,9 @@ Default - FDR.}
 \item{isOR}{logical. Indicates the origin of the transformed values. Used to
 properly convert their average values into decimal scale. Default - FALSE,
 the supplied mtx is the matrix of -log10-transformed p-values.}
+
+\item{p2z}{logical. Indicates whether instead of -log10-transformation use
+Z-scores. Default - FALSE.}
 
 \item{nperm}{if not NULL, differentially enrished p-values are calculated
 using permutations. Use at least 10000 permutations.}

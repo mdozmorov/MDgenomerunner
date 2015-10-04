@@ -4,12 +4,15 @@
 \alias{gr_cellspecific}
 \title{Cell type-specific enrichment analysis}
 \usage{
-gr_cellspecific(mtx, cutoff.pval = 0.01, fileName = NULL)
+gr_cellspecific(mtx, cutoff.pval = 0.01, p2z = FALSE, fileName = NULL)
 }
 \arguments{
 \item{mtx}{a matrix of the enrichment results (transformed p-values). The cell type-specific enrichment analysis is performed on each column (for each SNP set).}
 
 \item{cutoff.pval}{a p-value cutoff for cell type enrichment significance. Default: 0.01}
+
+\item{p2z}{logical. Indicates whether instead of -log10-transformation use
+Z-scores. Default - FALSE.}
 
 \item{fileName}{a path to a filename to save the results. Should be with "xlsx" extension. The results for each column are saved in separate worksheets. Default - NULL, do not save.}
 }
