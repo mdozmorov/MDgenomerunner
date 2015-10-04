@@ -24,6 +24,8 @@
 ##
 gene_enrichment <- function(selected, all.universe = NULL, id = "symbol", 
                             use = "GO", ont = "BP", fileName = NULL) {
+  # Precaution against misformatting of the supplied genes
+  selected <- as.vector(sapply(selected, as.character))
   # Preparing environment for remapping Gene Symbols to Entrez IDs
   x <- org.Hs.eg.db::org.Hs.egSYMBOL2EG
   # Get entrez gene identifiers that are mapped to a gene symbol
@@ -36,7 +38,7 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol",
     all.universe <- all.universe[!is.na(all.universe)]
   }
   # If no 'universe' provided, define it as all entrezids
-  if (is.null(all.universe)) {
+  if (is.null(all.universe) & (id == "entrezid")) {
     all.universe <- unlist(xx)
   }
   # Create list of selected genes
