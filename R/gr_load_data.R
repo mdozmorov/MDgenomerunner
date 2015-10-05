@@ -44,11 +44,7 @@ gr_load_data <- function(dname, subset = "none", p2z = FALSE) {
   }
   # Transform PVAL and OR matrixes accordingly
   if (grepl("PVAL", d)) {
-    if (p2z) { # If true, apply p-value to Z-score transformation
-      mtx <- sign(mtx) * qnorm(p = as.matrix(abs(mtx))/2, lower.tail = FALSE) 
-    } else {
-      mtx <- gr_transform(mtx)  # -log10 transform p-values
-    }
+    mtx <- gr_transform(mtx, p2z)  # transform p-values
   }
   if (grepl("OR", d)) {
     mtx <- log2(mtx)  # log2 transform odds ratios

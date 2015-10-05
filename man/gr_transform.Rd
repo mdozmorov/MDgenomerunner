@@ -4,10 +4,13 @@
 \alias{gr_transform}
 \title{Conversion of a matrix of p-values to -log10 scale}
 \usage{
-gr_transform(mtx)
+gr_transform(mtx, p2z = FALSE)
 }
 \arguments{
 \item{mtx}{a matrix of p-values, with "-" sign indicating depleted enrichments. Required.}
+
+\item{p2z}{logical. Indicates whether instead of -log10-transformation use
+Z-scores. Default - FALSE.}
 }
 \value{
 a matrix of -log10-transformed p-values, with "-" sign preserved
