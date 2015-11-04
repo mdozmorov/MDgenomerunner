@@ -39,8 +39,12 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol",
     all.universe <- unlist(xx)[all.universe]
     all.universe <- all.universe[!is.na(all.universe)]
   }
-  # If no 'universe' provided, define it as all entrezids
-  if (is.null(all.universe) & (id == "entrezid")) {
+  # If all.universe is provided as entrezgene, keep matching entrezids
+  if (!is.null(all.universe) & (id == "entrezid")) {
+    all.universe <- unlist(xx)[ unlist(xx) %in% all.universe ]
+  }
+  # If no all.universe is provided, keep all entrezids
+  if(is.null(all.universe)) {
     all.universe <- unlist(xx)
   }
   # Create list of selected genes
@@ -55,10 +59,10 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol",
   all.universe <- unique(c(selected, all.universe))
   # Get GO-gene annotations
   geneList.annot <- AnnotationDbi::select(org.Hs.eg.db, keys = selected, columns = c("ENTREZID", 
-                                                                      "SYMBOL", 
-                                                                      "GOALL", 
-                                                                      "PATH"), 
-                           keytype = "ENTREZID")
+                                                                                     "SYMBOL", 
+                                                                                     "GOALL", 
+                                                                                     "PATH"), 
+                                          keytype = "ENTREZID")
   # Prepare parameters for the enrichment analysis
   if (use == "GO") {
     params <- new("GOHyperGParams", geneIds = selected, universeGeneIds = all.universe, 
