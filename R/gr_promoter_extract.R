@@ -1,7 +1,9 @@
 #' Extract promoter regions for the list of genes
 #' 
-#' A function to extract genomic coordinates of gene promoters in BED format
-#'
+#' A function to extract genomic coordinates of gene promoters in BED format.
+#' 
+#' @details Only canonical chromosome names are considered. No patches, random or other contigs.
+#' 
 #' @param selected a character vector of gene names (EntrezIDs support in progress). Required
 #' @param upstream how many base pairs upstream of TSS define promoter. Default - 2,000bp.
 #' @param downstream how many base pairs downstream of TSS define promoter. Default - 500bp.
@@ -14,6 +16,8 @@
 #' selected <- c("TMEM59L", "SNTG1", "RPL41", "ADAMTS19")
 #' pr <- gr_promoter_extract(selected)$promoters
 #' write.table(pr, "pr.bed", sep="\t", quote=F, row.names=F, col.names=F)
+#' # Extract promoters of all genes (that have gene names). Note only canonical chromosomes are retained.
+#' promoters.all <- gr_promoter_extract(selected = unique(annotables::grch37$symbol))
 #' }
 ##
 gr_promoter_extract <- function(selected, upstream = 2000, downstream = 500) {

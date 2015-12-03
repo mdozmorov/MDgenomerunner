@@ -18,13 +18,18 @@ a list with two components. 'promoters' contains genomic coordinates
 of the selected genes; 'notfound' contains gene names not found in annotables (for diagnostics)
 }
 \description{
-A function to extract genomic coordinates of gene promoters in BED format
+A function to extract genomic coordinates of gene promoters in BED format.
+}
+\details{
+Only canonical chromosome names are considered. No patches, random or other contigs.
 }
 \examples{
 \dontrun{
 selected <- c("TMEM59L", "SNTG1", "RPL41", "ADAMTS19")
 pr <- gr_promoter_extract(selected)$promoters
 write.table(pr, "pr.bed", sep="\\t", quote=F, row.names=F, col.names=F)
+# Extract promoters of all genes (that have gene names). Note only canonical chromosomes are retained.
+promoters.all <- gr_promoter_extract(selected = unique(annotables::grch37$symbol))
 }
 }
 
