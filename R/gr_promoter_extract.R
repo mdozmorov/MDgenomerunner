@@ -43,12 +43,14 @@ gr_promoter_extract <- function(selected, upstream = 2000, downstream = 500) {
   promoters.bed <- genes.bed # Temporary storage
   for (i in 1:nrow(genes.bed)) {
     if (genes.bed$strand[i] == "+") {
-      promoters.bed$start[i] <- promoters.bed$start[i] - upstream
-      promoters.bed$end[i] <- promoters.bed$start[i] + downstream
+      tss <- promoters.bed$start[i]
+      promoters.bed$start[i] <- tss - upstream
+      promoters.bed$end[i] <- tss + downstream
     }
     if (genes.bed$strand[i] == "-") {
-      promoters.bed$start[i] <- promoters.bed$end[i] - downstream
-      promoters.bed$end[i] <- promoters.bed$end[i] + upstream
+      tss <- promoters.bed$end[i]
+      promoters.bed$start[i] <- tss - downstream
+      promoters.bed$end[i] <- tss + upstream
     }
   }
   return(list(promoters=promoters.bed, notfound=not.found))
