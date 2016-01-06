@@ -4,10 +4,13 @@
 \alias{gr_promoter_extract}
 \title{Extract promoter regions for the list of genes}
 \usage{
-gr_promoter_extract(selected, upstream = 2000, downstream = 500)
+gr_promoter_extract(selected, id = "entrezid", upstream = 2000,
+  downstream = 500)
 }
 \arguments{
-\item{selected}{a character vector of gene names (EntrezIDs support in progress). Required}
+\item{selected}{a character vector of gene Entrez IDs, or names. Required}
+
+\item{id}{what type of ID is provided. "symbol" (e.g., "BRCA1") or "entrezid" (e.g., "672", default and recommended).}
 
 \item{upstream}{how many base pairs upstream of TSS define promoter. Default - 2,000bp.}
 

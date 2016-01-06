@@ -4,7 +4,8 @@
 #' 
 #' @details Only canonical chromosome names are considered. No patches, random or other contigs.
 #' 
-#' @param selected a character vector of gene names (EntrezIDs support in progress). Required
+#' @param selected a character vector of gene Entrez IDs, or names. Required
+#' @param id what type of ID is provided. "symbol" (e.g., "BRCA1") or "entrezid" (e.g., "672", default and recommended).
 #' @param upstream how many base pairs upstream of TSS define promoter. Default - 2,000bp.
 #' @param downstream how many base pairs downstream of TSS define promoter. Default - 500bp.
 #'
@@ -20,7 +21,7 @@
 #' promoters.all <- gr_promoter_extract(selected = unique(annotables::grch37$symbol))
 #' }
 ##
-gr_promoter_extract <- function(selected, upstream = 2000, downstream = 500) {
+gr_promoter_extract <- function(selected, id = "entrezid", upstream = 2000, downstream = 500) {
   # Remove non-canonical chromosome names
   grch37 <- annotables::grch37[ !(grepl("_", annotables::grch37$chr) | grepl("GL", annotables::grch37$chr)), ]
   # Replace "MT" by "M"
@@ -33,12 +34,15 @@ gr_promoter_extract <- function(selected, upstream = 2000, downstream = 500) {
   # Replace strand
   grch37$strand[ grch37$strand == -1] <- "-"
   grch37$strand[ grch37$strand ==  1] <- "+"
-  
-  # Keep genes that were not found in the 'selected' vector
-  not.found <- setdiff(selected, grch37$symbol)
+  # If gene symbols are prvided, convert them to EntrezIDs
+  if (id == "symbol") {
+    selected <- unique(grch37$entrez[ grch37$symbol %in% selected & grch37$entrez != "?" ])
+  }
+  # Keep genes that were not found
+  not.found <- setdiff(selected, grch37$entrez)
   # Keep BED information for the genes that were found
-  mtx <- grch37[ grch37$symbol %in% selected, ]
-  genes.bed <- data.frame(chr=mtx$chr, start=mtx$start, end=mtx$end, name=mtx$symbol, strand=mtx$strand) %>% unique
+  mtx <- grch37[ grch37$entrez %in% selected, ]
+  genes.bed <- data.frame(chr=mtx$chr, start=mtx$start, end=mtx$end, name=paste(mtx$symbol, mtx$entrez, sep = "|"), strand=mtx$strand) %>% unique
   # Get promoters
   promoters.bed <- genes.bed # Temporary storage
   for (i in 1:nrow(genes.bed)) {
