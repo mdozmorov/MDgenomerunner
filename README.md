@@ -38,4 +38,6 @@ List of functions:
 
 `gr_maxmin` - extracts max/min correlation of each object (column) with other objects. Each column in an n x m matrix is correlated with other columns, and the names of the columns maximally/minimally correlated with the target column are assembled.
 
-`gr_promoter_extract` - given a vector of gene names, extract genomic coordinates of their promoters. Promoters can be defined as (by default) regions 2,000 bp upstream and 500 bp downstream of gene' transcription start site. Currently, hg19 only, and gene symbol only.
+`gr_promoter_extract` - given a vector of gene EntrezIDs, or symbols, extract genomic coordinates of their promoters. Promoters can be defined as (by default) regions 2,000 bp upstream and 500 bp downstream of gene' transcription start site. Currently, hg19 only.
+
+`gr_gene_extract` - given a vector of gene EntrezIDs, or symbols, extract genomic coordinates of the full genes. Currently, hg19 only.
