@@ -41,3 +41,5 @@ List of functions:
 `gr_promoter_extract` - given a vector of gene EntrezIDs, or symbols, extract genomic coordinates of their promoters. Promoters can be defined as (by default) regions 2,000 bp upstream and 500 bp downstream of gene' transcription start site. Currently, hg19 only.
 
 `gr_gene_extract` - given a vector of gene EntrezIDs, or symbols, extract genomic coordinates of the full genes. Currently, hg19 only.
+
+`get_pubmed_graph` - searches a term or phase in PubMed within year limits, and plot a barplot of counts.
