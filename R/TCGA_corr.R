@@ -4,8 +4,8 @@
 #' a gene of interest and all other genes in a specific cancer type.
 #' 
 #' @param cancer - cancer type abbreviation. Required. Example: "BRCA". Look up
-#' abbreviations [here](http://www.liuzlab.org/TCGA2STAT/CancerDataChecklist.pdf)
-#' and [here](https://tcga-data.nci.nih.gov/datareports/codeTablesReport.htm)
+#' abbreviations \url{http://www.liuzlab.org/TCGA2STAT/CancerDataChecklist.pdf}
+#' and \url{https://tcga-data.nci.nih.gov/datareports/codeTablesReport.htm}
 #' @param gene gene of interest. Required. Example: "BRCA1"
 #'
 #' @return a sorted by correlation coefficient data frame. Columns are 

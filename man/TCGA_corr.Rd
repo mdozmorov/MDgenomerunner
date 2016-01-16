@@ -10,8 +10,8 @@ TCGA_corr(canter = "BRCA", gene = "BRCA1")
 \item{gene}{gene of interest. Required. Example: "BRCA1"}
 
 \item{cancer}{- cancer type abbreviation. Required. Example: "BRCA". Look up
-abbreviations [here](http://www.liuzlab.org/TCGA2STAT/CancerDataChecklist.pdf)
-and [here](https://tcga-data.nci.nih.gov/datareports/codeTablesReport.htm)}
+abbreviations \url{http://www.liuzlab.org/TCGA2STAT/CancerDataChecklist.pdf}
+and \url{https://tcga-data.nci.nih.gov/datareports/codeTablesReport.htm}}
 }
 \value{
 a sorted by correlation coefficient data frame. Columns are 
