@@ -23,7 +23,9 @@ Suggests:
     scales,
     gplots,
     tools,
-    reshape2
+    reshape2,
+    TCGA2STAT,
+    biomaRt
 Imports:
     dplyr,
     shiny,

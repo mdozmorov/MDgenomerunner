@@ -43,3 +43,5 @@ List of functions:
 `gr_gene_extract` - given a vector of gene EntrezIDs, or symbols, extract genomic coordinates of the full genes. Currently, hg19 only.
 
 `get_pubmed_graph` - searches a term or phase in PubMed within year limits, and plot a barplot of counts.
+
+`TCGA_corr` - retrieves correlation statistics between RSEM gene expression of a gene of interest and all other genes in a cancer sybtype from TCGA.
