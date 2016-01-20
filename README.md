@@ -11,12 +11,15 @@ install_github('mdozmorov/MDmisc')
 library(MDmisc)
 ```
 
-List of functions:
+# Misc functions
 
 `gene_enrichment` - gene set enrichment analysis on a list of gene names or EntrezIDs. Currently, Homo Sapiens only.
 
 `unembed` - extracts multiple values embedded in rows. E.g. one row with ABC11 /// BCD22 variable will be split into two separate entries, creating two ABC11 and BCD22 rows with other values equal to the original row.
 
+`get_pubmed_graph` - searches a term or phase in PubMed within year limits, and plot a barplot of counts.
+
+`TCGA_corr` - retrieves correlation statistics between RSEM gene expression of a gene of interest and all other genes in a cancer sybtype from TCGA.
 
 ### GenomeRunner-specific main functions
 
@@ -41,7 +44,3 @@ List of functions:
 `gr_promoter_extract` - given a vector of gene EntrezIDs, or symbols, extract genomic coordinates of their promoters. Promoters can be defined as (by default) regions 2,000 bp upstream and 500 bp downstream of gene' transcription start site. Currently, hg19 only.
 
 `gr_gene_extract` - given a vector of gene EntrezIDs, or symbols, extract genomic coordinates of the full genes. Currently, hg19 only.
-
-`get_pubmed_graph` - searches a term or phase in PubMed within year limits, and plot a barplot of counts.
-
-`TCGA_corr` - retrieves correlation statistics between RSEM gene expression of a gene of interest and all other genes in a cancer sybtype from TCGA.
