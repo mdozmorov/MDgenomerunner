@@ -138,6 +138,7 @@ gr_degfs <- function(mtx, clust, cutoff.pval = 0.1, cutoff.adjust = "fdr", isOR 
             write.xlsx2(degs.table, fileName, 
                         sheetName=paste(colnames(design)[i], 'vs', colnames(design)[j], sep='_'), 
                         row.names=FALSE, append=TRUE)
+          }
           # Keep the number of DEGs in the matrix
           degs.matrix[i, j] <- nrow(degs.table)
           # Format columns
@@ -149,7 +150,6 @@ gr_degfs <- function(mtx, clust, cutoff.pval = 0.1, cutoff.adjust = "fdr", isOR 
           # Name the list after combination of clustering
           names(degfs.list)[length(degfs.list)] <- 
             paste(colnames(design)[i], "vs", colnames(design)[j], sep = "_")
-          }
         }
       }
     }
