@@ -32,7 +32,7 @@ unembed <- function(data, col, sep, ...) {
   #                        data[rep(seq_along(ns), ns), -col_i]), 
   #                        names = c(col, names(data)[-col_i]))
   data.unembed <- cbind(unlist(pieces), data[rep(seq_along(ns), ns), -col_i])
-  data.unembed <- as.data.frame(data.unembed)
+  data.unembed <- as.data.frame(data.unembed, stringsAsFactors = FALSE) # Disable factors in the created data.frame
   names(data.unembed) <- names(data)
   #names(data.unembed) <- c(col, names(data)[-col_i])
   return(data.unembed)
