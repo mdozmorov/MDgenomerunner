@@ -7,7 +7,8 @@
 #' @param data a data.frame object, with a column containing values with multiple
 #' variables.
 #' @param col column name containing values with multiple variables.
-#' @param sep regular expression to split column by
+#' @param sep character/regular expression to split a column by
+#' @param fixed logical. If TRUE (default), match split exactly, otherwise use regular expressions.
 #' 
 #' @return a data frame with columns containing unique variables obtained by
 #' unembedding.
@@ -19,13 +20,13 @@
 #' }
 #' @note Courtesy to \link[https://github.com/aaronwolen]{Aaron Wolen}
 
-unembed <- function(data, col, sep, ...) {
+unembed <- function(data, col, sep, fixed = TRUE, ...) {
   
   stopifnot(is.data.frame(data))
   col_i <- which(names(data) == col)
   
   data[[col]] <- as.character(data[[col]])
-  pieces <- strsplit(data[[col]], sep)
+  pieces <- strsplit(data[[col]], sep, fixed = TRUE)
   ns <- vapply(pieces, length, integer(1))
   
   #   structure(data.frame(unlist(pieces), 

@@ -4,7 +4,7 @@
 \alias{unembed}
 \title{Extracts multiple variables embedded in rows}
 \usage{
-unembed(data, col, sep, ...)
+unembed(data, col, sep, fixed = TRUE, ...)
 }
 \arguments{
 \item{data}{a data.frame object, with a column containing values with multiple
@@ -12,7 +12,9 @@ variables.}
 
 \item{col}{column name containing values with multiple variables.}
 
-\item{sep}{regular expression to split column by}
+\item{sep}{character/regular expression to split a column by}
+
+\item{fixed}{logical. If TRUE (default), match split exactly, otherwise use regular expressions.}
 }
 \value{
 a data frame with columns containing unique variables obtained by
