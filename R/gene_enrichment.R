@@ -73,7 +73,7 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol",
                          geneList.annot$GOALL[!duplicated(geneList.annot[,1:3])])
     genes.annot <- lapply(genes.annot, function(x) data.frame(ID = x$GOALL[1], 
                                                               SYMBOL = paste(x$SYMBOL, collapse = ","), 
-                                                              ENTREZID = paste(x$ENTREZID, collapse = ",")))
+                                                              ENTREZID = paste(x$ENTREZID, collapse = ","), stringsAsFactors = FALSE))
     genes.annot <- do.call("rbind", genes.annot)  # resing data frame
   } else {
     params <- new("KEGGHyperGParams", geneIds = selected, universeGeneIds = all.universe, 
@@ -83,7 +83,7 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol",
                          geneList.annot$PATH[!duplicated(geneList.annot[, c(1, 2, 6)])])
     genes.annot <- lapply(genes.annot, function(x) data.frame(ID = x$PATH[1], 
                                                               SYMBOL = paste(x$SYMBOL, collapse = ","), 
-                                                              ENTREZID = paste(x$ENTREZID, collapse = ",")))
+                                                              ENTREZID = paste(x$ENTREZID, collapse = ","), stringsAsFactors = FALSE))
     genes.annot <- do.call("rbind", genes.annot)  # resing data frame
   }
   # Enrichment analysis
@@ -95,7 +95,7 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol",
   colnames(res)[1] <- "ID"  # Set column name to merge by to ID, instead of GO- or KEGG specific
   # If genes.annot is empty, skip joining
   if (!is.null(genes.annot)) 
-    res <- left_join(res, genes.annot, by = c(ID = "ID"))
+    res <- left_join(res, genes.annot, by = c("ID" = "ID"))
   # Sort by p.adj
   res <- res[ order(res$p.adj, decreasing = FALSE), ]
   # Save the ress
