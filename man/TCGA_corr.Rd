@@ -2,41 +2,62 @@
 % Please edit documentation in R/TCGA_corr.R
 \name{TCGA_corr}
 \alias{TCGA_corr}
-\title{Retrieves correlation statistics between a gene of interest and all other genes.}
+\title{Retrieves correlation statistics between a gene of interest and 
+all other genes in TCGA cancers}
 \usage{
 TCGA_corr(cancer = "BRCA", gene = "BRCA1")
 }
 \arguments{
 \item{cancer}{- cancer type abbreviation. Required. Example: "BRCA". One of
-c("ACC", "BLCA", "BRCA", "CESC", "CHOL", "COAD", "COADREAD", "DLBC", "ESCA", "FPPP", 
+c("ACC", "BLCA", "BRCA", "CESC", "CHOL", "COAD", "COADREAD", "DLBC", "ESCA", 
 "GBM", "GBMLGG", "HNSC", "KICH", "KIPAN", "KIRC", "KIRP", "LAML", "LGG", "LIHC", 
 "LUAD", "LUSC", "MESO", "OV", "PAAD", "PCPG", "PRAD", "READ", "SARC", "SKCM", "STAD", 
 "TGCT", "THCA", "THYM", "UCEC", "UCS", "UVM"). Look up
 abbreviations at \url{http://www.liuzlab.org/TCGA2STAT/CancerDataChecklist.pdf}
 and \url{https://tcga-data.nci.nih.gov/datareports/codeTablesReport.htm}}
 
-\item{gene}{gene of interest. Required. Example: "BRCA1"}
+\item{gene}{HGNC approved gene name of a gene of interest. Required. Example: "BRCA1"}
 }
 \value{
-a sorted by correlation coefficient data frame. Columns are 
-"hgnc_symbol", "cor", "pval", "description"
+a correlation matrix (data frame) sorted by correlation coefficient. 
+Columns are "hgnc_symbol", "cor.TCGA", "pval.TCGA", "description", where 'TCGA'
+is a cancer ID
 }
 \description{
-A function to get Pearson correlation coefficients between RSEM gene expression of
-a gene of interest and all other genes in a specific cancer type.
+A function to get Pearson correlation coefficients and p-values between 
+RSEM gene expression profile of a gene of interest and all other genes 
+in a specific cancer type.
 }
 \examples{
 
 \dontrun{
-# Get correlation matrixes for the gene of interest in all cancers
-cancers <- c("ACC", "BLCA", "BRCA", "CESC", "CHOL", "COAD", "COADREAD", "DLBC", "ESCA", "FPPP", "GBM", "GBMLGG", "HNSC", "KICH", "KIPAN", "KIRC", "KIRP", "LAML", "LGG", "LIHC", "LUAD", "LUSC", "MESO", "OV", "PAAD", "PCPG", "PRAD", "READ", "SARC", "SKCM", "STAD", "TGCT", "THCA", "THYM", "UCEC", "UCS", "UVM")
-gene <- "FLI1"
 
+gene <- "FLI1" # Gene of interest
+cancers <- c("ACC", "BLCA", "BRCA", "CESC", "CHOL", "COAD", "COADREAD", "DLBC", "ESCA", "GBM", "GBMLGG", "HNSC", "KICH", "KIPAN", "KIRC", "KIRP", "LAML", "LGG", "LIHC", "LUAD", "LUSC", "MESO", "OV", "PAAD", "PCPG", "PRAD", "READ", "SARC", "SKCM", "STAD", "TGCT", "THCA", "THYM", "UCEC", "UCS", "UVM")
+dir <- "results" # Folder to store the results
+
+# Get correlation matrixes for the gene of interest in each cancer
 for (i in cancers) {
   print(i)
-  gene_corr <- TCGA_corr(cancer = i, gene = gene)
-  write.table(gene_corr, paste0("TCGA_corr_", gene, "_", i, ".txt"), sep = "\\t", quote = F, row.names = F)
+  gene_corr <- TCGA_corr(cancer = i, gene = gene) 
+  write.table(gene_corr, paste0(dir, "/", "TCGA_corr_", gene, "_", i, ".txt"), sep = "\\t", quote = F, row.names = F)
 }
+
+# Get genes most frequently correlated with the gene of interest (cor > 0.5, pval < 0.05)
+# across all cancers
+all_corrs <- list() # List to store cancer-specific correlation matrixes
+
+for (i in list.files(dir)) { # Go through each file containing cancer-specific correlation matrix
+  print(i) 
+  mtx <- read.table(paste0(dir, "/", i), sep = "\\t", header = T, stringsAsFactors = F)
+  # Get genes positively (cor > 0.5) and significantly (p < 0.05) correlated with the gene of interest
+  all_corrs[length(all_corrs) + 1] <- list(mtx[ mtx$cor > 0.5 & mtx$pval < 0.05, grep("^hgnc|^cor|^pval", colnames(mtx))])
+}
+all_summary <- Reduce(function(...) full_join(..., by = "hgnc_symbol"), all_corrs) # Combine all correlation matrixes with sighificant correlations
+all_summary <- mutate(all_summary, total=apply(all_summary, 1, function(x) (sum(!is.na(x)) - 1) / 2 )) # Append the total number of cancers having a gene correlated with the gene of interest
+all_summary <- all_summary[order(all_summary$total, decreasing = TRUE), ] # Order by the total
+write.table(all_summary, paste0(dir, "/", "TCGA_corr_", gene, "_all.txt"), sep="\\t", row.names = F)
+
 }
 }
 
