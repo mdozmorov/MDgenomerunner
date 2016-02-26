@@ -103,7 +103,7 @@ gr_cellspecific <- function(mtx, cutoff.pval = 0.01, p2z = FALSE, fileName = NUL
       # Formatting
       if (nrow(cells.stats.foi) > 1) {
         # If more than 1 row, order by p.value
-        cells.stats.foi <- cells.stats.foi[order(cells.stats.foi$p.value), ]
+        cells.stats.foi <- cells.stats.foi[order(cells.stats.foi[, "av_pval_cell"]), ]
       }
       cells.stats.foi$p.value <- formatC(cells.stats.foi$p.value, format = "e", digits = 2)
       cells.stats.foi$av_pval_cell <- formatC(cells.stats.foi$av_pval_cell, format = "e", digits = 2)
@@ -114,7 +114,7 @@ gr_cellspecific <- function(mtx, cutoff.pval = 0.01, p2z = FALSE, fileName = NUL
       # Store results
       enrichments.foi[d] <- list(cells.stats.foi)
       if (!is.null(fileName)) 
-        write.xlsx2(cells.stats.foi[order(as.numeric(cells.stats.foi[, 1]), decreasing = FALSE), ], 
+        write.xlsx2(cells.stats.foi[order(as.numeric(cells.stats.foi[, "av_pval_cell"]), decreasing = FALSE), ], 
                     fileName, sheetName = names(cutoff.pval.foi)[d], row.names = TRUE, append = TRUE)
     } else {
       enrichments.foi[d] <- list("Nothing significant")
