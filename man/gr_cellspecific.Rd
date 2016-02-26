@@ -28,8 +28,9 @@ and the results are returned as a list contatining cell type enrichment
 results for each set.
 }
 \examples{
-\dontrun {
- gr_cellspecific(mtx)
+
+\dontrun{
+gr_cellspecific(mtx)
 }
 }
 

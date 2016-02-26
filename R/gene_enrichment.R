@@ -16,7 +16,8 @@
 #' @return a data frame of significant enrichments, with lists of gene symbols per enriched funciton.
 #' @export
 #' @examples
-#' \dontrun {
+#' 
+#' \dontrun{
 #' # Analysis of genes associated with asperger syndrome
 #' res <- gene_enrichment(selected=c("100188800", "10849", "115727", "2272", "26059", "27185", "359778", "414", "4204", "431710", "431711", "449015", "4842", "4843", "50863", "6532", "79811", "80896", "831", "85358"), id="entrezid", use="GO", ont="MF")
 #' res <- gene_enrichment(selected=c("DISC1", "ASPG4", "ASPG1", "ASPG2", "SLC6A4", "ASPG3", "FRAXE", "FRAXA", "FHIT", "NTM", "SLTM", "RASGRP4", "NOS2", "NOS1", "SHANK3", "DISC2", "TSNAX", "OXTR", "ARSD"), id="symbol", use="KEGG", fileName="results.txt")
@@ -44,8 +45,8 @@
 #' write.xlsx(summary(res), fileName, sheetName = "Reactome",row.names=FALSE,  append = TRUE)
 #' res <- enrichDO(gene = entrez.genes, universe = all.entrez, ont = "DO", pAdjustMethod = "none", pvalueCutoff = 0.1, qvalueCutoff = 0.2, readable = TRUE)
 #' write.xlsx(summary(res), fileName, sheetName = "DiseaseOntology",row.names=FALSE,  append = TRUE)
-#'
 #' }
+#' 
 #' @note to visualize the top 10 most significant results, use
 #' \code{if (nrow(res) > 10) { n <-10 } else { n <- nrow(res) }; kable(res[1:n, ])}
 ##

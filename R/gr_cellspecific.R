@@ -12,11 +12,13 @@
 #' @param p2z logical. Indicates whether instead of -log10-transformation use
 #' Z-scores. Default - FALSE.
 #' @param fileName a path to a filename to save the results. Should be with "xlsx" extension. The results for each column are saved in separate worksheets. Default - NULL, do not save.
+#' 
 #' @return A list of the SNP set-specific cell type enrichment results
 #' @export
 #' @examples
-#' \dontrun {
-#'  gr_cellspecific(mtx)
+#' 
+#' \dontrun{
+#' gr_cellspecific(mtx)
 #' }
 ##
 gr_cellspecific <- function(mtx, cutoff.pval = 0.01, p2z = FALSE, fileName = NULL) {
