@@ -44,3 +44,23 @@ library(MDmisc)
 `gr_promoter_extract` - given a vector of gene EntrezIDs, or symbols, extract genomic coordinates of their promoters. Promoters can be defined as (by default) regions 2,000 bp upstream and 500 bp downstream of gene' transcription start site. Currently, hg19 only.
 
 `gr_gene_extract` - given a vector of gene EntrezIDs, or symbols, extract genomic coordinates of the full genes. Currently, hg19 only.
+
+
+# Misc notes
+
+### Rmd header
+
+	```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
+	# Set up the environment
+	library(knitr)
+	opts_chunk$set(cache.path='cache/', fig.path='img/', cache=F, tidy=T, fig.keep='high', echo=F, dpi=100, warnings=F, message=F, comment=NA, warning=F, results='hide') #out.width=700, 
+	library(pander)
+	panderOptions('table.split.table', Inf)
+	set.seed(1)
+	```
+
+### Rmd footer
+
+	```{r session_info, include=TRUE, echo=TRUE, results='markup'}
+	devtools::session_info()
+	```
