@@ -4,8 +4,9 @@
 \alias{gene_enrichment}
 \title{Performs GO or KEGG enrichment analysis of a list of gene symbols or Entrez IDs}
 \usage{
-gene_enrichment(selected, all.universe = NULL, id = "symbol", use = "GO",
-  ont = "BP", pval = 0.05, p.adj = 0.1, fileName = NULL)
+gene_enrichment(selected, all.universe = NULL, id = "symbol",
+  organism = "Hs", use = "GO", ont = "BP", pval = 0.05, p.adj = 0.1,
+  fileName = NULL)
 }
 \arguments{
 \item{selected}{a character vector of gene IDs. Either gene names or Entrez IDs are accepted. Required.}
@@ -14,6 +15,8 @@ gene_enrichment(selected, all.universe = NULL, id = "symbol", use = "GO",
 Must be the same ID type as the 'selected' genes.}
 
 \item{id}{what type of ID is provided. "symbol" (e.g., "BRCA1", default) or "entrezid" (e.g., "672").}
+
+\item{organism}{organism ID. "Hs" (homo sapiens, default), or "Mm" (mus musculus)}
 
 \item{use}{which analysis to perform. "GO" (default) or "KEGG".}
 
@@ -40,22 +43,22 @@ to visualize the top 10 most significant results, use
 
 \dontrun{
 # Analysis of genes associated with asperger syndrome
-res <- gene_enrichment(selected=c("100188800", "10849", "115727", "2272", "26059", "27185", "359778", "414", "4204", "431710", "431711", "449015", "4842", "4843", "50863", "6532", "79811", "80896", "831", "85358"), id="entrezid", use="GO", ont="MF")
-res <- gene_enrichment(selected=c("DISC1", "ASPG4", "ASPG1", "ASPG2", "SLC6A4", "ASPG3", "FRAXE", "FRAXA", "FHIT", "NTM", "SLTM", "RASGRP4", "NOS2", "NOS1", "SHANK3", "DISC2", "TSNAX", "OXTR", "ARSD"), id="symbol", use="KEGG", fileName="results.txt")
+res <- gene_enrichment(selected=c("100188800", "10849", "115727", "2272", "26059", "27185", "359778", "414", "4204", "431710", "431711", "449015", "4842", "4843", "50863", "6532", "79811", "80896", "831", "85358"), id="entrezid", organism = "Hs", use="GO", ont="MF")
+res <- gene_enrichment(selected=c("DISC1", "ASPG4", "ASPG1", "ASPG2", "SLC6A4", "ASPG3", "FRAXE", "FRAXA", "FHIT", "NTM", "SLTM", "RASGRP4", "NOS2", "NOS1", "SHANK3", "DISC2", "TSNAX", "OXTR", "ARSD"), id="symbol", organism = "Hs", use="KEGG", fileName="results.txt")
 
 # A wrapper function to perform all functional enrichment analyses. The 'fileName' should have 'xlsx' extension
 all.enrichment.analyses <- function(genes, fileName, id="symbol") {
   # Gene ontology, molecular function
-  res <- gene_enrichment(selected = genes, id=id, use="GO", ont="MF")
+  res <- gene_enrichment(selected = genes, id=id, organism = "Hs", use="GO", ont="MF")
   write.xlsx(res, fileName, sheetName = "GO-MF", row.names=FALSE, append=TRUE)
   # Gene ontology, biological process 
-  res <- gene_enrichment(selected = genes, id=id, use="GO", ont="BP")
+  res <- gene_enrichment(selected = genes, id=id, organism = "Hs", use="GO", ont="BP")
   write.xlsx(res, fileName, sheetName = "GO-BP", row.names=FALSE, append=TRUE)
   # Gene ontology, cellular component
-  res <- gene_enrichment(selected = genes, id=id, use="GO", ont="CC")
+  res <- gene_enrichment(selected = genes, id=id, organism = "Hs", use="GO", ont="CC")
   write.xlsx(res, fileName, sheetName = "GO-CC", row.names=FALSE, append=TRUE)
   # KEGG canonical pathways
-  res <- gene_enrichment(selected = genes, id=id, use="KEGG")
+  res <- gene_enrichment(selected = genes, id=id, organism = "Hs", use="KEGG")
   write.xlsx(res, fileName, sheetName = "KEGG", row.names=FALSE, append=TRUE)
 }
 
