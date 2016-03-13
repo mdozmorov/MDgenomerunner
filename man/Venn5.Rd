@@ -15,6 +15,9 @@ Nothing, just plot the diagram
 \description{
 Make five-circle Venn diagram
 }
+\note{
+Source \link[http://bioinfo-mite.crb.wsu.edu/Rcode/Venn2.R]{dead link}
+}
 \examples{
 \dontrun{
 # define some sets
