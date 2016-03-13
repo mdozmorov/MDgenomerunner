@@ -55,7 +55,7 @@ library(MDmisc)
 	```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
 	# Set up the environment
 	library(knitr)
-	opts_chunk$set(cache.path='cache/', fig.path='img/', cache=F, tidy=T, fig.keep='high', echo=F, dpi=100, warnings=F, message=F, comment=NA, warning=F, results='hide') #out.width=700, 
+	opts_chunk$set(cache.path='cache/', fig.path='img/', cache=F, tidy=T, fig.keep='high', echo=F, dpi=100, warnings=F, message=F, comment=NA, warning=F, results='as.is') #out.width=700, 
 	library(pander)
 	panderOptions('table.split.table', Inf)
 	set.seed(1)
@@ -63,6 +63,12 @@ library(MDmisc)
 
 ### Rmd footer
 
-	```{r session_info, include=TRUE, echo=TRUE, results='markup'}
-	devtools::session_info()
+	```{r session_info}
+	diagnostics <- devtools::session_info()
+  platform <- data.frame(diagnostics$platform %>% unlist, stringsAsFactors = FALSE)
+  colnames(platform) <- c("description")
+  pander(platform)
+  
+  packages <- as.data.frame(diagnostics$packages)
+  pander(packages[ packages$`*` == "*", ])
 	```
