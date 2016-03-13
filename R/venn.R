@@ -94,6 +94,7 @@ Venn3 <- function(set1, set2, set3, names = c("set 1", "set 2", "set 3"), title 
 #' set5 = letters[6:26];
 #' Venn5(set1, set2, set3, set4, set5);
 #' }
+#' @note Source \link[http://bioinfo-mite.crb.wsu.edu/Rcode/Venn2.R]{dead link}
 #
 Venn5 <- function(set1, set2, set3, set4, set5){
   
