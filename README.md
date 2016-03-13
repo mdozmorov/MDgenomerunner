@@ -21,6 +21,8 @@ library(MDmisc)
 
 `TCGA_corr` - retrieves correlation statistics between RSEM gene expression of a gene of interest and all other genes in a cancer sybtype from TCGA.
 
+`Venn2`, `Venn3` - plot 2, 3-circle Venn diagrams.
+
 ### GenomeRunner-specific main functions
 
 `gr_load_data` - loads enrichment analysis matrix(es) and remove non-informative enrichment results.
