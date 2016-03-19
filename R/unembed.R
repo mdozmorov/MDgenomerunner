@@ -29,10 +29,10 @@ unembed <- function(data, col, sep, fixed = TRUE, ...) {
   pieces <- strsplit(data[[col]], sep, fixed = TRUE)
   ns <- vapply(pieces, length, integer(1))
   
-  #   structure(data.frame(unlist(pieces), 
-  #                        data[rep(seq_along(ns), ns), -col_i]), 
-  #                        names = c(col, names(data)[-col_i]))
-  data.unembed <- data.frame(data[rep(seq_along(ns), ns), -col_i], unlist(pieces), stringsAsFactors = FALSE) # Disable factors in the created data.frame
-  names(data.unembed) <- names(data)
+  data.unembed <-  structure(data.frame(unlist(pieces), 
+                         data[rep(seq_along(ns), ns), -col_i], stringsAsFactors = FALSE), 
+                         names = c(col, names(data)[-col_i]))
+#   data.unembed <- data.frame(data[rep(seq_along(ns), ns), -col_i], unlist(pieces), stringsAsFactors = FALSE) # Disable factors in the created data.frame
+#   names(data.unembed) <- names(data)
   return(data.unembed)
 }
