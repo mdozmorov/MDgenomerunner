@@ -57,5 +57,6 @@ gr_promoter_extract <- function(selected, id = "entrezid", upstream = 2000, down
       promoters.bed$end[i] <- tss + upstream
     }
   }
+  promoters.bed$start[ promoters.bed$start < 0 ] <- 0 # Precaution against negative coordinates on genes close to start of chromosomes
   return(list(promoters=promoters.bed, notfound=not.found))
 }
