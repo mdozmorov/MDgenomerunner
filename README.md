@@ -63,12 +63,12 @@ library(MDmisc)
 
 ### Rmd footer
 
-	```{r session_info}
-	diagnostics <- devtools::session_info()
-  platform <- data.frame(diagnostics$platform %>% unlist, stringsAsFactors = FALSE)
-  colnames(platform) <- c("description")
-  pander(platform)
-  
-  packages <- as.data.frame(diagnostics$packages)
-  pander(packages[ packages$`*` == "*", ])
-	```
+  	```{r session_info}
+  	diagnostics <- devtools::session_info()
+    platform <- data.frame(diagnostics$platform %>% unlist, stringsAsFactors = FALSE)
+    colnames(platform) <- c("description")
+    pander(platform)
+    
+    packages <- as.data.frame(diagnostics$packages)
+    pander(packages[ packages$`*` == "*", ])
+  	```
