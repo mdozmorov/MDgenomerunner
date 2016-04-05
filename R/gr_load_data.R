@@ -9,8 +9,10 @@
 #' has 'OR' in its name, the data will be log2-transformed. If no such keywords 
 #' are found, the data is not transformed. The non-informative enrichments 
 #' (rows with all non-significant enrichments) are removed  
-#' @param subset a string used to select rows containing it. If a vector, "OR"
+#' @param row.subset a string used to select rows containing it. If a vector, "OR"
 #' operation is used in subsetting. Default - none. Examples - c("Histone", "Tfbs")
+#' @param col.subset a string used to select columns containing it. If a vector, "OR"
+#' operation is used in subsetting. Default - none. Examples - c("pos", "neg")
 #' @param p2z logical. Indicates whether instead of -log10-transformation use
 #' Z-scores. Default - FALSE.
 #'
@@ -23,7 +25,7 @@
 #' "data/ENCODE_Histone/matrix_PVAL.txt"), subset=c("Tfbs", "Histone"))
 #' }
 ##
-gr_load_data <- function(dname, subset = "none", p2z = FALSE) {
+gr_load_data <- function(dname, row.subset = "none", col.subset = "none", p2z = FALSE) {
   # Load matrix(es) from a (vector of) file(s) located at dname
   mtx.list <- list()
   for (d in dname) {
@@ -39,8 +41,11 @@ gr_load_data <- function(dname, subset = "none", p2z = FALSE) {
                                                                  colnames(x)), drop = FALSE]))
   class(mtx) <- "numeric"  # Convert to numbers
   # filter GF list, if specified
-  if (subset != "none") {
-    mtx <- mtx[grep(paste(subset, collapse = "|"), rownames(mtx), ignore.case = T), ]
+  if (row.subset != "none") {
+    mtx <- mtx[grep(paste(row.subset, collapse = "|"), rownames(mtx), ignore.case = T), ]
+  }
+  if (col.subset != "none") {
+    mtx <- mtx[, grep(paste(col.subset, collapse = "|"), colnames(mtx), ignore.case = T)]
   }
   # Transform PVAL and OR matrixes accordingly
   if (grepl("PVAL", d)) {

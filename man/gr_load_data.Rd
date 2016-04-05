@@ -4,7 +4,7 @@
 \alias{gr_load_data}
 \title{Load enrichment analysis data}
 \usage{
-gr_load_data(dname, subset = "none", p2z = FALSE)
+gr_load_data(dname, row.subset = "none", col.subset = "none", p2z = FALSE)
 }
 \arguments{
 \item{dname}{a string, or a character vector containing one or multiple paths 
@@ -14,8 +14,11 @@ has 'OR' in its name, the data will be log2-transformed. If no such keywords
 are found, the data is not transformed. The non-informative enrichments 
 (rows with all non-significant enrichments) are removed}
 
-\item{subset}{a string used to select rows containing it. If a vector, "OR"
+\item{row.subset}{a string used to select rows containing it. If a vector, "OR"
 operation is used in subsetting. Default - none. Examples - c("Histone", "Tfbs")}
+
+\item{col.subset}{a string used to select columns containing it. If a vector, "OR"
+operation is used in subsetting. Default - none. Examples - c("pos", "neg")}
 
 \item{p2z}{logical. Indicates whether instead of -log10-transformation use
 Z-scores. Default - FALSE.}
