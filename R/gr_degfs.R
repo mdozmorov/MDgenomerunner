@@ -1,19 +1,18 @@
 #' Defines epigenetic marks differentially enriched between clusters
 #' 
-#' A function that compares the enrichment values between pairs of clusters using 
-#' Wilcoxon (aka Mann-Whitney) test.
+#' A function that compares enrichment values between pairs of clusters.
 #' 
-#' @param mtx the matrix of transformed p-values or odds-ratios
-#' @param clust clustering definition object from 'gr_clusters'
+#' @param mtx a matrix of transformed p-values or odds-ratios
+#' @param clust clustering definition object from the 'gr_clusters' function
 #' @param cutoff.pval p-value cutoff to use when testing for differential 
 #' enrichment. Default - 0.1
 #' @param cutoff.adjust a method to correct p-values for multiple testing. 
 #' Default - FDR.
 #' @param isOR logical. Indicates the origin of the transformed values. Used to 
 #' properly convert their average values into decimal scale. Default - FALSE,
-#' the supplied mtx is the matrix of -log10-transformed p-values.
+#' the supplied mtx is a matrix of -log10-transformed p-values.
 #' @param p2z logical. Indicates whether instead of -log10-transformation use
-#' Z-scores. Default - FALSE.
+#' Z-scores. Default - FALSE. Does not affect the need to supply transformed p-values
 #' @param nperm if not NULL, differentially enrished p-values are calculated
 #' using permutations. Use at least 10000 permutations.
 #' @param fileName a name of an Excel file to save the differential enrichment
@@ -22,11 +21,15 @@
 #'
 #' @return prints a summary of the counts of differentially enriched marks
 #' @return returns a list of pair-wise cluster comparison results, each element
-#' corresponds to each comparison (e.g., c1_vs_c2)
+#' corresponds to each comparison (e.g., res$c1_vs_c2)
 #' @export
 #' @examples
 #' \dontrun{
-#' mtx.degfs(mtx.tumor[, tumor.clust$eset.labels] %>% mtx.transform.p2z %>% normalizeQuantiles , tumor.clust, fileName="tumor_gfs")
+#' mtx <- gr_load_data("matrix_PVAL.txt") %>% gr_transform # Load p-values and -log10-transform them
+#' h <- gplots::heatmap.2(Hmisc::rcorr(mtx)[[1]]) # Cluster matrix of values X observations
+#' plot(h$colDendrogram) # Look at the clustering dendrogram and decide height at which to cut
+#' mtx.clust <- gr_clusters(h$colDendrogram, height = 3) # Cut the dendrogram, and save the results
+#' res <- mtx.degfs(mtx, mtx.clust)
 #' }
 #' @note Permutation test shall be redone per 
 #' \preformatted{

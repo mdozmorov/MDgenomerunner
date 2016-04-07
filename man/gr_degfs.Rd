@@ -8,9 +8,9 @@ gr_degfs(mtx, clust, cutoff.pval = 0.1, cutoff.adjust = "fdr",
   isOR = FALSE, p2z = FALSE, nperm = NULL, fileName = NULL)
 }
 \arguments{
-\item{mtx}{the matrix of transformed p-values or odds-ratios}
+\item{mtx}{a matrix of transformed p-values or odds-ratios}
 
-\item{clust}{clustering definition object from 'gr_clusters'}
+\item{clust}{clustering definition object from the 'gr_clusters' function}
 
 \item{cutoff.pval}{p-value cutoff to use when testing for differential 
 enrichment. Default - 0.1}
@@ -20,10 +20,10 @@ Default - FDR.}
 
 \item{isOR}{logical. Indicates the origin of the transformed values. Used to 
 properly convert their average values into decimal scale. Default - FALSE,
-the supplied mtx is the matrix of -log10-transformed p-values.}
+the supplied mtx is a matrix of -log10-transformed p-values.}
 
 \item{p2z}{logical. Indicates whether instead of -log10-transformation use
-Z-scores. Default - FALSE.}
+Z-scores. Default - FALSE. Does not affect the need to supply transformed p-values}
 
 \item{nperm}{if not NULL, differentially enrished p-values are calculated
 using permutations. Use at least 10000 permutations.}
@@ -36,11 +36,10 @@ in a corresponding worksheet. Default - none. Example - "degfs.xsls"}
 prints a summary of the counts of differentially enriched marks
 
 returns a list of pair-wise cluster comparison results, each element
-corresponds to each comparison (e.g., c1_vs_c2)
+corresponds to each comparison (e.g., res$c1_vs_c2)
 }
 \description{
-A function that compares the enrichment values between pairs of clusters using 
-Wilcoxon (aka Mann-Whitney) test.
+A function that compares enrichment values between pairs of clusters.
 }
 \note{
 Permutation test shall be redone per 
@@ -52,7 +51,11 @@ Stat Appl Genet Mol Biol 2010, 9:Article39.
 }
 \examples{
 \dontrun{
-mtx.degfs(mtx.tumor[, tumor.clust$eset.labels] \%>\% mtx.transform.p2z \%>\% normalizeQuantiles , tumor.clust, fileName="tumor_gfs")
+mtx <- gr_load_data("matrix_PVAL.txt") \%>\% gr_transform # Load p-values and -log10-transform them
+h <- gplots::heatmap.2(Hmisc::rcorr(mtx)[[1]]) # Cluster matrix of values X observations
+plot(h$colDendrogram) # Look at the clustering dendrogram and decide height at which to cut
+mtx.clust <- gr_clusters(h$colDendrogram, height = 3) # Cut the dendrogram, and save the results
+res <- mtx.degfs(mtx, mtx.clust)
 }
 }
 
