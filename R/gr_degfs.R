@@ -26,9 +26,9 @@
 #' @examples
 #' \dontrun{
 #' mtx <- gr_load_data("matrix_PVAL.txt") %>% gr_transform # Load p-values and -log10-transform them
-#' h <- gplots::heatmap.2(Hmisc::rcorr(mtx)[[1]]) # Cluster matrix of values X observations
-#' plot(h$colDendrogram) # Look at the clustering dendrogram and decide height at which to cut
-#' mtx.clust <- gr_clusters(h$colDendrogram, height = 3) # Cut the dendrogram, and save the results
+#' cluster1 <- hclust(as.dist(1 - cor(mtx)))
+#' plot(cluster1) # Look at the clustering dendrogram and decide height at which to cut
+#' mtx.clust <- gr_clusters(as.dendrogram(cluster1), height = 3) # Create clustering object
 #' res <- mtx.degfs(mtx, mtx.clust)
 #' }
 #' @note Permutation test shall be redone per 
