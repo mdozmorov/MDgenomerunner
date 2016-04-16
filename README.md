@@ -11,6 +11,12 @@ install_github('mdozmorov/MDmisc')
 library(MDmisc)
 ```
 
+Or, from command line:
+
+```bash
+sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
+```
+
 # Misc functions
 
 `gene_enrichment` - gene set enrichment analysis on a list of gene names or EntrezIDs. Currently, Homo Sapiens only.
