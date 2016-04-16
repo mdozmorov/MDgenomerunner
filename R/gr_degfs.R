@@ -98,8 +98,8 @@ gr_degfs <- function(mtx, clust, cutoff.pval = 0.1, cutoff.adjust = "fdr", isOR 
             j.av <- j.sign * 2 * pnorm(q = as.matrix(-abs( j.av )))
           } else {
             # Anti -log10 transform p-values
-            i.av <- i.sign * 1/(10^abs( i.av ))  
-            j.av <- j.sign * 1/(10^abs( j.av ))
+            i.av <- i.sign * -1/(10^abs( i.av ))  
+            j.av <- j.sign * -1/(10^abs( j.av ))
           }
         } else {
           # Anti log2 transform mean odds ratios
