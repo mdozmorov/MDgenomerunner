@@ -29,6 +29,8 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
 
 `Venn2`, `Venn3`, `Venn5` - plot 2, 3, 5-circle Venn diagrams.
 
+`mtx_rand` - randomizes a numerical matrix using several techniques
+
 ### GenomeRunner-specific main functions
 
 `gr_load_data` - loads enrichment analysis matrix(es) and remove non-informative enrichment results.
