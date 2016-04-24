@@ -55,6 +55,7 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
 
 `gr_gene_extract` - given a vector of gene EntrezIDs, or symbols, extract genomic coordinates of the full genes. Currently, hg19 only.
 
+`gr_plot` - master function to visualize enrichment results outside the server environment.
 
 # Misc notes
 
