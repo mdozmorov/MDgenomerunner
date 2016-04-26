@@ -32,7 +32,7 @@ accepted by the 'p.adjust' function. Common choices - "none", "fdr". Default -
 "fdr"}
 
 \item{pvalue_cutoff}{threshold below which results are not considered. 
-Default - 0.1, or 10% FDR.}
+Default - 0.1, or 10 percent FDR.}
 
 \item{numtofilt}{needs refactoring}
 

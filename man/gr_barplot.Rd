@@ -21,7 +21,7 @@ Default - 5}
 \item{pvalue_cutoff}{where to draw dashed lines representing significance cutoff.}
 
 \item{log10_transformed}{logical. Indicates the scale of the enrichment values.
-Default - 0.1, 10% FDR.}
+Default - 0.1, 10 percent FDR.}
 }
 \value{
 none

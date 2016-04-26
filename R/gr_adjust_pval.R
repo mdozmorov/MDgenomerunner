@@ -10,7 +10,6 @@
 #' @param log10_transformed logical. Indicates the scale of the enrichment values.
 #' Used to properly convert the values for adjustment. Default - FALSE, values 
 #' are regular p-values.
-#'
 #' @return a vector of the adjusted enrichment result in the same scale as x
 #' @export
 #' @examples

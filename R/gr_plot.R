@@ -18,7 +18,7 @@
 #' accepted by the 'p.adjust' function. Common choices - "none", "fdr". Default -
 #' "fdr"
 #' @param pvalue_cutoff threshold below which results are not considered. 
-#' Default - 0.1, or 10% FDR.
+#' Default - 0.1, or 10 percent FDR.
 #' @param numtofilt needs refactoring
 #' @param plot_type what to plot. "heat" is relevant only for one-column enrichment
 #' matrix, "barup", "bardn", "bar" is used for plotting barplots of enrichment,
@@ -46,6 +46,14 @@ gr_plot <- function(file_name, use_columns = 1, subset_by_GF = "none", subset_by
   # Attach annotations
   mtx <- data.frame(GF = rownames(mtx), mtx, stringsAsFactors = FALSE) 
   mtx <- left_join(mtx, gfAnnot[, c("file_name", "cell", "factor", "factor_desc")], by = c("GF" = "file_name"))
+  # Precaution against NAs
+  mtx$cell[ is.na(mtx$cell) ] <- ""
+  mtx$factor[ is.na(mtx$factor) ] <- ""
+  mtx$factor_desc[ is.na(mtx$factor_desc) ] <- ""
+  # If factor is empty, use original GF names
+  if (any(mtx$factor == "")) {
+    mtx$factor <- mtx$GF
+  }
   # Subset, if necessary
   if(subset_by_GF != "none") {
     mtx <- mtx[ grep(paste(subset_by_GF, collapse = "|"), rownames(mtx), ignore.case = T), , drop=F]
@@ -127,8 +135,8 @@ gr_plot <- function(file_name, use_columns = 1, subset_by_GF = "none", subset_by
     mtx.barplot.up <- mtx.barplot.up[ complete.cases(mtx.barplot.up), , drop=F]
     mtx.barplot.dn <- mtx.barplot.dn[ complete.cases(mtx.barplot.dn), , drop=F]
     # Reassign names
-    names.args.up <- paste(mtx.barplot.up$cell, mtx.barplot.up$factor, sep=":")
-    names.args.dn <- paste(mtx.barplot.dn$cell, mtx.barplot.dn$factor, sep=":")
+    names.args.up <- mtx.barplot.up$factor # paste(mtx.barplot.up$cell, mtx.barplot.up$factor, sep=":")
+    names.args.dn <- mtx.barplot.dn$factor # paste(mtx.barplot.dn$cell, mtx.barplot.dn$factor, sep=":")
     #names.args.up[names.args.up == "NA:NA"] <- make.names(unlist(lapply(mtx.sorted.up, rownames)), unique=T)[names.args.up == "NA:NA"]
     #names.args.dn[names.args.dn == "NA:NA"] <- make.names(unlist(lapply(mtx.sorted.dn, rownames)), unique=T)[names.args.dn == "NA:NA"]
     bottom_margin <- 8
