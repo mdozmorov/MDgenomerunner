@@ -81,3 +81,18 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
     packages <- as.data.frame(diagnostics$packages)
     pander(packages[ packages$`*` == "*", ])
   	```
+
+# Upgrading R & Bioconductor on Mac OS X
+
+When upgrading to the latest X.Y.Z R vestion, it is possible to rename the `/Library/Frameworks/R.framework/Versions/X.Y` folder. This will make all packages available to the latest R version, but often causes unforeseen incompatibilities, problems with upgrading Bioconductor, and other unpredictable behaviour. A more laborous manual upgrade may be simpler and cleaner.
+
+1. Rename the current R library folder, e.g., `/Library/Frameworks/R.framework/Versions/3.2` to `/Library/Frameworks/R.framework/Versions/3.2.old`
+2. Install the latest version of [R](https://www.r-project.org/)
+3. Install the latest version of [Bioconductor](https://www.bioconductor.org/install/)
+4. Go to the terminal, and note the new R folder, `d1=/Library/Frameworks/R.framework/Versions/3.3/Resources/library`
+5. Note the old R folder, `d2=/Library/Frameworks/R.framework/Versions/3.2.old/Resources/library`
+6. Get the list of R packages you need to install from the previous installation, `comm -13 <(find $d1 -type d -maxdepth 1 -exec basename {} \; | sort) <(find $d2 -type d -maxdepth 1 -exec basename {} \; | sort) > ~/Desktop/R_packages_to_upgrade.txt`
+7. Use the `R_packages_to_upgrade.txt` list to install necessary R packages into the fresh R/Bioconductor installation. The majority of them are dependencies, so use intelligence to install what you need.
+
+source("https://bioconductor.org/biocLite.R")
+biocLite("ChIPseeker", "clusterProfiler", "org.Hs.eg.db", "Rgraphviz", "pathview")
