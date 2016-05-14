@@ -31,6 +31,8 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
 
 `mtx_rand` - randomizes a numerical matrix using several techniques
 
+`t.test2` - t-test from a summary statistics
+
 ### GenomeRunner-specific main functions
 
 `gr_load_data` - loads enrichment analysis matrix(es) and remove non-informative enrichment results.
@@ -82,6 +84,11 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
     pander(packages[ packages$`*` == "*", ])
   	```
 
+### Tidy up code
+
+```formatR::tidy_app()```
+
+
 # Upgrading R & Bioconductor on Mac OS X
 
 When upgrading to the latest X.Y.Z R vestion, it is possible to rename the `/Library/Frameworks/R.framework/Versions/X.Y` folder. This will make all packages available to the latest R version, but often causes unforeseen incompatibilities, problems with upgrading Bioconductor, and other unpredictable behaviour. A more laborous manual upgrade may be simpler and cleaner.
@@ -95,4 +102,8 @@ When upgrading to the latest X.Y.Z R vestion, it is possible to rename the `/Lib
 7. Use the `R_packages_to_upgrade.txt` list to install necessary R packages into the fresh R/Bioconductor installation. The majority of them are dependencies, so use intelligence to install what you need.
 
 source("https://bioconductor.org/biocLite.R")
-biocLite("ChIPseeker", "clusterProfiler", "org.Hs.eg.db", "Rgraphviz", "pathview")
+
+biocLite("ChIPseeker", "clusterProfiler", "org.Hs.eg.db", "Rgraphviz", "pathview", "genefilter", "Category")
+
+install.packages(c("TCGA2STAT", "pander", "xlsx", "ggrepel", "shiny", "shinyBS", "devtools", "roxygen2"))
+
