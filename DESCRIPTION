@@ -25,7 +25,8 @@ Suggests:
     tools,
     reshape2,
     TCGA2STAT,
-    biomaRt
+    biomaRt,
+    stringr
 Imports:
     dplyr,
     shiny,
