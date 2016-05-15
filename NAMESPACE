@@ -28,3 +28,4 @@ export(mtx_rand)
 export(gr_plot)
 export(t.test2)
 export(gr_getV1OddsRatioPvalMatrix)
+

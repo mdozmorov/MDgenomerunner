@@ -59,6 +59,8 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
 
 `gr_plot` - master function to visualize enrichment results outside the server environment.
 
+`gr_getV1OddsRatioPvalMatrix` - converts a log file ofthe results obtained with GenomeRunner V1 (standalone) to "matrix_PVAL/OR.txt" files compatible with GenomeRunner V2 (web)
+
 # Misc notes
 
 ### Rmd header
@@ -103,7 +105,10 @@ When upgrading to the latest X.Y.Z R vestion, it is possible to rename the `/Lib
 
 source("https://bioconductor.org/biocLite.R")
 
-biocLite("ChIPseeker", "clusterProfiler", "org.Hs.eg.db", "Rgraphviz", "pathview", "genefilter", "Category")
+library(BiocInstaller)
+
+biocLite("ChIPseeker", "clusterProfiler", "org.Hs.eg.db", "Rgraphviz", "pathview", "genefilter", "Category", "edgeR")
 
 install.packages(c("TCGA2STAT", "pander", "xlsx", "ggrepel", "shiny", "shinyBS", "devtools", "roxygen2"))
 
+devtools::install_github("mdozmorov/annotables")
