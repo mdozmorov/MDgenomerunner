@@ -63,6 +63,21 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
 
 # Misc notes
 
+### YAML header
+
+[R Markdown v2 formatting options](http://rmarkdown.rstudio.com/html_document_format.html#overview)
+
+	---
+	title: "Demo Document"
+	output:
+	  html_document:
+	    toc: true
+	    theme: united
+	date: "`r Sys.Date()`"
+	author: "Author's Name"
+	---
+
+
 ### Rmd header
 
 	```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
@@ -109,6 +124,6 @@ library(BiocInstaller)
 
 biocLite("ChIPseeker", "clusterProfiler", "org.Hs.eg.db", "Rgraphviz", "pathview", "genefilter", "Category", "edgeR")
 
-install.packages(c("TCGA2STAT", "pander", "xlsx", "ggrepel", "shiny", "shinyBS", "devtools", "roxygen2"))
+install.packages(c("TCGA2STAT", "pander", "xlsx", "ggrepel", "shiny", "shinyBS", "devtools", "roxygen2", "caret", "kernlab", "pROC"))
 
 devtools::install_github("mdozmorov/annotables")
