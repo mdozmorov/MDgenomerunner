@@ -103,7 +103,7 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
 
 ### Tidy up code
 
-```formatR::tidy_app()```
+`formatR::tidy_app()`
 
 
 # Upgrading R & Bioconductor on Mac OS X
