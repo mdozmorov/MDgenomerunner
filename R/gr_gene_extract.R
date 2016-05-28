@@ -16,7 +16,7 @@
 #' genes_bed <- gr_gene_extract(selected, id = "symbol")$genes
 #' write.table(genes_bed, "genes.bed", sep="\t", quote=F, row.names=F, col.names=F)
 #' # Extract genomic coordinates of all genes. Note only canonical chromosomes are retained.
-#' genes_all <- gr_gene_extract(selected = unique(annotables::grch37$symbol))
+#' genes_all <- gr_gene_extract(selected = unique(annotables::grch37$symbol), id = "symbol")
 #' }
 ##
 gr_gene_extract <- function(selected, id = "entrezid") {
@@ -40,7 +40,7 @@ gr_gene_extract <- function(selected, id = "entrezid") {
   not.found <- setdiff(selected, grch37$entrez)
   # Keep BED information for the genes that were found
   mtx <- grch37[ grch37$entrez %in% selected, ]
-  genes.bed <- data.frame(chr=mtx$chr, start=mtx$start, end=mtx$end, name=paste(mtx$symbol, mtx$entrez, sep = "|"), strand=mtx$strand) %>% unique
+  genes.bed <- data.frame(chr = mtx$chr, start = mtx$start, end = mtx$end, name = paste(mtx$symbol, mtx$entrez, sep = "|"), description = mtx$description, strand = mtx$strand) %>% unique
   
   return(list(genes=genes.bed, notfound=not.found))
 }

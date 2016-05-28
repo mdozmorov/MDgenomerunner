@@ -27,7 +27,7 @@ selected <- c("TMEM59L", "SNTG1", "RPL41", "ADAMTS19")
 genes_bed <- gr_gene_extract(selected, id = "symbol")$genes
 write.table(genes_bed, "genes.bed", sep="\\t", quote=F, row.names=F, col.names=F)
 # Extract genomic coordinates of all genes. Note only canonical chromosomes are retained.
-genes_all <- gr_gene_extract(selected = unique(annotables::grch37$symbol))
+genes_all <- gr_gene_extract(selected = unique(annotables::grch37$symbol), id = "symbol")
 }
 }
 
