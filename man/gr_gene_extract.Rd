@@ -12,7 +12,7 @@ gr_gene_extract(selected, id = "entrezid")
 \item{id}{what type of ID is provided. "symbol" (e.g., "BRCA1") or "entrezid" (e.g., "672", default and recommended).}
 }
 \value{
-a list with two components. 'promoters' contains genomic coordinates
+a list with two components. 'genes' contains genomic coordinates
 of the selected genes; 'notfound' contains gene names not found in annotables (for diagnostics)
 }
 \description{
@@ -24,10 +24,10 @@ Only canonical chromosome names are considered. No patches, random or other cont
 \examples{
 \dontrun{
 selected <- c("TMEM59L", "SNTG1", "RPL41", "ADAMTS19")
-pr <- gr_promoter_extract(selected)$promoters
-write.table(pr, "pr.bed", sep="\\t", quote=F, row.names=F, col.names=F)
-# Extract promoters of all genes (that have gene names). Note only canonical chromosomes are retained.
-promoters.all <- gr_promoter_extract(selected = unique(annotables::grch37$symbol))
+genes_bed <- gr_gene_extract(selected, id = "symbol")$genes
+write.table(genes_bed, "genes.bed", sep="\\t", quote=F, row.names=F, col.names=F)
+# Extract genomic coordinates of all genes. Note only canonical chromosomes are retained.
+genes_all <- gr_gene_extract(selected = unique(annotables::grch37$symbol))
 }
 }
 

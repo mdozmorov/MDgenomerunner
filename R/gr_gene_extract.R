@@ -7,16 +7,16 @@
 #' @param selected a character vector of gene Entrez IDs, or names. Required
 #' @param id what type of ID is provided. "symbol" (e.g., "BRCA1") or "entrezid" (e.g., "672", default and recommended).
 #'
-#' @return a list with two components. 'promoters' contains genomic coordinates
+#' @return a list with two components. 'genes' contains genomic coordinates
 #' of the selected genes; 'notfound' contains gene names not found in annotables (for diagnostics)
 #' @export
 #' @examples
 #' \dontrun{
 #' selected <- c("TMEM59L", "SNTG1", "RPL41", "ADAMTS19")
-#' pr <- gr_promoter_extract(selected)$promoters
-#' write.table(pr, "pr.bed", sep="\t", quote=F, row.names=F, col.names=F)
-#' # Extract promoters of all genes (that have gene names). Note only canonical chromosomes are retained.
-#' promoters.all <- gr_promoter_extract(selected = unique(annotables::grch37$symbol))
+#' genes_bed <- gr_gene_extract(selected, id = "symbol")$genes
+#' write.table(genes_bed, "genes.bed", sep="\t", quote=F, row.names=F, col.names=F)
+#' # Extract genomic coordinates of all genes. Note only canonical chromosomes are retained.
+#' genes_all <- gr_gene_extract(selected = unique(annotables::grch37$symbol))
 #' }
 ##
 gr_gene_extract <- function(selected, id = "entrezid") {
@@ -32,7 +32,7 @@ gr_gene_extract <- function(selected, id = "entrezid") {
   # Replace strand
   grch37$strand[ grch37$strand == -1] <- "-"
   grch37$strand[ grch37$strand ==  1] <- "+"
-  # If gene symbols are prvided, convert them to EntrezIDs
+  # If gene symbols are provided, convert them to EntrezIDs
   if (id == "symbol") {
     selected <- unique(grch37$entrez[ grch37$symbol %in% selected & grch37$entrez != "?" ])
   }
