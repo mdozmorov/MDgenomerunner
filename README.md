@@ -118,12 +118,18 @@ When upgrading to the latest X.Y.Z R vestion, it is possible to rename the `/Lib
 6. Get the list of R packages you need to install from the previous installation, `comm -13 <(find $d1 -type d -maxdepth 1 -exec basename {} \; | sort) <(find $d2 -type d -maxdepth 1 -exec basename {} \; | sort) > ~/Desktop/R_packages_to_upgrade.txt`
 7. Use the `R_packages_to_upgrade.txt` list to install necessary R packages into the fresh R/Bioconductor installation. The majority of them are dependencies, so use intelligence to install what you need.
 
-source("https://bioconductor.org/biocLite.R")
+	```{r}
+	source("https://bioconductor.org/biocLite.R")
 
-library(BiocInstaller)
+	library(BiocInstaller)
 
-biocLite("ChIPseeker", "clusterProfiler", "org.Hs.eg.db", "Rgraphviz", "pathview", "genefilter", "Category", "edgeR")
+	biocLite("ChIPseeker", "clusterProfiler", "org.Hs.eg.db", "Rgraphviz", "pathview", "genefilter", "Category", "edgeR", "sva", "ReactomePA", "GOstats", "KEGG.db", "methylumi", "lumi", "wateRmelon", "betareg", "IlluminaHumanMethylationEPICanno.ilm10b2.hg19", "hgu133a.db", "hgu133a2.db", "impute", "sscore")
 
-install.packages(c("TCGA2STAT", "pander", "xlsx", "ggrepel", "shiny", "shinyBS", "devtools", "roxygen2", "caret", "kernlab", "pROC"))
+	install.packages(c("TCGA2STAT", "pander", "xlsx", "ggrepel", "shiny", "shinyBS", "devtools", "roxygen2", "caret", "kernlab", "pROC", "openxlsx", "XLConnect", "pheatmap"))
 
-devtools::install_github("mdozmorov/annotables")
+	devtools::install_github("mdozmorov/annotables")
+
+	install_github('ramnathv/slidify')
+	install_github('ramnathv/slidifyLibraries')
+	```
+
