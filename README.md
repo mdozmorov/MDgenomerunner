@@ -63,6 +63,10 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
 
 # Misc notes
 
+### Global settings
+
+`options(stringsAsFactors = FALSE)` - place at the beginning of R code
+
 ### YAML header
 
 [R Markdown v2 formatting options](http://rmarkdown.rstudio.com/html_document_format.html#overview)
@@ -76,7 +80,6 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
 	date: "`r Sys.Date()`"
 	author: "Author's Name"
 	---
-
 
 ### Rmd header
 
@@ -125,7 +128,9 @@ When upgrading to the latest X.Y.Z R vestion, it is possible to rename the `/Lib
 
 	biocLite("ChIPseeker", "clusterProfiler", "org.Hs.eg.db", "Rgraphviz", "pathview", "genefilter", "Category", "edgeR", "sva", "ReactomePA", "GOstats", "KEGG.db", "methylumi", "lumi", "wateRmelon", "betareg", "IlluminaHumanMethylationEPICanno.ilm10b2.hg19", "hgu133a.db", "hgu133a2.db", "impute", "sscore")
 
-	install.packages(c("TCGA2STAT", "pander", "xlsx", "ggrepel", "shiny", "shinyBS", "devtools", "roxygen2", "caret", "kernlab", "pROC", "openxlsx", "XLConnect", "pheatmap"))
+	biocLite('CellMix', siteRepos = 'http://web.cbio.uct.ac.za/~renaud/CRAN', type='both')
+
+	install.packages(c("TCGA2STAT", "pander", "xlsx", "ggrepel", "shiny", "shinyBS", "devtools", "roxygen2", "caret", "kernlab", "pROC", "openxlsx", "XLConnect", "pheatmap", "scatterplot3d"))
 
 	devtools::install_github("mdozmorov/annotables")
 
