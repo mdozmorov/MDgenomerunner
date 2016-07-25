@@ -90,6 +90,8 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
 	library(pander)
 	panderOptions('table.split.table', Inf)
 	set.seed(1)
+	library(dplyr)
+	options(stringsAsFactors = FALSE)
 	```
 
 ### Rmd footer
@@ -126,11 +128,11 @@ When upgrading to the latest X.Y.Z R vestion, it is possible to rename the `/Lib
 
 	library(BiocInstaller)
 
-	biocLite("ChIPseeker", "clusterProfiler", "org.Hs.eg.db", "Rgraphviz", "pathview", "genefilter", "Category", "edgeR", "sva", "ReactomePA", "GOstats", "KEGG.db", "methylumi", "lumi", "wateRmelon", "betareg", "IlluminaHumanMethylationEPICanno.ilm10b2.hg19", "hgu133a.db", "hgu133a2.db", "impute", "sscore")
+	biocLite(c("ChIPseeker", "clusterProfiler", "org.Hs.eg.db", "Rgraphviz", "pathview", "genefilter", "Category", "edgeR", "sva", "ReactomePA", "GOstats", "KEGG.db", "methylumi", "lumi", "wateRmelon", "betareg", "IlluminaHumanMethylationEPICanno.ilm10b2.hg19", "hgu133a.db", "hgu133a2.db", "impute", "sscore"))
 
 	biocLite('CellMix', siteRepos = 'http://web.cbio.uct.ac.za/~renaud/CRAN', type='both')
 
-	install.packages(c("TCGA2STAT", "pander", "xlsx", "ggrepel", "shiny", "shinyBS", "devtools", "roxygen2", "caret", "kernlab", "pROC", "openxlsx", "XLConnect", "pheatmap", "scatterplot3d"))
+	install.packages(c("TCGA2STAT", "pander", "xlsx", "ggrepel", "shiny", "shinyBS", "devtools", "roxygen2", "caret", "kernlab", "pROC", "openxlsx", "XLConnect", "pheatmap", "scatterplot3d", "tsne", "Rtsne"))
 
 	devtools::install_github("mdozmorov/annotables")
 
