@@ -128,12 +128,12 @@ When upgrading to the latest X.Y.Z R vestion, it is possible to rename the `/Lib
 
 	library(BiocInstaller)
 
-	biocLite(c("ChIPseeker", "clusterProfiler", "org.Hs.eg.db", "Rgraphviz", "pathview", "genefilter", "Category", "edgeR", "sva", "ReactomePA", "GOstats", "KEGG.db", "methylumi", "lumi", "wateRmelon", "betareg", "IlluminaHumanMethylationEPICanno.ilm10b2.hg19", "hgu133a.db", "hgu133a2.db", "impute", "sscore", "snpStats", "bladderbatch", "simpleaffy", "fpc", "GEOquery", "e1071", "pathview"))
+	biocLite(c("ChIPseeker", "clusterProfiler", "org.Hs.eg.db", "Rgraphviz", "pathview", "genefilter", "Category", "edgeR", "sva", "ReactomePA", "GOstats", "KEGG.db", "methylumi", "lumi", "wateRmelon", "betareg", "IlluminaHumanMethylationEPICanno.ilm10b2.hg19", "hgu133a.db", "hgu133a2.db", "impute", "sscore", "snpStats", "bladderbatch", "simpleaffy", "fpc", "GEOquery", "e1071", "pathview", "biclust", "eisa", "ExpressionView", "samr", "WGCNA"))
 
 	biocLite('CellMix', siteRepos = 'http://web.cbio.uct.ac.za/~renaud/CRAN', type='both')
 
 	# brew install openssl
-	install.packages(c("devtools", "TCGA2STAT", "pander", "xlsx", "ggrepel", "shiny", "shinyBS", "devtools", "roxygen2", "caret", "kernlab", "pROC", "openxlsx", "XLConnect", "pheatmap", "scatterplot3d", "tsne", "Rtsne", "DT", "pvclust", "Hmisc", "dynamicTreeCut", "apcluster", "rgl"))
+	install.packages(c("devtools", "TCGA2STAT", "pander", "xlsx", "ggrepel", "shiny", "shinyBS", "devtools", "roxygen2", "caret", "kernlab", "pROC", "openxlsx", "XLConnect", "pheatmap", "scatterplot3d", "tsne", "Rtsne", "DT", "pvclust", "Hmisc", "dynamicTreeCut", "apcluster", "rgl", "calibrate"))
 
 	devtools::install_github("mdozmorov/MDmisc")
 	devtools::install_github("mdozmorov/annotables")
