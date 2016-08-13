@@ -20,24 +20,41 @@
 #' 
 #' \dontrun{
 #' # Analysis of genes associated with asperger syndrome
-#' res <- gene_enrichment(selected=c("100188800", "10849", "115727", "2272", "26059", "27185", "359778", "414", "4204", "431710", "431711", "449015", "4842", "4843", "50863", "6532", "79811", "80896", "831", "85358"), id="entrezid", organism = "Hs", use="GO", ont="MF")
-#' res <- gene_enrichment(selected=c("DISC1", "ASPG4", "ASPG1", "ASPG2", "SLC6A4", "ASPG3", "FRAXE", "FRAXA", "FHIT", "NTM", "SLTM", "RASGRP4", "NOS2", "NOS1", "SHANK3", "DISC2", "TSNAX", "OXTR", "ARSD"), id="symbol", organism = "Hs", use="KEGG", fileName="results.txt")
+#' genes <- c("100188800", "10849", "115727", "2272", "26059", "27185", "359778", "414", "4204", "431710", "431711", "449015", "4842", "4843", "50863", "6532", "79811", "80896", "831", "85358")
+#' res <- gene_enrichment(selected = genes, id = "entrezid", organism = "Hs", use = "GO", ont = "MF")
+#' genes <- c("DISC1", "ASPG4", "ASPG1", "ASPG2", "SLC6A4", "ASPG3", "FRAXE", "FRAXA", "FHIT", "NTM", "SLTM", "RASGRP4", "NOS2", "NOS1", "SHANK3", "DISC2", "TSNAX", "OXTR", "ARSD")
+#' res <- gene_enrichment(selected = genes, id = "symbol", organism = "Hs", use = "KEGG", fileName = "results.txt")
 #' 
-#' # A wrapper function to perform all functional enrichment analyses. The 'fileName' should have 'xlsx' extension
-#' all.enrichment.analyses <- function(genes, fileName, id="symbol") {
-#'   # Gene ontology, molecular function
-#'   res <- gene_enrichment(selected = genes, id=id, organism = "Hs", use="GO", ont="MF")
-#'   write.xlsx(res, fileName, sheetName = "GO-MF", row.names=FALSE, append=TRUE)
-#'   # Gene ontology, biological process 
-#'   res <- gene_enrichment(selected = genes, id=id, organism = "Hs", use="GO", ont="BP")
-#'   write.xlsx(res, fileName, sheetName = "GO-BP", row.names=FALSE, append=TRUE)
-#'   # Gene ontology, cellular component
-#'   res <- gene_enrichment(selected = genes, id=id, organism = "Hs", use="GO", ont="CC")
-#'   write.xlsx(res, fileName, sheetName = "GO-CC", row.names=FALSE, append=TRUE)
-#'   # KEGG canonical pathways
-#'   res <- gene_enrichment(selected = genes, id=id, organism = "Hs", use="KEGG")
-#'   write.xlsx(res, fileName, sheetName = "KEGG", row.names=FALSE, append=TRUE)
+#' # A wrapper function to perform all functional enrichment analyses.
+#' # Helper function to save non-empty results
+#' save_res <- function(res, fileName = fileName, wb = wb, sheetName = "KEGG") {
+#'   if (nrow(res) > 0) {
+#'     openxlsx::addWorksheet(wb = wb, sheetName = sheetName)
+#'     openxlsx::writeData(wb, res, sheet = sheetName)
+#'     openxlsx::saveWorkbook(wb, fileName, overwrite = TRUE)
+#'   }
 #' }
+#' # Create (or, load)  Excel file
+#' fileName <- "fileName.xlsx"
+#' wb <- openxlsx::createWorkbook(fileName) # openxlsx::loadWorkbook(fileName)
+#' # Gene ontology, molecular function
+#' res <- gene_enrichment(selected = genes, id="symbol", organism = "Hs", use="GO", ont="MF")
+#' save_res(res, fileName, wb = wb, sheetName = "GOMF")
+#' # Gene ontology, biological process 
+#' res <- gene_enrichment(selected = genes, id="symbol", organism = "Hs", use="GO", ont="BP")
+#' save_res(res, fileName, wb = wb, sheetName = "GOBP")
+#' # Gene ontology, cellular component
+#' res <- gene_enrichment(selected = genes, id="symbol", organism = "Hs", use="GO", ont="CC")
+#' save_res(res, fileName, wb = wb, sheetName = "GOCC")
+#' # KEGG canonical pathways
+#' res <- gene_enrichment(selected = genes, id="symbol", organism = "Hs", use="KEGG")
+#' save_res(res, fileName, wb = wb, sheetName = "KEGG")
+#' 
+#' # Legend for GO/KEGG functional enrichment results: "ID" - unique identifier of functional category; 
+#' # "Pvalue" - non-adjusted p-value; "OddsRatio" - enrichment odds ratio; "ExpCount" - number of genes 
+#' # expected to be selected in a category; "Count" - number of genes observed in the current list; 
+#' # "Size" - total number of genes in a category; "Term" - category description; "p.adj" - false  
+#' # discovery rate; "SYMBOL", "ENTREZ" - genes observed in the current list as annotated with a category 
 #' 
 #' # To perform Reactome and Disease Ontology enrichment analyses, use the corresponding packages
 #' library("ReactomePA")
