@@ -19,7 +19,9 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
 
 # Misc functions
 
-`gene_enrichment` - gene set enrichment analysis on a list of gene names or EntrezIDs. Currently, Homo Sapiens only.
+`gene_filter` - filters expression matrix by two genefilter criteria
+
+`gene_enrichment` - gene set enrichment analysis on a list of gene names or EntrezIDs. Currently, Homo Sapiens and Mus Musculus only.
 
 `unembed` - extracts multiple values embedded in rows. E.g. one row with ABC11 /// BCD22 variable will be split into two separate entries, creating two ABC11 and BCD22 rows with other values equal to the original row.
 

@@ -26,7 +26,8 @@ Suggests:
     reshape2,
     TCGA2STAT,
     biomaRt,
-    stringr
+    stringr,
+    genefilter
 Imports:
     dplyr,
     shiny,
