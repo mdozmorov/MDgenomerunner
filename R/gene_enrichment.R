@@ -8,8 +8,12 @@
 #' Must be the same ID type as the 'selected' genes.
 #' @param id what type of ID is provided. "symbol" (e.g., "BRCA1", default) or "entrezid" (e.g., "672").
 #' @param organism organism ID. "Hs" (homo sapiens, default), or "Mm" (mus musculus)
-#' @param use which analysis to perform. "GO" (default) or "KEGG".
-#' @param ont if "GO", which ontology namespace to use. "MF", "BP" (default), of "CC". Not used in "KEGG" analysis
+#' @param use which analysis to perform. "GO" (default), "KEGG", or "msigdf" for use with https://github.com/stephenturner/msigdf.
+#' @param ont if "GO", which ontology namespace to use: "MF", "BP" (default), of "CC". Not used in "KEGG" analysis. 
+#' If "msigdf", should be one of "c1": positional gene sets, "c2": curated gene sets, 
+#' "c3": motif gene sets, "c4": computational gene sets, "c5": GO gene sets, 
+#' "c6": oncogenic signatures, "c7": immunologic signatures, "hallmark": hallmark gene sets.
+#' See http://software.broadinstitute.org/gsea/msigdb/ for more details.
 #' @param pval non-corrected p-value cutoff to perform the enrichment analysis. Default - 0.05.
 #' @param p.adj FDR-corrected p-value cutoff to report the enrichment analysis results. Default - 0.1.
 #' @param fileName save the results into a fileName. Default - none
@@ -24,6 +28,8 @@
 #' res <- gene_enrichment(selected = genes, id = "entrezid", organism = "Hs", use = "GO", ont = "MF")
 #' genes <- c("DISC1", "ASPG4", "ASPG1", "ASPG2", "SLC6A4", "ASPG3", "FRAXE", "FRAXA", "FHIT", "NTM", "SLTM", "RASGRP4", "NOS2", "NOS1", "SHANK3", "DISC2", "TSNAX", "OXTR", "ARSD")
 #' res <- gene_enrichment(selected = genes, id = "symbol", organism = "Hs", use = "KEGG", fileName = "results.txt")
+#' genes <- c("4794", "25816", "9516", "19", "3601", "9308", "10950", "9120", "50486", "6446", "6890", "4609", "1435", "4170", "3383", "2354", "3164", "8870", "22822", "1846", "80176", "9314", "3606", "604", "7280", "8613", "3575", "10611", "6347", "80149", "150094", "595", "3659", "57007", "7128", "329", "1052", "2152", "1844", "1958", "3553", "10769", "2526", "4084", "597", "1960", "9334", "1847", "23135", "56937", "3326", "619279", "105371473", "9245", "100271380", "54541", "9666", "102724919", "105377252", "347252", "100873354", "6987", "386665", "84912", "105372408", "643406", "105372132", "105372270", "105371183", "574037", "102725016", "100500920", "101928274", "46", "693213", "55751", "360001", "100421721", "283693", "8411", "65095", "100873516", "408187", "105370802", "7544", "497048", "106481539", "105377107", "105376710", "27092", "9874", "100616418", "254783", "100653365", "152485", "28951", "105370436", "6902", "651258", "100129424")
+#' res <- gene_enrichment(selected = genes, id = "entrezid", use = "msigdf", ont = "hallmark")
 #' 
 #' # A wrapper function to perform all functional enrichment analyses.
 #' # Helper function to save non-empty results
@@ -118,38 +124,110 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol", organi
   }
   
   # Prepare parameters for the enrichment analysis
-  if (use == "GO") {
-    params <- new("GOHyperGParams", geneIds = selected, universeGeneIds = all.universe, 
-                  ontology = ont, pvalueCutoff = pval, conditional = F, testDirection = "over", 
-                  annotation = paste0("org.", organism, ".eg.db"))
-    # GO-gene summarization
-    genes.annot <- split(geneList.annot[!duplicated(geneList.annot[, 1:3]), 1:3], 
-                         geneList.annot$GOALL[!duplicated(geneList.annot[,1:3])])
-    genes.annot <- lapply(genes.annot, function(x) data.frame(ID = x$GOALL[1], 
-                                                              SYMBOL = paste(x$SYMBOL, collapse = ","), 
-                                                              ENTREZID = paste(x$ENTREZID, collapse = ","), stringsAsFactors = FALSE))
-    genes.annot <- do.call("rbind", genes.annot)  # resing data frame
-  } else {
-    params <- new("KEGGHyperGParams", geneIds = selected, universeGeneIds = all.universe, 
-                  pvalueCutoff = pval, testDirection = "over", annotation = paste0("org.", organism, ".eg.db"))
-    # Same for KEGG-gene summarization
-    genes.annot <- split(geneList.annot[!duplicated(geneList.annot[, c(1, 2, 6)]), c(1, 2, 6)], 
-                         geneList.annot$PATH[!duplicated(geneList.annot[, c(1, 2, 6)])])
-    genes.annot <- lapply(genes.annot, function(x) data.frame(ID = x$PATH[1], 
-                                                              SYMBOL = paste(x$SYMBOL, collapse = ","), 
-                                                              ENTREZID = paste(x$ENTREZID, collapse = ","), stringsAsFactors = FALSE))
-    genes.annot <- do.call("rbind", genes.annot)  # resing data frame
+  if (use == "GO" | use == "KEGG") {
+    if (use == "GO") {
+      params <- new("GOHyperGParams", geneIds = selected, universeGeneIds = all.universe, 
+                    ontology = ont, pvalueCutoff = pval, conditional = F, testDirection = "over", 
+                    annotation = paste0("org.", organism, ".eg.db"))
+      # GO-gene summarization
+      genes.annot <- split(geneList.annot[!duplicated(geneList.annot[, 1:3]), 1:3], 
+                           geneList.annot$GOALL[!duplicated(geneList.annot[,1:3])])
+      genes.annot <- lapply(genes.annot, function(x) data.frame(ID = x$GOALL[1], 
+                                                                SYMBOL = paste(x$SYMBOL, collapse = ","), 
+                                                                ENTREZID = paste(x$ENTREZID, collapse = ","), stringsAsFactors = FALSE))
+      genes.annot <- do.call("rbind", genes.annot)  # resing data frame
+    }
+    if (use == "KEGG") {
+      params <- new("KEGGHyperGParams", geneIds = selected, universeGeneIds = all.universe, 
+                    pvalueCutoff = pval, testDirection = "over", annotation = paste0("org.", organism, ".eg.db"))
+      # Same for KEGG-gene summarization
+      genes.annot <- split(geneList.annot[!duplicated(geneList.annot[, c(1, 2, 6)]), c(1, 2, 6)], 
+                           geneList.annot$PATH[!duplicated(geneList.annot[, c(1, 2, 6)])])
+      genes.annot <- lapply(genes.annot, function(x) data.frame(ID = x$PATH[1], 
+                                                                SYMBOL = paste(x$SYMBOL, collapse = ","), 
+                                                                ENTREZID = paste(x$ENTREZID, collapse = ","), stringsAsFactors = FALSE))
+      genes.annot <- do.call("rbind", genes.annot)  # resing data frame
+    }
+    # Common part of the enrichment analysis
+    hgOver <- GOstats::hyperGTest(params)
+    res <- GOstats::summary(hgOver)
+    res <- cbind(res, p.adjust(res$Pvalue, method = "BH"))  # Append corrected for multiple testing p-value
+    colnames(res)[length(colnames(res))] <- "p.adj"
+    res <- res[res$p.adj < p.adj, ]  # Subset the ress keeping FDR at 10%
+    colnames(res)[1] <- "ID"  # Set column name to merge by to ID, instead of GO- or KEGG specific
+    # If genes.annot is empty, skip joining
+    if (!is.null(genes.annot)) 
+      res <- left_join(res, genes.annot, by = c("ID" = "ID"))
   }
-  # Enrichment analysis
-  hgOver <- GOstats::hyperGTest(params)
-  res <- GOstats::summary(hgOver)
-  res <- cbind(res, p.adjust(res$Pvalue, method = "BH"))  # Append corrected for multiple testing p-value
-  colnames(res)[length(colnames(res))] <- "p.adj"
-  res <- res[res$p.adj < p.adj, ]  # Subset the ress keeping FDR at 10%
-  colnames(res)[1] <- "ID"  # Set column name to merge by to ID, instead of GO- or KEGG specific
-  # If genes.annot is empty, skip joining
-  if (!is.null(genes.annot)) 
-    res <- left_join(res, genes.annot, by = c("ID" = "ID"))
+  
+  if (use == "msigdf") {
+    # Depending on the organism, subsed msigdf by collection
+    if (organism == "Hs") {
+      msigdf.subset <- msigdf::msigdf.human %>% filter(collection == ont)
+    } else if (organism == "Mm") {
+      msigdf.subset <- msigdf::msigdf.mouse %>% filter(collection == ont)
+    }
+    genesets <- unique(msigdf.subset$geneset) # All genesets in a subset
+    msigdf.total <- length(genesets) # Total number of genesets
+    # Variables to populate the resulting data frame
+    msigdf.ID         <- rep(ont, msigdf.total)                           # Pre-populate ID column
+    msigdf.Pvalue     <- vector(mode = "numeric", length = msigdf.total)   # Vector for p-values
+    msigdf.OddsRatio  <- vector(mode = "numeric", length = msigdf.total)   # Vector for odds ratios
+    msigdf.ExpCount   <- vector(mode = "numeric", length = msigdf.total)   # Vector for expected counts
+    msigdf.Count      <- vector(mode = "numeric", length = msigdf.total)   # Vector for observed counts
+    msigdf.Size       <- vector(mode = "numeric", length = msigdf.total)   # Vector for the total size of a gene set
+    msigdf.Term       <- vector(mode = "character", length = msigdf.total) # Vector for the name of a gene set
+    msigdf.SYMBOL     <- vector(mode = "list", length = msigdf.total)      # Vector for gene symbols in GO
+    msigdf.ENTREZID   <- vector(mode = "list", length = msigdf.total)      # Vector for EntrezIDs in GO
+    # Pieces for Fisher's exact test
+    genes.total <- length(all.universe) # Total number of genes
+    degs.total <- length(selected) # Total number of DEGs
+    # Enrichment for each 
+    for (i in 1:msigdf.total) {
+      genes_in_gs <- msigdf.subset %>% dplyr::filter(geneset == genesets[i]) # Genes in a geneset
+      annot.total <- length(genes_in_gs$entrez)                              # Total annotated
+      annot.degs  <- sum(selected %in% genes_in_gs$entrez)                   # DEGs annotated
+      #
+      #         |  annot yes    |   annot no  |
+      #------------------------------------------------
+      # DEG yes |  annot.degs   |             | degs.total
+      #------------------------------------------------
+      # DEG no  |               |             |
+      #------------------------------------------------
+      #         |  annot.total  |             | genes.total
+      #
+      cont2x2 <- matrix(data = 0, nrow = 2, ncol = 2) # 2x2 contingency table
+      cont2x2[1, 1] <- annot.degs                     # DEGs - yes, annot - yes
+      cont2x2[1, 2] <- degs.total - annot.degs        # DEGs - yes, annot - no
+      cont2x2[2, 1] <- annot.total - annot.degs       # DEGs - no, annot - yes
+      cont2x2[2, 2] <- (genes.total - annot.total) - (degs.total - annot.degs) # DEGs - no, annot - no
+      # sum(cont2x2) == genes.total # Sanity check
+      msigdf.test <- fisher.test(cont2x2)             # Actual test
+      # Check if conf. interval overlaps 1
+      if(msigdf.test$conf.int[1] < 1 & msigdf.test$conf.int[2] > 1) {
+        msigdf.Pvalue[i] <- 1 # If overlaps, nothing is significant
+      } else {
+        msigdf.Pvalue[i] <- msigdf.test$p.value
+      }
+      # Save additional pieces
+      msigdf.OddsRatio[i] <- msigdf.test$estimate
+      msigdf.ExpCount[i]  <- (annot.total * degs.total) / genes.total
+      msigdf.Count[i]     <- annot.degs
+      msigdf.Size[i]      <- annot.total
+      msigdf.Term[i]      <- genesets[i]
+      # Save annotated DEGs
+      msigdf.ENTREZID[i] <- list(genes_in_gs$entrez[ selected %in% genes_in_gs$entrez])
+      names(msigdf.ENTREZID)[i] <- genesets[i]
+    }
+    
+    # Summarize significant results
+    ind <- which(msigdf.Pvalue < 1) # Indexes of significant results
+    for (i in ind){
+      msigdf.SYMBOL[i] <- paste(clusterProfiler::bitr(msigdf.ENTREZID[[i]], fromType = "ENTREZID", toType = "SYMBOL", OrgDb = paste0("org.", organism, ".eg.db"))[, 2], collapse = ";")
+      msigdf.ENTREZID[i] <- paste(msigdf.ENTREZID[[i]], collapse="; ")
+    }
+    res <- data.frame(ID = msigdf.ID[ind], Pvalue = msigdf.Pvalue[ind], OddsRatio = msigdf.OddsRatio[ind], ExpCount = msigdf.ExpCount[ind], Count = msigdf.Count[ind], Size = msigdf.Size[ind], Term = msigdf.Term[ind], p.adj = p.adjust(msigdf.Pvalue)[ind], SYMBOL = unlist(msigdf.SYMBOL[ind]), ENTREZID = unlist(msigdf.ENTREZID[ind]))
+  }
   # Sort by p.adj
   res <- res[ order(res$p.adj, decreasing = FALSE), ]
   # Save the ress

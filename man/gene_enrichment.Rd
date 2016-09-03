@@ -18,9 +18,13 @@ Must be the same ID type as the 'selected' genes.}
 
 \item{organism}{organism ID. "Hs" (homo sapiens, default), or "Mm" (mus musculus)}
 
-\item{use}{which analysis to perform. "GO" (default) or "KEGG".}
+\item{use}{which analysis to perform. "GO" (default), "KEGG", or "msigdf" for use with https://github.com/stephenturner/msigdf.}
 
-\item{ont}{if "GO", which ontology namespace to use. "MF", "BP" (default), of "CC". Not used in "KEGG" analysis}
+\item{ont}{if "GO", which ontology namespace to use: "MF", "BP" (default), of "CC". Not used in "KEGG" analysis. 
+If "msigdf", should be one of "c1": positional gene sets, "c2": curated gene sets, 
+"c3": motif gene sets, "c4": computational gene sets, "c5": GO gene sets, 
+"c6": oncogenic signatures, "c7": immunologic signatures, "hallmark": hallmark gene sets.
+See http://software.broadinstitute.org/gsea/msigdb/ for more details.}
 
 \item{pval}{non-corrected p-value cutoff to perform the enrichment analysis. Default - 0.05.}
 
@@ -47,6 +51,8 @@ genes <- c("100188800", "10849", "115727", "2272", "26059", "27185", "359778", "
 res <- gene_enrichment(selected = genes, id = "entrezid", organism = "Hs", use = "GO", ont = "MF")
 genes <- c("DISC1", "ASPG4", "ASPG1", "ASPG2", "SLC6A4", "ASPG3", "FRAXE", "FRAXA", "FHIT", "NTM", "SLTM", "RASGRP4", "NOS2", "NOS1", "SHANK3", "DISC2", "TSNAX", "OXTR", "ARSD")
 res <- gene_enrichment(selected = genes, id = "symbol", organism = "Hs", use = "KEGG", fileName = "results.txt")
+genes <- c("4794", "25816", "9516", "19", "3601", "9308", "10950", "9120", "50486", "6446", "6890", "4609", "1435", "4170", "3383", "2354", "3164", "8870", "22822", "1846", "80176", "9314", "3606", "604", "7280", "8613", "3575", "10611", "6347", "80149", "150094", "595", "3659", "57007", "7128", "329", "1052", "2152", "1844", "1958", "3553", "10769", "2526", "4084", "597", "1960", "9334", "1847", "23135", "56937", "3326", "619279", "105371473", "9245", "100271380", "54541", "9666", "102724919", "105377252", "347252", "100873354", "6987", "386665", "84912", "105372408", "643406", "105372132", "105372270", "105371183", "574037", "102725016", "100500920", "101928274", "46", "693213", "55751", "360001", "100421721", "283693", "8411", "65095", "100873516", "408187", "105370802", "7544", "497048", "106481539", "105377107", "105376710", "27092", "9874", "100616418", "254783", "100653365", "152485", "28951", "105370436", "6902", "651258", "100129424")
+res <- gene_enrichment(selected = genes, id = "entrezid", use = "msigdf", ont = "hallmark")
 
 # A wrapper function to perform all functional enrichment analyses.
 # Helper function to save non-empty results

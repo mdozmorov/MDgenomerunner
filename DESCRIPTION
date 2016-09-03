@@ -27,7 +27,9 @@ Suggests:
     TCGA2STAT,
     biomaRt,
     stringr,
-    genefilter
+    genefilter,
+    clusterProfiler,
+    msigdf
 Imports:
     dplyr,
     shiny,
