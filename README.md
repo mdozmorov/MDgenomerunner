@@ -9,6 +9,8 @@ To install:
 library(devtools)
 install_github('mdozmorov/MDmisc')
 library(MDmisc)
+library(org.Hs.eg.db)
+library(dplyr)
 ```
 
 Or, from command line:
