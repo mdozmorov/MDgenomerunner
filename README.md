@@ -137,7 +137,7 @@ When upgrading to the latest X.Y.Z R vestion, it is possible to rename the `/Lib
 	biocLite('CellMix', siteRepos = 'http://web.cbio.uct.ac.za/~renaud/CRAN', type='both')
 
 	# brew install openssl
-	install.packages(c("devtools", "TCGA2STAT", "pander", "xlsx", "ggrepel", "shiny", "shinyBS", "devtools", "roxygen2", "caret", "kernlab", "pROC", "openxlsx", "XLConnect", "pheatmap", "scatterplot3d", "tsne", "Rtsne", "DT", "pvclust", "Hmisc", "dynamicTreeCut", "apcluster", "rgl", "calibrate", "plotly"))
+	install.packages(c("devtools", "TCGA2STAT", "pander", "xlsx", "ggrepel", "shiny", "shinyBS", "devtools", "roxygen2", "caret", "kernlab", "pROC", "openxlsx", "XLConnect", "pheatmap", "scatterplot3d", "tsne", "Rtsne", "DT", "pvclust", "Hmisc", "dynamicTreeCut", "apcluster", "rgl", "calibrate", "plotly", "heatmaply", "survminer", "profvis"))
 
 	devtools::install_github("mdozmorov/MDmisc")
 	devtools::install_github("mdozmorov/annotables")
