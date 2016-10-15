@@ -7,7 +7,7 @@
 #' @param all.universe a character vector of all genes, to be used for estimating random enrichments.
 #' Must be the same ID type as the 'selected' genes.
 #' @param id what type of ID is provided. "symbol" (e.g., "BRCA1", default) or "entrezid" (e.g., "672").
-#' @param organism organism ID. "Hs" (homo sapiens, default), or "Mm" (mus musculus)
+#' @param organism organism ID. "Hs" (homo sapiens, default), or "Mm" (mus musculus), or "Rn" (rattus norvegicus)
 #' @param use which analysis to perform. "GO" (default), "KEGG", or "msigdf" for use with https://github.com/stephenturner/msigdf.
 #' @param ont if "GO", which ontology namespace to use: "MF", "BP" (default), of "CC". Not used in "KEGG" analysis. 
 #' If "msigdf", should be one of "c1": positional gene sets, "c2": curated gene sets, 
@@ -79,12 +79,10 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol", organi
   # Precaution against misformatting of the supplied genes
   selected <- as.vector(sapply(selected, as.character))
   # Preparing environment for remapping Gene Symbols to Entrez IDs
-  if (organism == "Hs"){
-    x <- org.Hs.eg.db::org.Hs.egSYMBOL2EG
-  } else if (organism == "Mm") {
-    x <- org.Mm.eg.db::org.Mm.egSYMBOL2EG
+  if (organism == "Hs" | organism == "Mm" | organism == "Rn"){
+    x <- eval(parse(text = paste0("org.", organism, ".eg.db::org.", organism, ".egSYMBOL2EG")))
   } else {
-    return("Wrong organism id type. Use 'Hs' or 'Mm'")
+    return("Wrong organism id type. Use 'Hs', 'Mm', or 'Rn'")
   }
   # Get entrez gene identifiers that are mapped to a gene symbol
   mapped_genes <- AnnotationDbi::mappedkeys(x)
@@ -117,12 +115,8 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol", organi
   all.universe <- unique(c(selected, all.universe)) %>% as.numeric
   all.universe <- all.universe[!is.na(all.universe)]
   # Get GO-gene annotations
-  if (organism == "Hs") {
-    geneList.annot <- AnnotationDbi::select(org.Hs.eg.db, keys = as.character(selected), columns = c("ENTREZID", "SYMBOL", "GOALL", "PATH"), keytype = "ENTREZID")
-  } else {
-    geneList.annot <- AnnotationDbi::select(org.Mm.eg.db, keys = as.character(selected), columns = c("ENTREZID", "SYMBOL", "GOALL", "PATH"), keytype = "ENTREZID")
-  }
-  
+  geneList.annot <- eval(parse(text = paste0("AnnotationDbi::select(org.", organism, ".eg.db, keys = as.character(selected), columns = c(\"ENTREZID\", \"SYMBOL\", \"GOALL\", \"PATH\"), keytype = \"ENTREZID\")")))
+
   # Prepare parameters for the enrichment analysis
   if (use == "GO" | use == "KEGG") {
     if (use == "GO") {
