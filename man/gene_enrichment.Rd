@@ -16,7 +16,7 @@ Must be the same ID type as the 'selected' genes.}
 
 \item{id}{what type of ID is provided. "symbol" (e.g., "BRCA1", default) or "entrezid" (e.g., "672").}
 
-\item{organism}{organism ID. "Hs" (homo sapiens, default), or "Mm" (mus musculus)}
+\item{organism}{organism ID. "Hs" (homo sapiens, default), or "Mm" (mus musculus), or "Rn" (rattus norvegicus)}
 
 \item{use}{which analysis to perform. "GO" (default), "KEGG", or "msigdf" for use with https://github.com/stephenturner/msigdf.}
 
@@ -92,6 +92,17 @@ res <- enrichPathway(gene = entrez.genes, universe = all.entrez, organism = "hum
 write.xlsx(summary(res), fileName, sheetName = "Reactome",row.names=FALSE,  append = TRUE)
 res <- enrichDO(gene = entrez.genes, universe = all.entrez, ont = "DO", pAdjustMethod = "none", pvalueCutoff = 0.1, qvalueCutoff = 0.2, readable = TRUE)
 write.xlsx(summary(res), fileName, sheetName = "DiseaseOntology",row.names=FALSE,  append = TRUE)
+}
+
+# To visualize selected pathways, colored by fold change
+library(pathview)
+degs <- openxlsx::read.xlsx(fileName, cols = c(1, 2)) # Adjust columns with gene names and fold changes
+degs.genes <- degs$logFC
+names(degs.genes) <- degs$Gene
+# Adjust as needed
+pathways <- c("04066", "04370")
+for (pathway.id in pathways) {
+  pv.out <- pathview(gene.data = degs.genes, pathway.id = pathway.id, species = "hsa", gene.idtype = "SYMBOL", gene.annotpkg = "org.Hs.eg.db", out.suffix = paste(selected_genes, collapse = "-"))
 }
 
 }

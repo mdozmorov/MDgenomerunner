@@ -71,6 +71,17 @@
 #' write.xlsx(summary(res), fileName, sheetName = "DiseaseOntology",row.names=FALSE,  append = TRUE)
 #' }
 #' 
+#' # To visualize selected pathways, colored by fold change
+#' library(pathview)
+#' degs <- openxlsx::read.xlsx(fileName, cols = c(1, 2)) # Adjust columns with gene names and fold changes
+#' degs.genes <- degs$logFC
+#' names(degs.genes) <- degs$Gene
+#' # Adjust as needed
+#' pathways <- c("04066", "04370")
+#' for (pathway.id in pathways) {
+#'   pv.out <- pathview(gene.data = degs.genes, pathway.id = pathway.id, species = "hsa", gene.idtype = "SYMBOL", gene.annotpkg = "org.Hs.eg.db", out.suffix = paste(selected_genes, collapse = "-"))
+#' }
+#' 
 #' @note to visualize the top 10 most significant results, use
 #' \code{if (nrow(res) > 10) { n <-10 } else { n <- nrow(res) }; kable(res[1:n, ])}
 ##
