@@ -7,6 +7,8 @@
 #' @param term what to search. Required. Example: "reproducible research"
 #' @param yearstart starting year to search the term. Required. Default: 1970
 #' @param yearend last year to search the term. Required. Default: 2016
+#' @param normalize whether to normalize term counts by the total number
+#' of published papers per year (returns % of term out of the total). Default - FALSE
 #' @param id what type of ID is provided. "symbol" (e.g., "BRCA1") or "entrezid" (e.g., "672", default and recommended).
 #'
 #' @return a ggplot object, and plot the barplot
@@ -16,7 +18,7 @@
 #' get_pubmed_graph("retraction", yearstart = 2000, yearend = 2016)
 #' }
 ##
-get_pubmed_graph <- function(term, yearstart = 1970, yearend = 2016) {
+get_pubmed_graph <- function(term, yearstart = 1970, yearend = 2016, normalize = FALSE) {
   # http://davetang.org/muse/2013/10/31/querying-pubmed-using-r/
   #In order not to overload the E-utility servers, NCBI recommends that users post no more than three
   #URL requests per second and limit large jobs to either weekends or between 9:00 PM and 5:00 AM
@@ -27,7 +29,13 @@ get_pubmed_graph <- function(term, yearstart = 1970, yearend = 2016) {
   for (i in yearstart:yearend){
     Sys.sleep(1)
     r <- RISmed::EUtilsSummary(term, type='esearch', db='pubmed', mindate=i, maxdate=i)
-    tally[x] <- RISmed::QueryCount(r)
+    if (normalize) {
+      Sys.sleep(1)
+      tot <- RISmed::EUtilsSummary("", type='esearch', db='pubmed', mindate=i, maxdate=i)
+      tally[x] <- ( RISmed::QueryCount(r) / RISmed::QueryCount(tot) ) * 100 # Percent out of the total 
+    } else {
+      tally[x] <- RISmed::QueryCount(r) # Just raw count  
+    }
     x <- x + 1
   }
   
