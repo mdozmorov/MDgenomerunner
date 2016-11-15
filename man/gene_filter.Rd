@@ -25,6 +25,13 @@ A wrapper of two genefilter functions to filter low exprssed and low variability
 }
 \note{
 Example from "Statistics and Data Analysis for Microarrays Using R and Bioconductor" book by Sorin Drăghici, p/ 778
+
+Filtering should be done with caution, 10.1186/1471-2105-11-450.
+}
+\section{TODO}{
+ Implement three separate filtering functions: 1) Signal filtering, removing genes with expression
+at or below defined level, at or more defined proportion; 2) Absolute value of change, max-min difference
+should be larger than a defied threshold; 3) Variance filtering, variance should be larger than a defined threshold
 }
 \examples{
 
