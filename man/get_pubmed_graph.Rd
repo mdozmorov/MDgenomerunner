@@ -15,7 +15,7 @@ get_pubmed_graph(term, yearstart = 1970, yearend = 2016,
 \item{yearend}{last year to search the term. Required. Default: 2016}
 
 \item{normalize}{whether to normalize term counts by the total number
-of published papers per year (returns % of term out of the total). Default - FALSE}
+of published papers per year (returns proportion of the term out of the total). Default - FALSE}
 
 \item{id}{what type of ID is provided. "symbol" (e.g., "BRCA1") or "entrezid" (e.g., "672", default and recommended).}
 }

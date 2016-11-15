@@ -8,7 +8,7 @@
 #' @param yearstart starting year to search the term. Required. Default: 1970
 #' @param yearend last year to search the term. Required. Default: 2016
 #' @param normalize whether to normalize term counts by the total number
-#' of published papers per year (returns % of term out of the total). Default - FALSE
+#' of published papers per year (returns proportion of the term out of the total). Default - FALSE
 #' @param id what type of ID is provided. "symbol" (e.g., "BRCA1") or "entrezid" (e.g., "672", default and recommended).
 #'
 #' @return a ggplot object, and plot the barplot
