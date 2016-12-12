@@ -91,7 +91,7 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
 	```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
 	# Set up the environment
 	library(knitr)
-	opts_chunk$set(cache.path='cache/', fig.path='img/', cache=F, tidy=T, fig.keep='high', echo=F, dpi=100, warnings=F, message=F, comment=NA, warning=F, results='as.is', dev = "pdf") #out.width=700, 
+	opts_chunk$set(cache.path='cache/', fig.path='img/', cache=F, tidy=T, fig.keep='high', echo=F, dpi=100, warnings=F, message=F, comment=NA, warning=F, results='as.is', fig.width = 10, fig.height = 6) #out.width=700, 
 	library(pander)
 	panderOptions('table.split.table', Inf)
 	set.seed(1)
