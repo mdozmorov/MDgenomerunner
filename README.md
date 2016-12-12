@@ -87,7 +87,7 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
 	date: "`r Sys.Date()`"
 	author: "Author's Name"
 	---
-
+	
 	```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
 	# Set up the environment
 	library(knitr)
