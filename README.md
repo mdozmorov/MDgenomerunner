@@ -65,6 +65,8 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
 
 `gr_getV1OddsRatioPvalMatrix` - converts a log file ofthe results obtained with GenomeRunner V1 (standalone) to "matrix_PVAL/OR.txt" files compatible with GenomeRunner V2 (web)
 
+### `sh` folder - Misc scripts and notes for Mac/Linux shell
+
 # Misc notes
 
 ### Global settings
