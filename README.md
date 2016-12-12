@@ -71,7 +71,7 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
 
 `options(stringsAsFactors = FALSE)` - place at the beginning of R code
 
-### YAML header
+### Rmd header
 
 [R Markdown v2 formatting options](http://rmarkdown.rstudio.com/html_document_format.html#overview)
 
@@ -80,17 +80,18 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
 	output:
 	  html_document:
 	    toc: true
-	    theme: united
+	    toc_float: true
+	    # theme: united
+	    theme: cerulean
+	    # number_sections: true
 	date: "`r Sys.Date()`"
 	author: "Author's Name"
 	---
 
-### Rmd header
-
 	```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
 	# Set up the environment
 	library(knitr)
-	opts_chunk$set(cache.path='cache/', fig.path='img/', cache=F, tidy=T, fig.keep='high', echo=F, dpi=100, warnings=F, message=F, comment=NA, warning=F, results='as.is') #out.width=700, 
+	opts_chunk$set(cache.path='cache/', fig.path='img/', cache=F, tidy=T, fig.keep='high', echo=F, dpi=100, warnings=F, message=F, comment=NA, warning=F, results='as.is', dev = "pdf") #out.width=700, 
 	library(pander)
 	panderOptions('table.split.table', Inf)
 	set.seed(1)
