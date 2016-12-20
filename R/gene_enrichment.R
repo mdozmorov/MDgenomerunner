@@ -13,6 +13,7 @@
 #' If "msigdf", should be one of "c1": positional gene sets, "c2": curated gene sets, 
 #' "c3": motif gene sets, "c4": computational gene sets, "c5": GO gene sets, 
 #' "c6": oncogenic signatures, "c7": immunologic signatures, "hallmark": hallmark gene sets.
+#' If "custom", should be "custom"
 #' See http://software.broadinstitute.org/gsea/msigdb/ for more details.
 #' @param pval non-corrected p-value cutoff to perform the enrichment analysis. Default - 0.05.
 #' @param p.adj FDR-corrected p-value cutoff to report the enrichment analysis results. Default - 0.1.
@@ -165,10 +166,14 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol", organi
       res <- left_join(res, genes.annot, by = c("ID" = "ID"))
   }
   
-  if (use == "msigdf") {
+  if (use == "msigdf" | use == "custom") {
     # Depending on the organism, subsed msigdf by collection
     if (organism == "Hs") {
-      msigdf.subset <- msigdf::msigdf.human %>% filter(collection == ont)
+      if (use == "msigdf") {
+        msigdf.subset <- msigdf::msigdf.human %>% filter(collection == ont)
+      } else {
+        msigdf.subset <- msigdf::md.human.custom %>% filter(collection == ont)
+      }
     } else if (organism == "Mm") {
       msigdf.subset <- msigdf::msigdf.mouse %>% filter(collection == ont)
     }

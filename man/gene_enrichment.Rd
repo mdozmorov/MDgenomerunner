@@ -24,6 +24,7 @@ Must be the same ID type as the 'selected' genes.}
 If "msigdf", should be one of "c1": positional gene sets, "c2": curated gene sets, 
 "c3": motif gene sets, "c4": computational gene sets, "c5": GO gene sets, 
 "c6": oncogenic signatures, "c7": immunologic signatures, "hallmark": hallmark gene sets.
+If "custom", should be "custom"
 See http://software.broadinstitute.org/gsea/msigdb/ for more details.}
 
 \item{pval}{non-corrected p-value cutoff to perform the enrichment analysis. Default - 0.05.}
