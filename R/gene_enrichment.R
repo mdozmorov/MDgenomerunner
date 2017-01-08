@@ -233,7 +233,8 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol", organi
     # Summarize significant results
     ind <- which(msigdf.Pvalue < 1) # Indexes of significant results
     for (i in ind){
-      msigdf.SYMBOL[i] <- paste(clusterProfiler::bitr(msigdf.ENTREZID[[i]], fromType = "ENTREZID", toType = "SYMBOL", OrgDb = paste0("org.", organism, ".eg.db"))[, 2], collapse = ";")
+      msigdf.SYMBOL[i] <- paste(annotables::grch38$symbol[annotables::grch38$entrez %in% msigdf.ENTREZID[[i]]], collapse = ";")
+      # paste(clusterProfiler::bitr(msigdf.ENTREZID[[i]], fromType = "ENTREZID", toType = "SYMBOL", OrgDb = paste0("org.", organism, ".eg.db"))[, 2], collapse = ";")
       msigdf.ENTREZID[i] <- paste(msigdf.ENTREZID[[i]], collapse="; ")
     }
     res <- data.frame(ID = msigdf.ID[ind], Pvalue = msigdf.Pvalue[ind], OddsRatio = msigdf.OddsRatio[ind], ExpCount = msigdf.ExpCount[ind], Count = msigdf.Count[ind], Size = msigdf.Size[ind], Term = msigdf.Term[ind], p.adj = p.adjust(msigdf.Pvalue)[ind], SYMBOL = unlist(msigdf.SYMBOL[ind]), ENTREZID = unlist(msigdf.ENTREZID[ind]))
