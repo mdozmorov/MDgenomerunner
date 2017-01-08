@@ -37,6 +37,8 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
 
 `t.test2` - t-test from a summary statistics
 
+`round_df` - round all columns with numerical values in a data frame
+
 ### GenomeRunner-specific main functions
 
 `gr_load_data` - loads enrichment analysis matrix(es) and remove non-informative enrichment results.
