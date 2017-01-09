@@ -5,16 +5,19 @@
 \title{Extract promoter regions for the list of genes}
 \usage{
 gr_promoter_extract(selected, id = "entrezid", upstream = 2000,
-  downstream = 500)
+  downstream = 500, annotables.df = grch37)
 }
 \arguments{
 \item{selected}{a character vector of gene Entrez IDs, or names. Required}
 
 \item{id}{what type of ID is provided. "symbol" (e.g., "BRCA1") or "entrezid" (e.g., "672", default and recommended).}
 
-\item{upstream}{how many base pairs upstream of TSS define promoter. Default - 2,000bp.}
+\item{upstream}{how many base pairs upstream of TSS define promoter. Defaul: - 2,000bp.}
 
-\item{downstream}{how many base pairs downstream of TSS define promoter. Default - 500bp.}
+\item{downstream}{how many base pairs downstream of TSS define promoter. Default: 500bp.}
+
+\item{annotables.df}{data frame with annotations for a specific organism. Default: grch37. 
+Annotation data frame should exist in the 'annotables' package. Tested with 'mmu9'.}
 }
 \value{
 a list with two components. 'promoters' contains genomic coordinates
@@ -25,14 +28,21 @@ A function to extract genomic coordinates of gene promoters in BED format.
 }
 \details{
 Only canonical chromosome names are considered. No patches, random or other contigs.
+The coordinates are obtained from \url{https://github.com/mdozmorov/annotables}
 }
 \examples{
 \dontrun{
 selected <- c("TMEM59L", "SNTG1", "RPL41", "ADAMTS19")
 pr <- gr_promoter_extract(selected)$promoters
-write.table(pr, "pr.bed", sep="\\t", quote=F, row.names=F, col.names=F)
+write.table(pr$promoters, "pr.bed", sep="\\t", quote=F, row.names=F, col.names=F, annotables.df = annotables::grch37)
 # Extract promoters of all genes (that have gene names). Note only canonical chromosomes are retained.
-promoters.all <- gr_promoter_extract(selected = unique(annotables::grch37$symbol))
+annotables.df <- annotables::mmu9 # Annotation database, organism-specific
+selected = unique(annotables.df$entrez[ !is.na(annotables.df$entrez)]) # All non-NA unique Entrez IDs
+promoters.all <- gr_promoter_extract(selected = selected, id = "entrezid", upstream = 2000, downstream = 500,  annotables.df = annotables.df)
+dim(promoters.all$promoters) # How many genes got coordinates?
+write.table(promoters.all$promoters, "all_genes_entrez_mm9.bed", sep="\\t", quote=F, row.names=F, col.names=F)
+promoters.all$notfound # Explore not found IDs
+length(promoters.all$notfound)
 }
 }
 
