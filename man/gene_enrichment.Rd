@@ -5,7 +5,7 @@
 \title{Performs GO or KEGG enrichment analysis of a list of gene symbols or Entrez IDs}
 \usage{
 gene_enrichment(selected, all.universe = NULL, id = "symbol",
-  organism = "Hs", use = "GO", ont = "BP", pval = 0.05, p.adj = 0.1,
+  organism = "Hs", use = "GO", ont = "BP", pval = 1, p.adj = 0.1,
   fileName = NULL)
 }
 \arguments{
@@ -24,10 +24,11 @@ Must be the same ID type as the 'selected' genes.}
 If "msigdf", should be one of "c1": positional gene sets, "c2": curated gene sets, 
 "c3": motif gene sets, "c4": computational gene sets, "c5": GO gene sets, 
 "c6": oncogenic signatures, "c7": immunologic signatures, "hallmark": hallmark gene sets.
-If "custom", should be "custom"
-See http://software.broadinstitute.org/gsea/msigdb/ for more details.}
+See http://software.broadinstitute.org/gsea/msigdb/ for more details.
+If "custom", currently, "msigdf::md.human.custom" database is used. Currently supported fields are:
+"cancer", "pharmacology"}
 
-\item{pval}{non-corrected p-value cutoff to perform the enrichment analysis. Default - 0.05.}
+\item{pval}{not used. non-corrected p-value cutoff to perform the enrichment analysis. Default - 1.}
 
 \item{p.adj}{FDR-corrected p-value cutoff to report the enrichment analysis results. Default - 0.1.}
 

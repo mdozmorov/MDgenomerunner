@@ -13,9 +13,10 @@
 #' If "msigdf", should be one of "c1": positional gene sets, "c2": curated gene sets, 
 #' "c3": motif gene sets, "c4": computational gene sets, "c5": GO gene sets, 
 #' "c6": oncogenic signatures, "c7": immunologic signatures, "hallmark": hallmark gene sets.
-#' If "custom", should be "custom"
 #' See http://software.broadinstitute.org/gsea/msigdb/ for more details.
-#' @param pval non-corrected p-value cutoff to perform the enrichment analysis. Default - 0.05.
+#' If "custom", currently, "msigdf::md.human.custom" database is used. Currently supported fields are:
+#' "cancer", "pharmacology"
+#' @param pval not used. non-corrected p-value cutoff to perform the enrichment analysis. Default - 1.
 #' @param p.adj FDR-corrected p-value cutoff to report the enrichment analysis results. Default - 0.1.
 #' @param fileName save the results into a fileName. Default - none
 #'
@@ -87,7 +88,7 @@
 #' \code{if (nrow(res) > 10) { n <-10 } else { n <- nrow(res) }; kable(res[1:n, ])}
 ##
 gene_enrichment <- function(selected, all.universe = NULL, id = "symbol", organism = "Hs",
-                            use = "GO", ont = "BP", pval = 0.05, p.adj = 0.1, fileName = NULL) {
+                            use = "GO", ont = "BP", pval = 1, p.adj = 0.1, fileName = NULL) {
   # Precaution against misformatting of the supplied genes
   selected <- as.vector(sapply(selected, as.character))
   # Preparing environment for remapping Gene Symbols to Entrez IDs
@@ -126,11 +127,11 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol", organi
   # Combine the universe with all genes
   all.universe <- unique(c(selected, all.universe)) %>% as.numeric
   all.universe <- all.universe[!is.na(all.universe)]
-  # Get GO-gene annotations
-  geneList.annot <- eval(parse(text = paste0("AnnotationDbi::select(org.", organism, ".eg.db, keys = as.character(selected), columns = c(\"ENTREZID\", \"SYMBOL\", \"GOALL\", \"PATH\"), keytype = \"ENTREZID\")")))
-
+  
   # Prepare parameters for the enrichment analysis
   if (use == "GO" | use == "KEGG") {
+    # Get GO-gene annotations
+    geneList.annot <- eval(parse(text = paste0("AnnotationDbi::select(org.", organism, ".eg.db, keys = as.character(selected), columns = c(\"ENTREZID\", \"SYMBOL\", \"GOALL\", \"PATH\"), keytype = \"ENTREZID\")")))
     if (use == "GO") {
       params <- new("GOHyperGParams", geneIds = selected, universeGeneIds = all.universe, 
                     ontology = ont, pvalueCutoff = pval, conditional = F, testDirection = "over", 
@@ -226,12 +227,12 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol", organi
       msigdf.Size[i]      <- annot.total
       msigdf.Term[i]      <- genesets[i]
       # Save annotated DEGs
-      msigdf.ENTREZID[i] <- list(genes_in_gs$entrez[ selected %in% genes_in_gs$entrez])
+      msigdf.ENTREZID[i] <- list(selected[ selected %in% genes_in_gs$entrez])
       names(msigdf.ENTREZID)[i] <- genesets[i]
     }
     
     # Summarize significant results
-    ind <- which(msigdf.Pvalue < 1) # Indexes of significant results
+    ind <- which(msigdf.Pvalue <= p.adj) # Indexes of significant results
     for (i in ind){
       msigdf.SYMBOL[i] <- paste(annotables::grch38$symbol[annotables::grch38$entrez %in% msigdf.ENTREZID[[i]]], collapse = ";")
       # paste(clusterProfiler::bitr(msigdf.ENTREZID[[i]], fromType = "ENTREZID", toType = "SYMBOL", OrgDb = paste0("org.", organism, ".eg.db"))[, 2], collapse = ";")
