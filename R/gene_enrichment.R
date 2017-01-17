@@ -215,11 +215,11 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol", organi
       # sum(cont2x2) == genes.total # Sanity check
       msigdf.test <- fisher.test(cont2x2)             # Actual test
       # Check if conf. interval overlaps 1
-      if(msigdf.test$conf.int[1] < 1 & msigdf.test$conf.int[2] > 1) {
-        msigdf.Pvalue[i] <- 1 # If overlaps, nothing is significant
-      } else {
-        msigdf.Pvalue[i] <- msigdf.test$p.value
-      }
+      # if(msigdf.test$conf.int[1] < 1 & msigdf.test$conf.int[2] > 1) {
+      #   msigdf.Pvalue[i] <- 1 # If overlaps, nothing is significant
+      # } else {
+      msigdf.Pvalue[i] <- msigdf.test$p.value
+      # }
       # Save additional pieces
       msigdf.OddsRatio[i] <- msigdf.test$estimate
       msigdf.ExpCount[i]  <- (annot.total * degs.total) / genes.total
@@ -238,7 +238,16 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol", organi
       # paste(clusterProfiler::bitr(msigdf.ENTREZID[[i]], fromType = "ENTREZID", toType = "SYMBOL", OrgDb = paste0("org.", organism, ".eg.db"))[, 2], collapse = ";")
       msigdf.ENTREZID[i] <- paste(msigdf.ENTREZID[[i]], collapse="; ")
     }
-    res <- data.frame(ID = msigdf.ID[ind], Pvalue = msigdf.Pvalue[ind], OddsRatio = msigdf.OddsRatio[ind], ExpCount = msigdf.ExpCount[ind], Count = msigdf.Count[ind], Size = msigdf.Size[ind], Term = msigdf.Term[ind], p.adj = p.adjust(msigdf.Pvalue)[ind], SYMBOL = unlist(msigdf.SYMBOL[ind]), ENTREZID = unlist(msigdf.ENTREZID[ind]))
+    res <- data.frame(ID        = msigdf.ID[ind], 
+                      Pvalue    = formatC(msigdf.Pvalue[ind], digits = 3, format = "e"), 
+                      OddsRatio = formatC(msigdf.OddsRatio[ind], digits = 3, format = "f"), 
+                      ExpCount  = formatC(msigdf.ExpCount[ind], digits = 3, format = "f"), 
+                      Count     = formatC(msigdf.Count[ind], digits = 3, format = "f"), 
+                      Size      = formatC(msigdf.Size[ind], digits = 3, format = "f"), 
+                      Term      = msigdf.Term[ind], 
+                      p.adj     = formatC(p.adjust(msigdf.Pvalue)[ind], digits = 3, format = "e"), 
+                      SYMBOL    = unlist(msigdf.SYMBOL[ind]), 
+                      ENTREZID  = unlist(msigdf.ENTREZID[ind]))
   }
   # Sort by p.adj
   res <- res[ order(res$p.adj, decreasing = FALSE), ]
