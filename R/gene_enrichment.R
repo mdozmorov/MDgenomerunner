@@ -234,23 +234,24 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol", organi
     # Summarize significant results
     ind <- which(msigdf.Pvalue <= p.adj) # Indexes of significant results
     for (i in ind){
-      msigdf.SYMBOL[i] <- paste(annotables::grch38$symbol[annotables::grch38$entrez %in% msigdf.ENTREZID[[i]]], collapse = ";")
+      msigdf.SYMBOL[i] <- paste(annotables::grch38$symbol[annotables::grch38$entrez %in% msigdf.ENTREZID[[i]]], collapse = "; ")
       # paste(clusterProfiler::bitr(msigdf.ENTREZID[[i]], fromType = "ENTREZID", toType = "SYMBOL", OrgDb = paste0("org.", organism, ".eg.db"))[, 2], collapse = ";")
       msigdf.ENTREZID[i] <- paste(msigdf.ENTREZID[[i]], collapse="; ")
     }
     res <- data.frame(ID        = msigdf.ID[ind], 
-                      Pvalue    = formatC(msigdf.Pvalue[ind], digits = 3, format = "e"), 
+                      Pvalue    = msigdf.Pvalue[ind],  # Do not format for sorting 
                       OddsRatio = formatC(msigdf.OddsRatio[ind], digits = 3, format = "f"), 
                       ExpCount  = formatC(msigdf.ExpCount[ind], digits = 3, format = "f"), 
                       Count     = formatC(msigdf.Count[ind], digits = 3, format = "f"), 
                       Size      = formatC(msigdf.Size[ind], digits = 3, format = "f"), 
                       Term      = msigdf.Term[ind], 
-                      p.adj     = formatC(p.adjust(msigdf.Pvalue)[ind], digits = 3, format = "e"), 
+                      p.adj     = formatC(p.adjust(msigdf.Pvalue)[ind], digits = 3, format = "e"),
                       SYMBOL    = unlist(msigdf.SYMBOL[ind]), 
                       ENTREZID  = unlist(msigdf.ENTREZID[ind]))
   }
   # Sort by p.adj
   res <- res[ order(res$p.adj, decreasing = FALSE), ]
+  res$Pvalue <- formatC(res$Pvalue, digits = 3, format = "e") # Format after sorting
   # Save the ress
   if (!is.null(fileName)) {
     write.table(res, fileName, sep = "\t", row.names = F, quote = F)
