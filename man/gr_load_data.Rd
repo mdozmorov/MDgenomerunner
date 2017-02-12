@@ -37,4 +37,3 @@ mtx <- gr_load_data(c("data/ENCODE_Tfbs/matrix_PVAL.txt",
 "data/ENCODE_Histone/matrix_PVAL.txt"), subset=c("Tfbs", "Histone"))
 }
 }
-

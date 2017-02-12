@@ -39,4 +39,3 @@ are assembled
 mtx.maxmin <- gr_maxmin(mtx, cortype="pearson", fileName = "maxmin.txt")
 }
 }
-

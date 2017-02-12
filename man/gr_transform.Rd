@@ -24,4 +24,3 @@ into a -log10-transformed matrix with sign preserved
 mtx.transformed <- gr_transform(mtx)
 }
 }
-

@@ -31,4 +31,3 @@ A function to randomize a matrix using different methods
 mtx.rand(mtx.degs, randomize="mix")
 }
 }
-

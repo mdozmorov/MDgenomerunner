@@ -33,4 +33,3 @@ Counts are not normalized by the total number of published papers
 get_pubmed_graph("retraction", yearstart = 2000, yearend = 2016)
 }
 }
-

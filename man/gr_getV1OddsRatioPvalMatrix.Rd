@@ -25,4 +25,3 @@ Courtesy to \link[https://github.com/AmyOlex]{Amy Olex}
 gr_getV1OddsRatioPvalMatrix("TFBS100_LOG.gr")
 }
 }
-

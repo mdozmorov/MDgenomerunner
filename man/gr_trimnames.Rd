@@ -23,4 +23,3 @@ A function to trim long column/row names to a defined length.
 colnames(mtx) <- gr_trimnames(colnames(mtx))
 }
 }
-

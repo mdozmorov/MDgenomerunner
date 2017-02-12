@@ -29,4 +29,3 @@ set5 = letters[6:26];
 Venn5(set1, set2, set3, set4, set5);
 }
 }
-

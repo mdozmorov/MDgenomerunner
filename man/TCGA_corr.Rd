@@ -60,4 +60,3 @@ write.table(all_summary, paste0(dir, "/", "TCGA_corr_", gene, "_all.txt"), sep="
 
 }
 }
-

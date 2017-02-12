@@ -27,4 +27,3 @@ A function to define clusters by cutting a dendrogram by specified height.
 mtx.clust <- gr_clusters(d=h$Colv, height=1.5, minmembers=3, fileName="clustering.txt")
 }
 }
-

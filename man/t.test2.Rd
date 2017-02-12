@@ -31,4 +31,3 @@ x2 = rnorm(200)
 t.test2( mean(x1), mean(x2), sd(x1), sd(x2), 100, 200)
 }
 }
-

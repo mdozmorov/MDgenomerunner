@@ -58,4 +58,3 @@ mtx.clust <- gr_clusters(as.dendrogram(cluster1), height = 3) # Create clusterin
 res <- mtx.degfs(mtx, mtx.clust)
 }
 }
-

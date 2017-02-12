@@ -33,6 +33,7 @@ Filtering should be done with caution, 10.1186/1471-2105-11-450.
 at or below defined level, at or more defined proportion; 2) Absolute value of change, max-min difference
 should be larger than a defied threshold; 3) Variance filtering, variance should be larger than a defined threshold
 }
+
 \examples{
 
 \dontrun{
@@ -44,4 +45,3 @@ dim(gene_filter(mtx))
 }
 
 }
-

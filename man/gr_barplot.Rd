@@ -34,4 +34,3 @@ A function to plot a barplot of the enrichment results
 gr_barplot(mtx = mtx.barplot.dn[, seq(1:length(use_columns)), drop=F], legend_location = "bottomright", bottom_margin = 8, x_axis_labels = names.args.dn, pvalue_cutoff = pvalue_cutoff)
 }
 }
-

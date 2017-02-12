@@ -30,4 +30,3 @@ write.table(genes_bed, "genes.bed", sep="\\t", quote=F, row.names=F, col.names=F
 genes_all <- gr_gene_extract(selected = unique(annotables::grch37$symbol), id = "symbol")
 }
 }
-

@@ -25,4 +25,3 @@ indicating depletion) into a linear scale
 mtx <- gr_untransform(mtx.transformed)
 }
 }
-

@@ -55,4 +55,3 @@ Adapted from 'utils2.R'. Currently "bar" plotting has been tested.
 gr_plot(file_name = "matrix_PVAL.txt", use_columns = 1, subset_by_GF = "none", subset_by_cell = "none", log10_transformed = FALSE, adjust_pval_by = "fdr", pvalue_cutoff = 0.1, numtofilt = 1, plot_type = "bar")
 }
 }
-

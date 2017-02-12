@@ -29,4 +29,3 @@ while accounting for -log10 status and the directionality of enrichments
 mtx[, 1] <- gr_adjust_pval(mtx[, 1], adjust_pval_by = adjust_pval_by, log10_transformed = TRUE )
 }
 }
-

@@ -34,4 +34,3 @@ df <- data.frame(key = c("a", "a;b", "a;b;c"), val = 1:3)
 unembed(df, "key", ";")
 }
 }
-
