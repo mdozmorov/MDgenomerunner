@@ -90,7 +90,7 @@
 gene_enrichment <- function(selected, all.universe = NULL, id = "symbol", organism = "Hs",
                             use = "GO", ont = "BP", pval = 1, p.adj = 0.1, fileName = NULL) {
   # Precaution against misformatting of the supplied genes
-  selected <- as.vector(sapply(selected, as.character))
+  selected <- unique(as.vector(sapply(selected, as.character)))
   # Preparing environment for remapping Gene Symbols to Entrez IDs
   if (organism == "Hs" | organism == "Mm" | organism == "Rn"){
     x <- eval(parse(text = paste0("org.", organism, ".eg.db::org.", organism, ".egSYMBOL2EG")))
@@ -122,11 +122,11 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol", organi
   } else if (!(id == "entrezid")) {
     return("Wrong gene id type. Use 'symbol' or 'entrezid'")
   }
-  selected <- as.numeric(selected)
-  selected <- selected[!is.na(selected)]
+  # selected <- as.numeric(selected)
+  selected <- selected[!is.na(selected)] %>% as.character()
   # Combine the universe with all genes
-  all.universe <- unique(c(selected, all.universe)) %>% as.numeric
-  all.universe <- all.universe[!is.na(all.universe)]
+  all.universe <- unique(c(selected, all.universe))
+  all.universe <- all.universe[!is.na(all.universe)] %>% as.character()
   
   # Prepare parameters for the enrichment analysis
   if (use == "GO" | use == "KEGG") {
@@ -145,7 +145,7 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol", organi
       genes.annot <- do.call("rbind", genes.annot)  # resing data frame
     }
     if (use == "KEGG") {
-      params <- new("KEGGHyperGParams", geneIds = selected, universeGeneIds = all.universe, 
+      params <- new("KEGGHyperGParams", geneIds = selected, universeGeneIds = as.character(all.universe), 
                     pvalueCutoff = pval, testDirection = "over", annotation = paste0("org.", organism, ".eg.db"))
       # Same for KEGG-gene summarization
       genes.annot <- split(geneList.annot[!duplicated(geneList.annot[, c(1, 2, 6)]), c(1, 2, 6)], 
