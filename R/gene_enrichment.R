@@ -161,10 +161,11 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol", organi
     res <- cbind(res, p.adjust(res$Pvalue, method = "BH"))  # Append corrected for multiple testing p-value
     colnames(res)[length(colnames(res))] <- "p.adj"
     res <- res[res$p.adj < p.adj, ]  # Subset the ress keeping FDR at 10%
-    colnames(res)[1] <- "ID"  # Set column name to merge by to ID, instead of GO- or KEGG specific
     # If genes.annot is empty, skip joining
-    if (!is.null(genes.annot)) 
+    if (!is.null(genes.annot) & nrow(res) > 0) {
+      colnames(res)[1] <- "ID"  # Set column name to merge by to ID, instead of GO- or KEGG specific
       res <- left_join(res, genes.annot, by = c("ID" = "ID"))
+    }
   }
   
   if (use == "msigdf" | use == "custom") {
@@ -249,9 +250,14 @@ gene_enrichment <- function(selected, all.universe = NULL, id = "symbol", organi
                       SYMBOL    = unlist(msigdf.SYMBOL[ind]), 
                       ENTREZID  = unlist(msigdf.ENTREZID[ind]))
   }
-  # Sort by p.adj
-  res <- res[ order(res$Pvalue, decreasing = FALSE), ]
-  res$Pvalue <- formatC(res$Pvalue, digits = 3, format = "e") # Format after sorting
+  
+  if (nrow(res) > 0) { # Precaution against null results
+    # Sort by p.adj
+    res <- res[ order(res$Pvalue, decreasing = FALSE), ]
+    res$Pvalue <- formatC(res$Pvalue, digits = 3, format = "e") # Format after sorting
+  } else {
+    res <- data.frame(results = "Nothing significant")
+  }
   # Save the ress
   if (!is.null(fileName)) {
     write.table(res, fileName, sep = "\t", row.names = F, quote = F)
