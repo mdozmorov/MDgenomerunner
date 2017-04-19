@@ -78,6 +78,47 @@ Venn3 <- function(set1, set2, set3, names = c("set 1", "set 2", "set 3"), title 
 	return(tab);
 }
 
+#' Make four-circle Venn diagram
+#'
+#' @param set1234 a character vector of values in the nth set. Required
+#' 
+#' @return Nothing, just plot the diagram
+#' @export
+#' @examples
+#' \dontrun{
+#' # define some sets
+#' set1 = letters[1:6];
+#' set2 = letters[6:10];
+#' set3 = letters[6:15];
+#' set4 = letters[6:21];
+#' Venn4(set1, set2, set3, set4);
+#' }
+#' @note Source \link[http://bioinfo-mite.crb.wsu.edu/Rcode/Venn2.R]{dead link}
+#
+Venn4 <- function(set1, set2, set3, set4, names = c("set 1", "set 2", "set 3", "set 4"), title = "Venn diagram")
+{
+  stopifnot( length(names) == 4)
+  # Form universe as union of all three sets
+  universe <- sort( unique( c(set1, set2, set3, set4) ) )
+  Counts <- matrix(0, nrow=length(universe), ncol=4)
+  colnames(Counts) <- names
+  
+  for (i in 1:length(universe))
+  {
+    Counts[i,1] <- universe[i] %in% set1
+    Counts[i,2] <- universe[i] %in% set2
+    Counts[i,3] <- universe[i] %in% set3
+    Counts[i,4] <- universe[i] %in% set4
+  }
+  
+  par(mar=c(1,1,2,1),oma=c(1,1,2,1))
+  limma::vennDiagram( limma::vennCounts(Counts) )
+  mtext(title,outer=T,line=1);
+  tab<-data.frame(universe,Counts,stringsAsFactors=FALSE)
+  colnames(tab)<-c("id",names);
+  return(tab);
+}
+
 #' Make five-circle Venn diagram
 #'
 #' @param set12345 a character vector of values in the nth set. Required
