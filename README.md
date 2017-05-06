@@ -41,6 +41,10 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
 
 `round_df` - round all columns with numerical values in a data frame
 
+`save_res` - A function to save a data frame or a matrix into an Excel file. Uses `openxlsx`
+
+
+
 ### GenomeRunner-specific main functions
 
 `gr_load_data` - loads enrichment analysis matrix(es) and remove non-informative enrichment results.
