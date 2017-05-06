@@ -43,7 +43,7 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
 
 `save_res` - A function to save a data frame or a matrix into an Excel file. Uses `openxlsx`
 
-
+`save_enrichr` - A function to run enrichment analysis using EnrichR [http://amp.pharm.mssm.edu/Enrichr/](http://amp.pharm.mssm.edu/Enrichr/) API and, optionally, save them in an Excel file
 
 ### GenomeRunner-specific main functions
 
