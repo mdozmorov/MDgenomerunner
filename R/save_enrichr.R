@@ -26,7 +26,7 @@ save_enrichr <- function(up.genes = NULL, dn.genes = NULL, databases = "KEGG_201
   if (!is.null(fileNameOut) & !is.null(wb)) {
     if (nchar(databases) > 30) databases <- paste0(substr(databases, 1, 20), "_", substr(databases, nchar(databases) - 8, nchar(databases))) # If a database is longer that 30 characters, keep first 20 and last 10 characters
     if (is.null(sheetName)) {sheetName <- databases} # If sheetName is not provided, use database label as a sheetname
-    save_res(res.kegg, fileNameOut, wb = wb, sheetName = databases)
+    save_res(res.kegg, fileNameOut, wb = wb, sheetName = sheetName)
   }
   # Pause for a few seconds
   pause_sec <- round(runif(1, min = 1, max = 10))
