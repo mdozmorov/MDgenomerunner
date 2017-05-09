@@ -90,7 +90,7 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
 	output:
 	  html_document:
 	    toc: true
-	    toc_float: true
+	    # toc_float: true
 	    # theme: united
 	    theme: cerulean
 	    # number_sections: true
