@@ -34,4 +34,4 @@ export(t.test2)
 export(gr_getV1OddsRatioPvalMatrix)
 export(save_res)
 export(save_enrichr)
-
+export(pca_func)

@@ -45,6 +45,8 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
 
 `save_enrichr` - A function to run enrichment analysis using EnrichR [http://amp.pharm.mssm.edu/Enrichr/](http://amp.pharm.mssm.edu/Enrichr/) API and, optionally, save them in an Excel file
 
+`pca_func` - Beautiful PCA plots
+
 ### GenomeRunner-specific main functions
 
 `gr_load_data` - loads enrichment analysis matrix(es) and remove non-informative enrichment results.
