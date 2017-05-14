@@ -8,7 +8,15 @@
 #' @param wb a workbook object, created initially, Default: wb
 #' @param sheetName a name of a worksheet to save the results, Default: 'KEGG'
 #' @return nothing, just saves the results
-
+#' @examples
+#' \dontrun{
+#' library(openxlsx)
+#' fileName <- "results/DEGs.xlsx"
+#' unlink(fileName) # Delete previous file
+#' wb <- openxlsx::createWorkbook(fileName) # openxlsx::loadWorkbook(fileName) # Or, load existing
+#' res <- enrichR::enrichFullGeneList(up.genes, dn.genes, databases = "KEGG_2016", fdr.cutoff = 1) # Enrichment analysis of up/downregulated genes
+#' save_res(res, fileName = fileName, wb = wb, sheetName = "KEGG")
+#' }
 #' @importFrom openxlsx addWorksheet writeData saveWorkbook
 #' 
 save_res <- function(res, fileName = "fileName.xlsx", wb = wb, sheetName = "KEGG") {

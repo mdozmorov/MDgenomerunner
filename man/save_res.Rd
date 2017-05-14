@@ -24,3 +24,13 @@ or load existing (\code{wb <- openxlsx::loadWorkbook(fileName)}) Excel file. The
 to save `res` objects into this file into a specified worksheet. One file can hold multiple worksheets.
 No need to explicitly close the file.
 }
+\examples{
+\dontrun{
+library(openxlsx)
+fileName <- "results/DEGs.xlsx"
+unlink(fileName) # Delete previous file
+wb <- openxlsx::createWorkbook(fileName) # openxlsx::loadWorkbook(fileName) # Or, load existing
+res <- enrichR::enrichFullGeneList(up.genes, dn.genes, databases = "KEGG_2016", fdr.cutoff = 1) # Enrichment analysis of up/downregulated genes
+save_res(res, fileName = fileName, wb = wb, sheetName = "KEGG")
+}
+}

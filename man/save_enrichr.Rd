@@ -32,3 +32,15 @@ run enrichment analysis using \link[https://github.com/compbiomed/enrichR]{enric
 are analyzed separately, so for two gene lists the results are simply concatenated into one data frame,
 with "UP" and "DN" indicator of enrichment results corresponding to a given list.
 }
+\examples{
+\dontrun{
+library(openxlsx)
+fileName <- "results/DEGs.xlsx"
+unlink(fileName) # Delete previous file
+wb <- openxlsx::createWorkbook(fileName) # openxlsx::loadWorkbook(fileName) # Or, load existing
+# Enrichment analysis of up/downregulated genes. Saves results directly into Excel file, and returns as a data frame
+res <- save_enrichr(up.genes = up.genes, dn.genes = dn.genes, databases = "KEGG_2016", fdr.cutoff = fdr.cutoff, fileNameOut = fileNameOut, wb = wb)
+DT::datatable(res) # Visualize
+}
+
+}

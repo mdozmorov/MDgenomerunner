@@ -12,6 +12,16 @@
 #' @param wb a workbook created beforehand. See \link{save_res} function. Default: NULL (do not save)
 #' @param sheetName a name of a worksheet to save the results. Default: NULL (use `databases` as a worksheet name). If provided, takes priority over `datavases`
 #' @return a data frame with the enrichment results. And, if fileName etc. are provided, saves them
+#' @examples
+#' \dontrun{
+#' library(openxlsx)
+#' fileName <- "results/DEGs.xlsx"
+#' unlink(fileName) # Delete previous file
+#' wb <- openxlsx::createWorkbook(fileName) # openxlsx::loadWorkbook(fileName) # Or, load existing
+#' # Enrichment analysis of up/downregulated genes. Saves results directly into Excel file, and returns as a data frame
+#' res <- save_enrichr(up.genes = up.genes, dn.genes = dn.genes, databases = "KEGG_2016", fdr.cutoff = fdr.cutoff, fileNameOut = fileNameOut, wb = wb)
+#' DT::datatable(res) # Visualize
+#' }
 #' 
 save_enrichr <- function(up.genes = NULL, dn.genes = NULL, databases = "KEGG_2016", fdr.cutoff = 1, fileNameOut = NULL, wb = NULL, sheetName = NULL) {
   print(paste("Running", databases, "analysis", sep = " "))
