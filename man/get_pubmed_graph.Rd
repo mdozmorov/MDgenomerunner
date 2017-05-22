@@ -5,7 +5,7 @@
 \title{Plot a barplot of counts a term appearing in PubMed}
 \usage{
 get_pubmed_graph(term, yearstart = 1970, yearend = 2016,
-  normalize = FALSE)
+  normalize = FALSE, xlab = "X axis", ylab = "Y axis")
 }
 \arguments{
 \item{term}{what to search. Required. Example: "reproducible research"}
@@ -16,6 +16,10 @@ get_pubmed_graph(term, yearstart = 1970, yearend = 2016,
 
 \item{normalize}{whether to normalize term counts by the total number
 of published papers per year (returns proportion of the term out of the total). Default - FALSE}
+
+\item{xlab}{labels for X axis. Default - "X axis"}
+
+\item{ylab}{labels for Y axis. Default - "Y axis"}
 
 \item{id}{what type of ID is provided. "symbol" (e.g., "BRCA1") or "entrezid" (e.g., "672", default and recommended).}
 }
