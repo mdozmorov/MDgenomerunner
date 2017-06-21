@@ -111,6 +111,28 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
 	options(stringsAsFactors = FALSE)
 	```
 
+To output code chunks 'as is', with the leading/trailing forwardticks, use a workaround from https://rstudio-pubs-static.s3.amazonaws.com/14268_9d9d6cb7bc2f44048d66641e8d460a0b.html. Include 
+
+	```
+	knit_hooks$set(source = function(x, options){
+	  if (!is.null(options$verbatim) && options$verbatim){
+	    opts = gsub(",\\s*verbatim\\s*=\\s*TRUE\\s*", "", options$params.src)
+	    bef = sprintf('\n\n    ```{r %s}\n', opts, "\n")
+	    stringr::str_c(
+	      bef, 
+	      knitr:::indent_block(paste(x, collapse = '\n'), "    "), 
+	      "\n    ```\n"
+	    )
+	  } else {
+	    stringr::str_c("\n\n```", tolower(options$engine), "\n", 
+	      paste(x, collapse = '\n'), "\n```\n\n"
+	    )
+	  }
+	})
+	```
+
+in the `setup` chunk above. Add `verbatim=TRUE` to the code chunk needs to be printed verbatim. 
+
 ### Rmd footer
 
   	```{r session_info}
@@ -130,6 +152,9 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
 
 # Upgrading R & Bioconductor on Mac OS X
 
+Tips:  
+  - [InstallR](https://cran.r-project.org/web/packages/installr/) for Windows and [updateR](https://github.com/AndreaCirilloAC/updateR) may help.
+
 When upgrading to the latest X.Y.Z R vestion, it is possible to rename the `/Library/Frameworks/R.framework/Versions/X.Y` folder. This will make all packages available to the latest R version, but often causes unforeseen incompatibilities, problems with upgrading Bioconductor, and other unpredictable behaviour. A more laborous manual upgrade may be simpler and cleaner.
 
 1. Rename the current R library folder, e.g., `/Library/Frameworks/R.framework/Versions/3.2` to `/Library/Frameworks/R.framework/Versions/3.2.old`
@@ -145,12 +170,12 @@ When upgrading to the latest X.Y.Z R vestion, it is possible to rename the `/Lib
 
 	library(BiocInstaller)
 
-	biocLite(c("ChIPseeker", "clusterProfiler", "org.Hs.eg.db", "Rgraphviz", "pathview", "genefilter", "Category", "edgeR", "sva", "ReactomePA", "GOstats", "KEGG.db", "methylumi", "lumi", "wateRmelon", "betareg", "IlluminaHumanMethylationEPICanno.ilm10b2.hg19", "hgu133a.db", "hgu133a2.db", "impute", "sscore", "snpStats", "bladderbatch", "simpleaffy", "fpc", "GEOquery", "e1071", "pathview", "biclust", "eisa", "ExpressionView", "samr", "WGCNA", "RISmed", "RCircos"))
+	biocLite(c("ChIPseeker", "clusterProfiler", "org.Hs.eg.db", "Rgraphviz", "pathview", "genefilter", "Category", "edgeR", "sva", "ReactomePA", "GOstats", "KEGG.db", "KEGGREST", "reactome.db", "methylumi", "lumi", "wateRmelon", "betareg", "IlluminaHumanMethylationEPICanno.ilm10b2.hg19", "hgu133a.db", "hgu133a2.db", "impute", "sscore", "snpStats", "bladderbatch", "simpleaffy", "fpc", "GEOquery", "e1071", "pathview", "biclust", "eisa", "ExpressionView", "samr", "WGCNA", "RISmed", "RCircos", "pcaGoPromoter", "InteractionSet", "EGAD", "corrplot", "clusterGeneration", "glmnet", "aracne.networks", "pcaGoPromoter"))
 
 	biocLite('CellMix', siteRepos = 'http://web.cbio.uct.ac.za/~renaud/CRAN', type='both')
 
 	# brew install openssl
-	install.packages(c("devtools", "TCGA2STAT", "pander", "xlsx", "ggrepel", "shiny", "shinyBS", "devtools", "roxygen2", "caret", "kernlab", "pROC", "openxlsx", "XLConnect", "pheatmap", "scatterplot3d", "tsne", "Rtsne", "DT", "pvclust", "Hmisc", "dynamicTreeCut", "apcluster", "rgl", "calibrate", "plotly", "heatmaply", "survminer", "profvis"))
+	install.packages(c("devtools", "TCGA2STAT", "pander", "readr", "readtext", "openxlsx" "ggrepel", "shiny", "shinyBS", "devtools", "roxygen2", "caret", "kernlab", "pROC", "openxlsx", "XLConnect", "pheatmap", "scatterplot3d", "tsne", "Rtsne", "DT", "pvclust", "Hmisc", "dynamicTreeCut", "apcluster", "rgl", "calibrate", "plotly", "heatmaply", "survminer", "profvis", "DataExplorer", "rrcov", "fitdistrplus", "stargazer", "factoextra", "ellipse", "gridExtra"))
 
 	devtools::install_github("mdozmorov/MDmisc")
 	devtools::install_github("mdozmorov/annotables")
