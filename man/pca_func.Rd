@@ -31,8 +31,8 @@ library(ellipse)
 library(gridExtra)
 library(grid)
 library(ggplot2)
-p1 <- pca_func(data = t(mtcars), groups = as.character(mtcars$cyl), print_ellipse = TRUE, title = "mtcars samples colored by cylinder")
-p2 <- pca_func(data = mtcars, groups = colnames(mtcars), print_ellipse = FALSE, title = "mtcars features")
+p1 <- pca_func(data = t(mtcars), groups = as.character(mtcars$am), print_ellipse = TRUE, title = "mtcars samples colored by transmission type")
+p2 <- ggplot(data.frame(prcomp(mtcars, scale. = TRUE, center = TRUE)$x, Transmission = factor(mtcars$am)), aes(x = PC1, y = PC2, color = Transmission)) + geom_point(shape = 1)
 grid.arrange(p1, p2, ncol = 2)
 }
 }
