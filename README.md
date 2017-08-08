@@ -170,18 +170,17 @@ When upgrading to the latest X.Y.Z R vestion, it is possible to rename the `/Lib
 
 	library(BiocInstaller)
 
-	biocLite(c("ChIPseeker", "clusterProfiler", "org.Hs.eg.db", "Rgraphviz", "pathview", "genefilter", "Category", "edgeR", "sva", "ReactomePA", "GOstats", "KEGG.db", "KEGGREST", "reactome.db", "methylumi", "lumi", "wateRmelon", "betareg", "IlluminaHumanMethylationEPICanno.ilm10b2.hg19", "hgu133a.db", "hgu133a2.db", "impute", "sscore", "snpStats", "bladderbatch", "simpleaffy", "fpc", "GEOquery", "e1071", "pathview", "biclust", "eisa", "ExpressionView", "samr", "WGCNA", "RISmed", "RCircos", "pcaGoPromoter", "InteractionSet", "EGAD", "corrplot", "clusterGeneration", "glmnet", "aracne.networks", "pcaGoPromoter"))
+	biocLite(c("ChIPseeker", "clusterProfiler", "org.Hs.eg.db", "Rgraphviz", "pathview", "genefilter", "Category", "edgeR", "sva", "ReactomePA", "GOstats", "KEGG.db", "KEGGREST", "reactome.db", "methylumi", "lumi", "wateRmelon", "betareg", "IlluminaHumanMethylationEPICanno.ilm10b2.hg19", "hgu133a.db", "hgu133a2.db", "impute", "sscore", "snpStats", "bladderbatch", "simpleaffy", "fpc", "GEOquery", "e1071", "pathview", "biclust", "eisa", "ExpressionView", "samr", "WGCNA", "RISmed", "RCircos", "pcaGoPromoter", "InteractionSet", "EGAD", "corrplot", "clusterGeneration", "glmnet", "aracne.networks", "pcaGoPromoter", "CNTools", "ChIPpeakAnno", "ExperimentHub"))
 
 	biocLite('CellMix', siteRepos = 'http://web.cbio.uct.ac.za/~renaud/CRAN', type='both')
 
 	# brew install openssl
-	install.packages(c("devtools", "TCGA2STAT", "pander", "readr", "readtext", "openxlsx" "ggrepel", "shiny", "shinyBS", "devtools", "roxygen2", "caret", "kernlab", "pROC", "openxlsx", "XLConnect", "pheatmap", "scatterplot3d", "tsne", "Rtsne", "DT", "pvclust", "Hmisc", "dynamicTreeCut", "apcluster", "rgl", "calibrate", "plotly", "heatmaply", "survminer", "profvis", "DataExplorer", "rrcov", "fitdistrplus", "stargazer", "factoextra", "ellipse", "gridExtra"))
+	install.packages(c("devtools", "TCGA2STAT", "pander", "readr", "readtext", "openxlsx" "ggrepel", "shiny", "shinyBS", "devtools", "roxygen2", "caret", "kernlab", "pROC", "openxlsx", "XLConnect", "pheatmap", "scatterplot3d", "tsne", "Rtsne", "DT", "pvclust", "Hmisc", "dynamicTreeCut", "apcluster", "rgl", "calibrate", "plotly", "heatmaply", "survminer", "profvis", "DataExplorer", "rrcov", "fitdistrplus", "stargazer", "factoextra", "ellipse", "gridExtra", "TCGA2STAT"))
 
 	devtools::install_github("mdozmorov/MDmisc")
 	devtools::install_github("mdozmorov/annotables")
 
-	install_github('ramnathv/slidify')
-	install_github('ramnathv/slidifyLibraries')
+	install.packages('GenometriCorr',repos='http://genometricorr.sourceforge.net/R/',type='source')
 
 	# Install Java, then
 	install.packages(c("rJava", "xlsx"))
