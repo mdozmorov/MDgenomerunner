@@ -6,7 +6,7 @@
 and, optionally, save them in an Excel file}
 \usage{
 save_enrichr(up.genes = NULL, dn.genes = NULL, databases = "KEGG_2016",
-  fdr.cutoff = 1, fileNameOut = NULL, wb = NULL, sheetName = NULL)
+  fdr.cutoff = 1, fileName = NULL, wb = NULL, sheetName = NULL)
 }
 \arguments{
 \item{up.genes}{a vactor of gene names defined as upregulated. Required}
@@ -17,7 +17,7 @@ save_enrichr(up.genes = NULL, dn.genes = NULL, databases = "KEGG_2016",
 
 \item{fdr.cutoff}{an FDR cutoff for enrichment results to be considered significant, Default: 1 (output all)}
 
-\item{fileNameOut}{a name of an Excel file to save the results, Default: NULL (do not save)}
+\item{fileName}{a name of an Excel file to save the results, Default: NULL (do not save)}
 
 \item{wb}{a workbook created beforehand. See \link{save_res} function. Default: NULL (do not save)}
 
@@ -39,7 +39,7 @@ fileName <- "results/DEGs.xlsx"
 unlink(fileName) # Delete previous file
 wb <- openxlsx::createWorkbook(fileName) # openxlsx::loadWorkbook(fileName) # Or, load existing
 # Enrichment analysis of up/downregulated genes. Saves results directly into Excel file, and returns as a data frame
-res <- save_enrichr(up.genes = up.genes, dn.genes = dn.genes, databases = "KEGG_2016", fdr.cutoff = fdr.cutoff, fileNameOut = fileNameOut, wb = wb)
+res <- save_enrichr(up.genes = up.genes, dn.genes = dn.genes, databases = "KEGG_2016", fdr.cutoff = fdr.cutoff, fileName = fileName, wb = wb)
 DT::datatable(res) # Visualize
 }
 

@@ -8,7 +8,7 @@
 #' @param dn.genes a vactor of gene names defined as downregulated. Optional
 #' @param databases database name in EnrichR. See help for \link[enrichR]{enrichGeneList} function. Default: 'KEGG_2016'
 #' @param fdr.cutoff an FDR cutoff for enrichment results to be considered significant, Default: 1 (output all)
-#' @param fileNameOut a name of an Excel file to save the results, Default: NULL (do not save)
+#' @param fileName a name of an Excel file to save the results, Default: NULL (do not save)
 #' @param wb a workbook created beforehand. See \link{save_res} function. Default: NULL (do not save)
 #' @param sheetName a name of a worksheet to save the results. Default: NULL (use `databases` as a worksheet name). If provided, takes priority over `datavases`
 #' @return a data frame with the enrichment results. And, if fileName etc. are provided, saves them
@@ -19,11 +19,11 @@
 #' unlink(fileName) # Delete previous file
 #' wb <- openxlsx::createWorkbook(fileName) # openxlsx::loadWorkbook(fileName) # Or, load existing
 #' # Enrichment analysis of up/downregulated genes. Saves results directly into Excel file, and returns as a data frame
-#' res <- save_enrichr(up.genes = up.genes, dn.genes = dn.genes, databases = "KEGG_2016", fdr.cutoff = fdr.cutoff, fileNameOut = fileNameOut, wb = wb)
+#' res <- save_enrichr(up.genes = up.genes, dn.genes = dn.genes, databases = "KEGG_2016", fdr.cutoff = fdr.cutoff, fileName = fileName, wb = wb)
 #' DT::datatable(res) # Visualize
 #' }
 #' 
-save_enrichr <- function(up.genes = NULL, dn.genes = NULL, databases = "KEGG_2016", fdr.cutoff = 1, fileNameOut = NULL, wb = NULL, sheetName = NULL) {
+save_enrichr <- function(up.genes = NULL, dn.genes = NULL, databases = "KEGG_2016", fdr.cutoff = 1, fileName = NULL, wb = NULL, sheetName = NULL) {
   print(paste("Running", databases, "analysis", sep = " "))
   if (is.null(dn.genes)) {
     res.kegg <- enrichGeneList(up.genes, databases = databases, fdr.cutoff = 1)
@@ -33,10 +33,10 @@ save_enrichr <- function(up.genes = NULL, dn.genes = NULL, databases = "KEGG_201
   
   res.kegg$pval <- formatC(res.kegg$pval, digits = 3, format = "e")
   res.kegg$qval <- formatC(res.kegg$qval, digits = 3, format = "e")
-  if (!is.null(fileNameOut) & !is.null(wb)) {
+  if (!is.null(fileName) & !is.null(wb)) {
     if (nchar(databases) > 30) databases <- paste0(substr(databases, 1, 20), "_", substr(databases, nchar(databases) - 8, nchar(databases))) # If a database is longer that 30 characters, keep first 20 and last 10 characters
     if (is.null(sheetName)) {sheetName <- databases} # If sheetName is not provided, use database label as a sheetname
-    save_res(res.kegg, fileNameOut, wb = wb, sheetName = sheetName)
+    save_res(res.kegg, fileName, wb = wb, sheetName = sheetName)
   }
   # Pause for a few seconds
   pause_sec <- round(runif(1, min = 1, max = 10))
