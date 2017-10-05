@@ -81,6 +81,14 @@ save_res(res, fileName, wb = wb, sheetName = "GOCC")
 res <- gene_enrichment(selected = genes, id="symbol", organism = "Hs", use="KEGG")
 save_res(res, fileName, wb = wb, sheetName = "KEGG")
 
+Legend for the limma topTable: "Gene" - gene annotations; "logFC" - log fold change; 
+"AveExpr" - average expression, log2; "t" - t-statistics; "P.Val"/"adj.P.Val" - non-/FDR-adjusted 
+p-value, "B" - B-statistics, the log-odds that that gene is differentially expressed.
+
+Legend for the edgeR topTable: "Geneid", "symbol", "description" - gene annotations; 
+"Length" - length of a gene in bp; "logFC" - log fold change; "logCPM" - average Counts 
+Per Million, log2; "LR" - log-likelihood; "P.Val"/"adj.P.Val" - non-/FDR-adjusted p-value.
+
 # Legend for GO/KEGG functional enrichment results: "ID" - unique identifier of functional category; 
 # "Pvalue" - non-adjusted p-value; "OddsRatio" - enrichment odds ratio; "ExpCount" - number of genes 
 # expected to be selected in a category; "Count" - number of genes observed in the current list; 
