@@ -89,15 +89,14 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
 
 	---
 	title: "Demo Document"
-	output:
-	  html_document:
-	    toc: true
-	    # toc_float: true
-	    # theme: united
-	    theme: cerulean
-	    # number_sections: true
-	date: "`r Sys.Date()`"
 	author: "Author's Name"
+	date: "`r Sys.Date()`"
+	output:
+	  pdf_document:
+	    toc: no
+	  html_document:
+	    theme: cerulean
+	    toc: yes
 	---
 	
 	```{r setup, echo=FALSE, message=FALSE, warning=FALSE}
