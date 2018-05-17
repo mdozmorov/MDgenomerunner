@@ -132,6 +132,10 @@ To output code chunks 'as is', with the leading/trailing forwardticks, use a wor
 
 in the `setup` chunk above. Add `verbatim=TRUE` to the code chunk needs to be printed verbatim. 
 
+A simpler alternative is to create a function `catn <- function(x="") cat("    ", x, "\n")` and use it as
+
+![](img/code_verbatim.png)
+
 ### Rmd footer
 
   	```{r session_info}
