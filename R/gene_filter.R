@@ -1,6 +1,8 @@
 #' Filters expression matrix by two genefilter criteria
 #' 
-#' A wrapper of two genefilter functions to filter low exprssed and low variability genes (rows)
+#' A wrapper of two genefilter functions to filter low exprssed and low variability genes (rows).
+#' The default settings will keep genes for which 1) at least 33% of samples have an intensity of 10 
+#' or above; and 2) ratio of maximal/minimal intensity is at least 2
 #'
 #' @param mtx a matrix of genes (rows) vs. samples (columns), or an ExpressionSet. Required.
 #' @param proportion a proportion of samples having gene expressed above 'average_expression'. Default - 0.33
