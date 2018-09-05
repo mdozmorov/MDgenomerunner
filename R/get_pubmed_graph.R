@@ -17,7 +17,13 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' get_pubmed_graph("retraction", yearstart = 2000, yearend = 2016)
+#' library(MDmisc)
+#' library(ggplot2)
+#' # Get the graph object
+#' p <- get_pubmed_graph("bioinformatics", yearstart = 1970, yearend = 2018, normalize = TRUE, xlab = "Year", ylab = "Proportion of bioinformatics publications")
+#' plot(p) # Plot it
+#' ggsave("Figure_bioinformatics_papers.png", plot = p) # Save
+#' # Figure. Growth of publications having the term "bioinformatics" in their title/abstract. Y-axis is the proportion of bioinformatics publications out of the total number of publications, in percent.
 #' }
 ##
 get_pubmed_graph <- function(term, yearstart = 1970, yearend = 2016, normalize = FALSE, xlab = "X axis", ylab = "Y axis") {
