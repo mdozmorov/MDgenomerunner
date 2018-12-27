@@ -139,6 +139,11 @@ A simpler alternative is to create a function `catn <- function(x="") cat("    "
 ### Rmd footer
 
   	```{r session_info}
+	xfun::session_info()
+  	```
+
+<!--
+  	```{r session_info}
   	diagnostics <- devtools::session_info()
     platform <- data.frame(diagnostics$platform %>% unlist, stringsAsFactors = FALSE)
     colnames(platform) <- c("description")
@@ -147,6 +152,7 @@ A simpler alternative is to create a function `catn <- function(x="") cat("    "
     packages <- as.data.frame(diagnostics$packages)
     pander(packages[ packages$`*` == "*", ])
   	```
+-->
 
 ### Tidy up code
 
