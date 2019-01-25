@@ -21,6 +21,8 @@ sudo R -e "devtools::install_github('mdozmorov/MDmisc')"
 
 # Misc functions
 
+`auto_install` - Automatically install CRAN, Bioconductor, and/or GitHub packages
+
 `gene_filter` - filters expression matrix by two genefilter criteria
 
 `gene_enrichment` - gene set enrichment analysis on a list of gene names or EntrezIDs. Currently, tested for Homo Sapiens, Mus Musculus, and Rattus Norvegicus. Now, supporting GO, KEGG, and [msigdf](https://github.com/stephenturner/msigdf) enrichments.
@@ -195,3 +197,16 @@ When upgrading to the latest X.Y.Z R vestion, it is possible to rename the `/Lib
 	install.packages(c("rJava", "xlsx"))
 	```
 
+Install CRAN packages from a string vector
+
+```
+my_pkg <- c("clValid", "NbClust")
+
+for(pkg in my_pkg){
+  if (! pkg %in% installed.packages()){
+    install.packages(pkg)
+  }
+  library(pkg, character.only = TRUE)
+}
+
+```
