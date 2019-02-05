@@ -1,9 +1,11 @@
 #' @title A function for PCA plotting with highlighting groups using ellipses
 #' @description Beautiful PCA plot
-#' @param data a gene-by-sample numeric matrix. Required
+#' @param data a gene-by-sample numeric matrix. Note, internally it will be transposed. Required
 #' @param groups a character vector of sample group assignment. Required
 #' @param title a title for the graph. Required
-#' @param print_ellipse highlight groups by ellipses, Default: TRUE
+#' @param print_ellipse highlight groups by ellipses. Default: TRUE
+#' @param scale scale the data, as in ?prcomp. Default: TRUE
+#' @param center center the data, as in ?prcomp. Default: TRUE
 #' @return ggplot2 object
 #' @export
 #' @examples
@@ -20,10 +22,10 @@
 #' @note Source: \url{https://shiring.github.io/machine_learning/2017/01/15/rfe_ga_post}
 ##
 
-pca_func <- function(data, groups, title, print_ellipse = TRUE) {
+pca_func <- function(data, groups, title, print_ellipse = TRUE, scale = TRUE, center = TRUE) {
   
   # perform pca and extract scores
-  pcaOutput <- pca(data, printDropped = FALSE, scale = TRUE, center = TRUE)
+  pcaOutput <- pca(data, printDropped = FALSE, scale = scale, center = center)
   pcaOutput2 <- as.data.frame(pcaOutput$scores)
   
   # define groups for plotting
