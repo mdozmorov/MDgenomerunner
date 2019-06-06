@@ -30,7 +30,9 @@ save_enrichr <- function(up.genes = NULL, dn.genes = NULL, databases = "KEGG_201
   } else {
     res.kegg <- enrichFullGeneList(up.genes, dn.genes, databases = databases, fdr.cutoff = 1)
   }
-  
+  # Sort by p-value
+  res.kegg <- res.kegg[order(res.kegg$pval, decreasing = FALSE), ]
+  # Format pretty
   res.kegg$pval <- formatC(res.kegg$pval, digits = 3, format = "e")
   res.kegg$qval <- formatC(res.kegg$qval, digits = 3, format = "e")
   if (!is.null(fileName) & !is.null(wb)) {
