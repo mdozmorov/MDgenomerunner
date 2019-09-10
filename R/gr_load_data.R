@@ -42,10 +42,10 @@ gr_load_data <- function(dname, row.subset = "none", col.subset = "none", p2z = 
   class(mtx) <- "numeric"  # Convert to numbers
   # filter GF list, if specified
   if (row.subset != "none") {
-    mtx <- mtx[grep(paste(row.subset, collapse = "|"), rownames(mtx), ignore.case = T), ]
+    mtx <- mtx[grep(paste(row.subset, collapse = "|"), rownames(mtx), ignore.case = T), , drop = FALSE]
   }
   if (col.subset != "none") {
-    mtx <- mtx[, grep(paste(col.subset, collapse = "|"), colnames(mtx), ignore.case = T)]
+    mtx <- mtx[, grep(paste(col.subset, collapse = "|"), colnames(mtx), ignore.case = T), drop = FALSE]
   }
   # Transform PVAL and OR matrixes accordingly
   if (grepl("PVAL", d)) {
