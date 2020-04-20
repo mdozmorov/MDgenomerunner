@@ -210,3 +210,5 @@ for(pkg in my_pkg){
 }
 
 ```
+
+Install packages using a single function `ipak`. [Instructions](https://bvieth.github.io/powsimR/articles/powsimR.html)
